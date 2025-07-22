@@ -1,0 +1,99 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+@using AzureApp.ViewModels;
+@model List<VilaIndexViewModel>
+
+
+<div class="text-center">
+	<h1 class="display-4">Holidays</h1>
+	<p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+	<hr />
+	<div class="container">
+
+		<div class="row">
+			@foreach (var villa in Model)
+			{
+				<div class="col-4 col-12-medium">
+
+					<!-- Box -->
+					<section class="box feature">
+						<a href="#" class="image featured">
+							<img src=@villa.ImageUrl alt="" />
+						</a>
+						<div class="inner">
+							<h2>
+
+								<p>@villa.NameVilla</p>
+							</h2>
+							<p>@villa.VillaInfo</p>
+
+
+							<div class="row1">
+
+								<div class="col-sm-6 mb-3">
+
+									<label asp-for="@villa.VillaAddress" class="form-label-add-edit">Address</label>
+									<input asp-for="@villa.VillaAddress" class="form-control" aria-required="true" />
+									@*   <span asp-validation-for="@Model.Name" class="text-danger"></span> *@
+								</div>
+
+								<div class="col-sm-6 mb-3">
+
+									<label asp-for="@villa.CountAdults" class="form-label-add-edit">CountAdults</label>
+									<input asp-for="@villa.CountAdults" class="form-control" aria-required="true" />
+								
+								</div>
+
+								<div class="col-sm-6 mb-3">
+
+									<label asp-for="@villa.CountChildren" class="form-label-add-edit">Address</label>
+									<input asp-for="@villa.CountChildren" class="form-control" aria-required="true" />
+									
+								</div>
+
+								<div class="col-sm-6 mb-3">
+
+									<label asp-for="@villa.LocationName" class="form-label-add-edit">Address</label>
+									<input asp-for="@villa.LocationName" class="form-control" aria-required="true" />
+
+								</div>
+						    </div>
+							<div class="classBtns">
+
+								<a asp-controller="Vacation" asp-action="Details" asp-route-id="@villa.IdVilla" class="btn btn-info w-25">
+									<i class="fas fa-info-circle"></i> Details
+								</a>
+
+								@if (User?.Identity?.IsAuthenticated == true && ViewBag.EmailConfirmed == false)
+								{
+
+									<a asp-controller="Vacation" asp-action="Add" asp-route-id="@($"{villa.IdVilla},{villa.NameVilla}")" class="btn btn-info w-70">
+										<i class="fas fa-info-circle"></i> Make reservation
+									</a>
+
+									<form asp-controller="Vacation" asp-action="GetFavorite" asp-route-id="@villa.IdVilla" method="post" class="w-50">
+										<input type="hidden" name="id" value="@villa.IdVilla" />
+										<button type="submit" class="btn btn-success w-100">
+											<i class="fas fa-heart"></i> Favorites
+										</button>
+									</form>
+								}
+
+							</div>
+
+						</div>
+					</section>
+
+				</div>
+			}
+
+
+		</div>
+	</div>
+</div>
+

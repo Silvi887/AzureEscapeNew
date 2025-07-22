@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AzureAdd.Data\AzureAdd.Data\AzureAdd.Data.csproj" />
+    <ProjectReference Include="..\AzureApp.ViewModels\AzureApp.ViewModels\AzureApp.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>

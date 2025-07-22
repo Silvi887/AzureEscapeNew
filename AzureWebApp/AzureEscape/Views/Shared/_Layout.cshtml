@@ -1,0 +1,246 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AzureEscape</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BookVacation</title>
+
+    <link rel="stylesheet" type="text/html" href="~/css/plugins/OwlCarousel2-2.2.1/owl.theme.default.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/plugins/OwlCarousel2-2.2.1/animate.css" />
+    <link href="~/css/plugins/colorbox/colorbox.css" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" type="text/css" href="~/css/plugins/OwlCarousel2-2.2.1/owl.carousel.css" />
+    <link href="~/css/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="~/css/styles/main_styles.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/styles/responsive.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/styles/bootstrap-4.1.2/bootstrap.min.css" />
+    <link href="~/css/Stylefile1.css" rel="stylesheet" />
+
+  @*   <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/AzureEscape.styles.css" asp-append-version="true" /> *@
+</head>
+<body>
+    <header>
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="header_content d-flex flex-row align-items-center justify-content-start">
+                        <div class="logo">
+                            <a href="#">
+                                <div>Azure Escape</div>
+                                <div>Agency</div>
+                            </a>
+                        </div>
+                        <nav class="main_nav">
+                            <ul class="d-flex flex-row align-items-center justify-content-start">
+                                <li class="active"><a asp-controller="Vila" asp-action="Index">Home</a></li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Hotels</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" asp-area="" asp-controller="Vacation" asp-action="Index"> <i class="fas fa-list"></i>All Hotels</a>
+                                        <div class="dropdown-divider"></div>
+
+                                        @if (User?.Identity?.IsAuthenticated == true && ViewBag.EmailConfirmed == true)
+                                        {
+
+                                            <a class="dropdown-item" asp-controller="Hotels" asp-action="AddHotel">
+                                                <i class="fas fa-plus"></i> Add Hotel
+                                            </a>
+                                        }
+                                        else if (User?.Identity?.IsAuthenticated == true && ViewBag.EmailConfirmed == false)
+                                        {
+                                            <a class="dropdown-item" asp-controller="Vacation" asp-action="GetFavorite">
+                                                <i class="fas fa-plus"></i> Favorite hotel
+                                            </a>
+                                        }
+                                    </div>
+                                </li>
+
+
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Vacation" asp-action="AllReservations">All Reservation</a>
+                                </li>
+
+                                @*    <li><a href="about.html">About us</a></li>
+                                <li><a href="rooms.html">Rooms</a></li>
+                                <li><a href="blog.html">News</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                                <li><a href="contact.html"> </a></li> *@
+                            </ul>
+
+                        </nav>
+
+                        <!-- Login/Register buttons -->
+                        <div class="login-buttons ml-auto">
+                            <partial name="_LoginPartial" />
+                        </div>
+                        <div class="header_extra d-flex flex-row align-items-center justify-content-start ml-auto">
+                            @*        <div class="phone d-flex flex-row align-items-center justify-content-start"><i class="fa fa-phone" aria-hidden="true"></i><span>652-345 3222 11</span></div> *@
+                            <div class="book_button trans_200"><a href="#">Book Now</a></div>
+                            <div></div>
+                        </div>
+                        <div class="hamburger ml-auto"><i class="fa fa-bars" aria-hidden="true"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       @*  <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AzureEscape</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav> *@
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <!-- Facilities -->
+
+    <div class="facilities">
+        <div class="container">
+            <div class="row icon_box_row">
+
+                <!-- Icon Box -->
+                <div class="col-lg-4">
+                    <div class="icon_box text-center">
+                        <div class="icon_box_icon"><img src="~/img/icon_1.svg" alt="https://www.flaticon.com/authors/monkik"></div>
+                        <div class="icon_box_title"><h2>Beautiful Rooms</h2></div>
+                        <div class="icon_box_text">
+                            <p>In vitae nisi aliquam, scelerisque leo a, volutpat sem. Vivamus rutrum dui fermentum eros hendrerit, id lobortis leo volutpat.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Icon Box -->
+                <div class="col-lg-4">
+                    <div class="icon_box text-center">
+                        <div class="icon_box_icon"><img src="~/img/icon_1.svg" alt="https://www.flaticon.com/authors/monkik"></div>
+                        <div class="icon_box_title"><h2>Swimming Pool</h2></div>
+                        <div class="icon_box_text">
+                            <p>In vitae nisi aliquam, scelerisque leo a, volutpat sem. Vivamus rutrum dui fermentum eros hendrerit, id lobortis leo volutpat.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Icon Box -->
+                <div class="col-lg-4">
+                    <div class="icon_box text-center">
+                        <div class="icon_box_icon"><img src="~/img/icon_3.svg" alt="https://www.flaticon.com/authors/monkik"></div>
+                        <div class="icon_box_title"><h2>Luxury Resort</h2></div>
+                        <div class="icon_box_text">
+                            <p>In vitae nisi aliquam, scelerisque leo a, volutpat sem. Vivamus rutrum dui fermentum eros hendrerit, id lobortis leo volutpat.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Gallery -->
+    @* 	<div><img src="~/css/gallery_1.jpg" /></div> *@
+
+
+
+
+
+
+    <div class="gallery">
+        <div class="gallery_slider_container">
+
+            <!-- Gallery Slider -->
+            <div class="owl-carousel owl-theme gallery_slider">
+
+                <!-- Slide -->
+                <div class="owl-item gallery_item">
+
+                    <a class="colorbox" href="@Url.Content("~/img/gallery_1.jpg")">
+                        <div class="background_image" style="background-image:url('@Url.Content("~/img/gallery_1.jpg")')"></div>
+                    </a>
+                    <div class="gallery_overlay trans_200 d-flex flex-column align-items-center justify-content-center"><div>+</div></div>
+                </div>
+
+                <!-- Slide -->
+                <div class="owl-item gallery_item">
+                    <a class="colorbox" href="~/img/gallery_2.jpg">
+                        <div class="background_image" style="background-image:url('@Url.Content("~/img/gallery_2.jpg")')"></div>
+                    </a>
+                    <div class="gallery_overlay trans_200 d-flex flex-column align-items-center justify-content-center"><div>+</div></div>
+                </div>
+
+                <!-- Slide -->
+                <div class="owl-item gallery_item">
+                    <a class="colorbox" href="~/img/gallery_3.jpg">
+                        <div class="background_image" style="background-image:url('@Url.Content("~/img/gallery_3.jpg")')"></div>
+                    </a>
+                    <div class="gallery_overlay trans_200 d-flex flex-column align-items-center justify-content-center"><div>+</div></div>
+                </div>
+
+                <!-- Slide -->
+                <div class="owl-item gallery_item">
+                    <a class="colorbox" href="~/img/gallery_4.jpg">
+                        <div class="background_image" style="background-image:url('@Url.Content("~/img/gallery_4.jpg")')"></div>
+                    </a>
+                    <div class="gallery_overlay trans_200 d-flex flex-column align-items-center justify-content-center"><div>+</div></div>
+                </div>
+
+                <!-- Slide -->
+                <div class="owl-item gallery_item">
+                    <a class="colorbox" href="~/img/gallery_5.jpg">
+                        <div class="background_image" style="background-image:url('@Url.Content("~/img/gallery_5.jpg")')"></div>
+                    </a>
+                    <div class="gallery_overlay trans_200 d-flex flex-column align-items-center justify-content-center"><div>+</div></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - AzureEscape - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+
+    <script src="~/css/js/jquery-3.2.1.min.js"></script>
+    <script src="~/css/styles/bootstrap-4.1.2/popper.js"></script>
+    <script src="~/css/styles/bootstrap-4.1.2/bootstrap.min.js"></script>
+    <script src="~/css/plugins/greensock/TweenMax.min.js"></script>
+    <script src="~/css/plugins/greensock/TimelineMax.min.js"></script>
+    <script src="~/css/plugins/scrollmagic/ScrollMagic.min.js"></script>
+    <script src="~/css/plugins/greensock/animation.gsap.min.js"></script>
+    <script src="~/css/plugins/greensock/ScrollToPlugin.min.js"></script>
+    <script src="~/css/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+    <script src="~/css/plugins/easing/easing.js"></script>
+    <script src="~/css/plugins/progressbar/progressbar.min.js"></script>
+    <script src="~/css/plugins/colorbox/jquery.colorbox-min.js"></script>
+    <script src="~/css/plugins/parallax-js-master/parallax.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCIwF204lFZg1y4kPSIhKaHEXMLYxxuMhA"></script>
+    <script src="~/css/js/custom.js"></script>
+</body>
+</html>

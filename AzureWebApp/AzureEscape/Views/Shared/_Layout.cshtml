@@ -18,8 +18,8 @@
     <link rel="stylesheet" type="text/css" href="~/css/styles/main_styles.css" />
     <link rel="stylesheet" type="text/css" href="~/css/styles/responsive.css" />
     <link rel="stylesheet" type="text/css" href="~/css/styles/bootstrap-4.1.2/bootstrap.min.css" />
-    <link href="~/css/Stylefile1.css" rel="stylesheet" />
-
+    
+    <link href="~/css/site.css" rel="stylesheet" />
   @*   <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AzureEscape.styles.css" asp-append-version="true" /> *@
@@ -39,11 +39,11 @@
                         </div>
                         <nav class="main_nav">
                             <ul class="d-flex flex-row align-items-center justify-content-start">
-                                <li class="active"><a asp-controller="Vila" asp-action="Index">Home</a></li>
+                                <li class="active"><a asp-controller="Home" asp-action="Index">Home</a></li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Hotels</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" asp-area="" asp-controller="Vacation" asp-action="Index"> <i class="fas fa-list"></i>All Hotels</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Vila" asp-action="Index"> <i class="fas fa-list"></i>All Hotels</a>
                                         <div class="dropdown-divider"></div>
 
                                         @if (User?.Identity?.IsAuthenticated == true && ViewBag.EmailConfirmed == true)
@@ -111,6 +111,8 @@
             </div>
         </nav> *@
     </header>
+    <div class="backimage">
+    </div>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

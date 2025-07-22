@@ -2,10 +2,6 @@
 
 
 
-header {
-    margin-bottom: 10px;
-    background: #4c5c7e;
-}
 .backimage {
     /* linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),*/
     background: url(../img/luxury-home.jpg) no-repeat;

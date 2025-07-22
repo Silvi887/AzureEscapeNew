@@ -15,57 +15,61 @@
 	<hr />
 	<div class="container">
 
-		<div class="row">
+		<div class="row3">
 			@foreach (var villa in Model)
 			{
-				<div class="col-4 col-12-medium">
+				<div>
 
 					<!-- Box -->
-					<section class="box feature">
-						<a href="#" class="image featured">
+					<section class="section1">
+						@* <a href="#" class="image featured"> *@	@* </a> *@
+							<div>
 							<img src=@villa.ImageUrl alt="" />
-						</a>
+							</div>
+					
 						<div class="inner">
 							<h2>
 
-								<p>@villa.NameVilla</p>
+								@villa.NameVilla
 							</h2>
 							<p>@villa.VillaInfo</p>
 
 
-							<div class="row1">
+							<div>
 
 								<div class="col-sm-6 mb-3">
 
-									<label asp-for="@villa.VillaAddress" class="form-label-add-edit">Address</label>
-									<input asp-for="@villa.VillaAddress" class="form-control" aria-required="true" />
+									
+									<p> <span> Address: </span>@villa.VillaAddress </p>
 									@*   <span asp-validation-for="@Model.Name" class="text-danger"></span> *@
 								</div>
 
 								<div class="col-sm-6 mb-3">
 
-									<label asp-for="@villa.CountAdults" class="form-label-add-edit">CountAdults</label>
-									<input asp-for="@villa.CountAdults" class="form-control" aria-required="true" />
+									<p> <span> Count Adults:</span>@villa.CountAdults </p>
 								
 								</div>
 
 								<div class="col-sm-6 mb-3">
 
-									<label asp-for="@villa.CountChildren" class="form-label-add-edit">Address</label>
-									<input asp-for="@villa.CountChildren" class="form-control" aria-required="true" />
+									<p> <span> Count Children: @villa.CountChildren</span> </p>
 									
 								</div>
 
 								<div class="col-sm-6 mb-3">
 
-									<label asp-for="@villa.LocationName" class="form-label-add-edit">Address</label>
-									<input asp-for="@villa.LocationName" class="form-control" aria-required="true" />
+										<p> <span> Location Name: @villa.LocationName</span> </p>
+
+								</div>
+								<div class="col-sm-6 mb-3">
+
+										<p> <span> Details: @villa.VillaInfo</span> </p>
 
 								</div>
 						    </div>
 							<div class="classBtns">
 
-								<a asp-controller="Vacation" asp-action="Details" asp-route-id="@villa.IdVilla" class="btn btn-info w-25">
+								<a asp-controller="Vacation" asp-action="Details" asp-route-id="@villa.IdVilla" class="btn btn-info">
 									<i class="fas fa-info-circle"></i> Details
 								</a>
 
@@ -85,8 +89,8 @@
 								}
 
 							</div>
-
-						</div>
+							</div>
+						
 					</section>
 
 				</div>

@@ -1,0 +1,103 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Add Hotel";
+}
+
+@using AzureApp.ViewModels;
+@model AddVillaIndexViewModel;
+
+<h2>Add New Villa</h2>
+
+<form asp-action="AddVilla" method="post">
+    <div class="form-group">
+        <label asp-for="@Model.NameVilla"></label>
+        <input asp-for="@Model.NameVilla" class="form-control" />
+        <span asp-validation-for="@Model.NameVilla" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.VillaInfo"></label>
+        <textarea asp-for="@Model.VillaInfo" class="form-control"></textarea>
+        <span asp-validation-for="@Model.VillaInfo" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.VillaAddress"></label>
+        <input asp-for="@Model.VillaAddress" class="form-control" />
+        <span asp-validation-for="@Model.VillaAddress" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.ImageUrl"></label>
+        <input asp-for="@Model.ImageUrl" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.IdTown" class="form-label-add-edit">Town </label>
+        <select asp-for="@Model.IdTown" class="form-control" aria-required="true" asp-items="@(new SelectList(Model.AllTownsModels, "IdTown", "NameTown"))">
+            <option value="">...</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.IdTypePlace" class="form-label-add-edit">TypePlace </label>
+        <select asp-for="@Model.IdTypePlace" class="form-control" aria-required="true" asp-items="@(new SelectList(Model.AllTypePlaces, "IdTypePlace", "NameTypePlace"))">
+            <option value="">...</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.CountRooms"></label>
+        <input asp-for="@Model.CountRooms" class="form-control" type="number" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.CountAdults"></label>
+        <input asp-for="@Model.CountAdults" class="form-control" type="number" />
+        <span asp-validation-for="@Model.CountAdults" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.CountChildren"></label>
+        <input asp-for="@Model.CountChildren" class="form-control" type="number" />
+        <span asp-validation-for="@Model.CountChildren" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Bedrooms"></label>
+        <input asp-for="@Model.Bedrooms" class="form-control" type="number" />
+        <span asp-validation-for="@Model.Bedrooms" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Bathrooms"></label>
+        <input asp-for="@Model.Bathrooms" class="form-control" type="number" />
+        <span asp-validation-for="@Model.Bathrooms" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Area"></label>
+        <input asp-for="@Model.Area" class="form-control" />
+        <span asp-validation-for="@Model.Area" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Parking"></label>
+        <input asp-for="@Model.Parking" class="form-control" />
+        <span asp-validation-for="@Model.Parking" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.LocationName"></label>
+        <input asp-for="@Model.LocationName" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Villa</button>
+    <a asp-action="Details" asp-route-id="@Model.NamePlace" class="btn btn-info">View Details</a>
+</form>
+@* 
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+} *@

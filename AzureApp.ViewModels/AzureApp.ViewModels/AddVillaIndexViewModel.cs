@@ -2,19 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AzureApp.ViewModels
 {
-    public class VilaIndexViewModel
+    public class AddVillaIndexViewModel
     {
 
-
         [Key]
-       
+
         public int IdVilla { get; set; }
 
         [Required]
@@ -23,9 +21,7 @@ namespace AzureApp.ViewModels
         public string NameVilla { get; set; } = null!;
 
         [Required]
-       
 
-       
         public string NamePlace { get; set; } = null!;
 
         [Required]
@@ -67,12 +63,10 @@ namespace AzureApp.ViewModels
 
         public string LocationName { get; set; } = "";
 
-      
+        public int IdTown { get; set; }
+        public int IdTypePlace { get; set; }
+        public IEnumerable<TownIndexViewModel> AllTownsModels { get; set; } = null!;
 
-        //[Required]
-        //public string IDManager { get; set; } = null!;
-
-        //[ForeignKey(nameof(IDManager))]
-        //public virtual IdentityUser Manager { get; set; } = null!;
+        public IEnumerable<TypePlaceIndexViewModel> AllTypePlaces { get; set; } = null!;
     }
 }

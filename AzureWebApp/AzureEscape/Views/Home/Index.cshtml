@@ -7,3 +7,103 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+<!-- Facilities -->
+
+<div class="facilities">
+    <div class="container">
+        <div class="row icon_box_row">
+
+            <!-- Icon Box -->
+            <div class="col-lg-4">
+                <div class="icon_box text-center">
+                    <div class="icon_box_icon"><img src="~/img/icon_1.svg" alt="https://www.flaticon.com/authors/monkik"></div>
+                    <div class="icon_box_title"><h2>Beautiful Rooms</h2></div>
+                    <div class="icon_box_text">
+                        <p>In vitae nisi aliquam, scelerisque leo a, volutpat sem. Vivamus rutrum dui fermentum eros hendrerit, id lobortis leo volutpat.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Icon Box -->
+            <div class="col-lg-4">
+                <div class="icon_box text-center">
+                    <div class="icon_box_icon"><img src="~/img/icon_1.svg" alt="https://www.flaticon.com/authors/monkik"></div>
+                    <div class="icon_box_title"><h2>Swimming Pool</h2></div>
+                    <div class="icon_box_text">
+                        <p>In vitae nisi aliquam, scelerisque leo a, volutpat sem. Vivamus rutrum dui fermentum eros hendrerit, id lobortis leo volutpat.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Icon Box -->
+            <div class="col-lg-4">
+                <div class="icon_box text-center">
+                    <div class="icon_box_icon"><img src="~/img/icon_3.svg" alt="https://www.flaticon.com/authors/monkik"></div>
+                    <div class="icon_box_title"><h2>Luxury Resort</h2></div>
+                    <div class="icon_box_text">
+                        <p>In vitae nisi aliquam, scelerisque leo a, volutpat sem. Vivamus rutrum dui fermentum eros hendrerit, id lobortis leo volutpat.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Gallery -->
+@* 	<div><img src="~/css/gallery_1.jpg" /></div> *@
+
+
+
+
+
+
+<div class="gallery">
+    <div class="gallery_slider_container">
+
+        <!-- Gallery Slider -->
+        <div class="owl-carousel owl-theme gallery_slider">
+
+            <!-- Slide -->
+            <div class="owl-item gallery_item">
+
+                <a class="colorbox" href="@Url.Content("~/img/gallery_1.jpg")">
+                    <div class="background_image" style="background-image:url('@Url.Content("~/img/gallery_1.jpg")')"></div>
+                </a>
+                <div class="gallery_overlay trans_200 d-flex flex-column align-items-center justify-content-center"><div>+</div></div>
+            </div>
+
+            <!-- Slide -->
+            <div class="owl-item gallery_item">
+                <a class="colorbox" href="~/img/gallery_2.jpg">
+                    <div class="background_image" style="background-image:url('@Url.Content("~/img/gallery_2.jpg")')"></div>
+                </a>
+                <div class="gallery_overlay trans_200 d-flex flex-column align-items-center justify-content-center"><div>+</div></div>
+            </div>
+
+            <!-- Slide -->
+            <div class="owl-item gallery_item">
+                <a class="colorbox" href="~/img/gallery_3.jpg">
+                    <div class="background_image" style="background-image:url('@Url.Content("~/img/gallery_3.jpg")')"></div>
+                </a>
+                <div class="gallery_overlay trans_200 d-flex flex-column align-items-center justify-content-center"><div>+</div></div>
+            </div>
+
+            <!-- Slide -->
+            <div class="owl-item gallery_item">
+                <a class="colorbox" href="~/img/gallery_4.jpg">
+                    <div class="background_image" style="background-image:url('@Url.Content("~/img/gallery_4.jpg")')"></div>
+                </a>
+                <div class="gallery_overlay trans_200 d-flex flex-column align-items-center justify-content-center"><div>+</div></div>
+            </div>
+
+            <!-- Slide -->
+            <div class="owl-item gallery_item">
+                <a class="colorbox" href="~/img/gallery_5.jpg">
+                    <div class="background_image" style="background-image:url('@Url.Content("~/img/gallery_5.jpg")')"></div>
+                </a>
+                <div class="gallery_overlay trans_200 d-flex flex-column align-items-center justify-content-center"><div>+</div></div>
+            </div>
+
+        </div>
+    </div>
+</div>

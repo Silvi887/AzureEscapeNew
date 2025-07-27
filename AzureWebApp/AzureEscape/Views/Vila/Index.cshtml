@@ -15,7 +15,7 @@
 	<hr />
 	<div class="container">
 
-		<div class="row3">
+		<div class="row4">
 			@foreach (var villa in Model)
 			{
 				<div>
@@ -23,50 +23,52 @@
 					<!-- Box -->
 					<section class="section1">
 						@* <a href="#" class="image featured"> *@	@* </a> *@
-							<div>
-							<img src=@villa.ImageUrl alt="" />
-							</div>
-					
-						<div class="inner">
+						<div class="image-wrapper">
 							<h2>
 
 								@villa.NameVilla
 							</h2>
+							<img src=@villa.ImageUrl alt="" />
+					
+						<div class="inner">
+							
 							<p>@villa.VillaInfo</p>
 
 
 							<div>
 
-								<div class="col-sm-6 mb-3">
+								<div>
 
 									
 									<p> <span> Address: </span>@villa.VillaAddress </p>
 									@*   <span asp-validation-for="@Model.Name" class="text-danger"></span> *@
 								</div>
 
-								<div class="col-sm-6 mb-3">
+								<div>
 
 									<p> <span> Count Adults:</span>@villa.CountAdults </p>
 								
 								</div>
 
-								<div class="col-sm-6 mb-3">
+								<div>
 
 									<p> <span> Count Children: @villa.CountChildren</span> </p>
 									
 								</div>
 
-								<div class="col-sm-6 mb-3">
+								<div>
 
 										<p> <span> Location Name: @villa.LocationName</span> </p>
 
 								</div>
-								<div class="col-sm-6 mb-3">
+								<div class="mb-3">
 
 										<p> <span> Details: @villa.VillaInfo</span> </p>
 
 								</div>
 						    </div>
+							
+							</div>
 							<div class="classBtns">
 
 								<a asp-controller="Vacation" asp-action="Details" asp-route-id="@villa.IdVilla" class="btn btn-info">
@@ -76,7 +78,7 @@
 								@if (User?.Identity?.IsAuthenticated == true && ViewBag.EmailConfirmed == false)
 								{
 
-									<a asp-controller="Vacation" asp-action="Add" asp-route-id="@($"{villa.IdVilla},{villa.NameVilla}")" class="btn btn-info w-70">
+									<a asp-controller="Reserve" asp-action="AddBooking" asp-route-id="@($"{villa.IdVilla},{villa.NameVilla}")" class="btn btn-info w-70">
 										<i class="fas fa-info-circle"></i> Make reservation
 									</a>
 
@@ -89,7 +91,7 @@
 								}
 
 							</div>
-							</div>
+						</div>
 						
 					</section>
 

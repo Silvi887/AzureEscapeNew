@@ -11,5 +11,10 @@ namespace AzureServises.Core.Interfaces
     {
 
         Task<IEnumerable<VilaIndexViewModel>> GetAllVillasAsync(string? UserId);
+        Task<bool> AddVilaModel(string Userid, AddVillaIndexViewModel vilamodel);
+
+        Task<bool> AddBookingModel(string Userid, AddReservationViewModel reservationmodel);
+
+        Task<IEnumerable<AllReservationsViewModel>> GetAllReservations(string? Userid);
     }
 }

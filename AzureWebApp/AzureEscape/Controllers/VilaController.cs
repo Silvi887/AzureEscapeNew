@@ -75,11 +75,11 @@ namespace AzureEscape.Controllers
 
                 }
 
-                ViewBag.SuccessMessage = "Successful addes hotel!";
+                ViewBag.SuccessMessage = "Successful addes vila!";
 
 
-
-                return RedirectToAction("AddVilla", "Vila");
+                return RedirectToAction(nameof(Index), "Vila");
+                // return RedirectToAction("AddVilla", "Vila");
 
             }
         
@@ -92,6 +92,8 @@ namespace AzureEscape.Controllers
 
 
     }
+
+
 
 }
         

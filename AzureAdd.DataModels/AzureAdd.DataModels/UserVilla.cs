@@ -18,9 +18,9 @@ namespace AzureAdd.DataModels
 
 
         [Required]
-        public string UseriId { get; set; }
+        public string UserId { get; set; } = null!;
 
-        [ForeignKey(nameof(UseriId))]
+        [ForeignKey(nameof(UserId))]
         public IdentityUser User { get; set; }= null!;
     }
 }

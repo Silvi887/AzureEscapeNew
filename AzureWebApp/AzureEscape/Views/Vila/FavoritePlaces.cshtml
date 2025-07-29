@@ -1,0 +1,55 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@using AzureApp.ViewModels
+@model IEnumerable<FavoriteVilaIndexViewModel>
+
+<div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
+    <h2>Favorites hotels</h2>
+</div>
+<hr />
+
+@if (Model == null || !Model.Any())
+{
+    <div class="text-center mt-5">
+        <h4>You don't have any favorite hotels yet!</h4>
+        <p class="text-muted">Start exploring and adding hotels to your favorites.</p>
+    </div>
+}
+else
+{
+    @foreach (var hotel in Model)
+    {
+        <div class="row align-items-center mb-4 py-3" style="border-bottom: 1px solid #ccc;">
+            <div class="col-md-2 text-center">
+                @if (!string.IsNullOrEmpty(@hotel.ImageUrl))
+                {
+                    <img src="@hotel.ImageUrl" class="img-fluid" style="max-height: 100px; object-fit: contain;" alt="" />
+                }
+                else
+                {
+                    <img src="~/images/default-image.jpg" class="img-fluid" style="max-height: 100px; object-fit: contain;" alt="No Image Available" />
+                }
+            </div>
+            <div class="col-md-4 text-start">
+                <h5 class="mb-0">@hotel.VilaName</h5>
+                <p class="text-muted mb-0"><small>Town: @hotel.TownName</small></p>
+            </div>
+            <div class="col-md-4 text-end">
+                <form asp-controller="Favorite" asp-action="DeleteFavorite" asp-route-id="@hotel.IdVila" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Remove
+                    </button>
+                </form>
+            </div>
+        </div>
+    }
+}
+<div class="text-center mt-5">
+    <a asp-controller="Vila" asp-action="Index" class="btn btn-primary mt-3">
+        <i class="fas fa-arrow-left"></i> Back to List of All Hotels
+    </a>
+</div>

@@ -168,8 +168,10 @@ namespace AzureServises.Core
                 Console.WriteLine(ex.ToString());
                 throw;
             }
-            throw new NotImplementedException();
+           // throw new NotImplementedException();
         }
+
+     
 
         public async Task<IEnumerable<AllReservationsViewModel>> GetAllReservations(string? Userid)
         {
@@ -215,6 +217,233 @@ namespace AzureServises.Core
             return Allhotels;
         }
 
+        public async Task<IEnumerable<FavoriteVilaIndexViewModel>> GetFavoritePlaces(string? Userid)
+        {
+            bool issuccessfavorite = false;
+            IdentityUser? curentuser = await userManager.FindByIdAsync(Userid);
+            IEnumerable<FavoriteVilaIndexViewModel>? favoritehotel = null;
+
+
+            if (curentuser != null)
+            {
+                favoritehotel = await Dbcontext.UserVilla
+                    .Where(f => f.UserId.ToLower() == curentuser.Id.ToLower() && f.Villa.IsDeleted == false)
+                    .Include(f => f.Villa.Location)
+                     .Select(h => new FavoriteVilaIndexViewModel()
+                     {
+                         IdVila = h.VillaId,
+                         TownName = h.Villa.Location.NameLocation,
+                         ImageUrl = h.Villa.ImageUrl,
+                         VilaName = h.Villa.NameVilla,
+                     }).ToArrayAsync();
+
+                issuccessfavorite = true;
+            }
+
+            return favoritehotel;
+        }
+
+        public async Task<bool> FavoritePlaces(string Userid, int favoritehotelid)
+        {
+            bool issuccessfavorite = false;
+            IdentityUser? curentuser = await userManager.FindByIdAsync(Userid);
+
+            VillaPenthhouse? currentPlace1 = await Dbcontext.VillasPenthhouses.FindAsync(favoritehotelid);
+
+            if (curentuser != null && currentPlace1 != null) /* && currentPlace.IDManager != curentuser.Id */
+            {
+                UserVilla CurrentPlace = await Dbcontext.UserVilla.SingleOrDefaultAsync(h => h.VillaId == currentPlace1.IdVilla && h.UserId == curentuser.Id);
+
+
+                if (CurrentPlace == null)
+                {
+
+                    CurrentPlace = new UserVilla()
+                    {
+                        UserId = curentuser.Id,
+                        VillaId = favoritehotelid
+                        // HotelID = idhotel,
+                        //UserId = curentuser.Id
+                    };
+                    await Dbcontext.UserVilla.AddAsync(CurrentPlace);
+                }
+
+                await this.Dbcontext.SaveChangesAsync();
+
+                issuccessfavorite = true;
+            }
+
+
+
+            return issuccessfavorite;
+        }
+
+        public async Task<bool> RemoveFavorite(string Userid, int? id)
+        {
+            bool isdeleted = false;
+            IdentityUser? curentuser = await userManager.FindByIdAsync(Userid);
+            VillaPenthhouse? hoteltoremove = await Dbcontext.VillasPenthhouses.SingleOrDefaultAsync(h => h.IdVilla == id);
+            if (curentuser != null && hoteltoremove != null)
+            {
+                hoteltoremove.IsDeleted = true;
+
+
+                await this.Dbcontext.SaveChangesAsync();
+
+                isdeleted = true;
+            }
+
+
+
+            return isdeleted;
+        }
+
+        public async Task<DeleteReservationIndexViewModel> GetForDeleteReservation(int? id, string? Userid)
+        {
+
+            IdentityUser? currentUser = await userManager.FindByIdAsync(Userid);
+            DeleteReservationIndexViewModel? reservation1 = null;
+
+            if (currentUser != null)
+            {
+
+                Booking? curentreservation = await Dbcontext.Bookings.Include(r => r.VillaPenthhouse)
+
+                    .FirstOrDefaultAsync(r => r.IdBooking == id);
+
+                reservation1 = new DeleteReservationIndexViewModel()
+                {
+
+
+                    StartDate = curentreservation.StartDate.ToString("yyyy-MM-dd"),
+
+                    EndDate = curentreservation.StartDate.ToString("yyyy-MM-dd"),
+                    IdBooking = curentreservation.IdBooking,
+                    GuestFirstName = curentreservation.FirstName + " " + curentreservation.LastName,
+                    HotelName = curentreservation.VillaPenthhouse.NameVilla
+
+                    //AdultsCount = curentreservation.AdultsCount,
+
+                    //ChildrenCount = curentreservation.ChildrenCount,
+
+                    //RoomId = curentreservation.RoomId.ToString(),
+                    //HotelId = curentreservation.HotelId.ToString(),
+                    //HotelName = curentreservation.Hotel.HotelName,
+                    //GuestFirstName = curentreservation.FirstName,
+                    //LastNameG = curentreservation.LastName,
+                    //DateofBirth = curentreservation.DateOfBirth.ToString("yyyy-MM-dd"),
+                    //GuestAddress = curentreservation.Address,
+                    //GuestEmail = curentreservation.Email,
+                    //GuestPhoneNumber = curentreservation.NumberOfPhone
+                };
+
+            }
+
+
+            return reservation1;
+        }
+
+        public async Task<bool> DeleteReservation(string Userid, int? id)
+        {
+
+            bool issuccessdelete = false;
+
+            IdentityUser? curentuser = await userManager.FindByIdAsync(Userid);
+
+            Booking? currentReservation = await Dbcontext.Bookings.FindAsync(id);
+
+            if (currentReservation != null && currentReservation != null)
+            {
+
+
+                currentReservation.IsDeleted = true;
+                //Dbcontext.Reservations.Remove(currentReservation);
+                Dbcontext.SaveChanges();
+
+                issuccessdelete = true;
+            }
+            return issuccessdelete;
+        }
+
+        public async Task<EditBooking> GetForEditReservation(int? id, string? Userid)
+        {
+
+            IdentityUser? currentUser = await userManager.FindByIdAsync(Userid);
+            EditBooking reservation1 = null;
+
+            if (currentUser != null)
+            {
+
+                Booking? curentreservation = await Dbcontext.Bookings.Include(r => r.VillaPenthhouse)
+                                              .FirstOrDefaultAsync(r => r.IdBooking == id);
+
+                reservation1 = new EditBooking()
+                {
+
+                    IdBooking = curentreservation.IdBooking.ToString(),
+                    StartDate = curentreservation.StartDate.ToString("yyyy-MM-dd"),
+
+                    EndDate = curentreservation.EndDate.ToString("yyyy-MM-dd"),
+                    AdultsCount = curentreservation.AdultsCount,
+
+                    ChildrenCount = curentreservation.ChildrenCount,
+
+                   // RoomId = curentreservation.RoomId.ToString(),
+                    VilaId = curentreservation.VillaId.ToString(),
+                    VilaName = curentreservation.VillaPenthhouse.NameVilla,
+                    GuestFirstName = curentreservation.FirstName,
+                    LastNameG = curentreservation.LastName,
+                    DateofBirth = curentreservation.DateOfBirth.ToString("yyyy-MM-dd"),
+                    GuestAddress = curentreservation.Address,
+                    GuestEmail = curentreservation.Email,
+                    GuestPhoneNumber = curentreservation.NumberOfPhone
+                };
+
+            }
+
+
+            return reservation1;
+        }
+
+        public async Task<bool> EditReservation(string UserId, EditBooking editbooking)
+        {
+            IdentityUser userid = await userManager.FindByIdAsync(UserId);
+            bool resultReservation = false;
+
+            Booking? CurrentReservation = await Dbcontext.Bookings
+                                    .FindAsync(int.Parse(editbooking.IdBooking));
+
+           // Room? Room = await Dbcontext.Rooms.FindAsync(int.Parse(editreservation.RoomId));
+
+
+            if (userid != null && CurrentReservation != null)
+            {
+
+                CurrentReservation.StartDate =
+                    DateTime.ParseExact(editbooking.StartDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
+                CurrentReservation.EndDate =
+                  DateTime.ParseExact(editbooking.EndDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
+                CurrentReservation.AdultsCount = editbooking.AdultsCount;
+                CurrentReservation.ChildrenCount = editbooking.ChildrenCount;
+                CurrentReservation.GuestId = userid.Id;
+                //CurrentReservation.RoomId = Room.IdRoom;
+                CurrentReservation.IdBooking = int.Parse(editbooking.IdBooking);
+                CurrentReservation.FirstName = editbooking.GuestFirstName;
+                CurrentReservation.LastName = editbooking.LastNameG;
+                CurrentReservation.DateOfBirth = DateTime.ParseExact(editbooking.DateofBirth, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
+                CurrentReservation.Address = editbooking.GuestAddress;
+                CurrentReservation.Email = editbooking.GuestEmail;
+                CurrentReservation.NumberOfPhone = editbooking.GuestPhoneNumber;
+
+
+                this.Dbcontext.SaveChanges();
+                resultReservation = true;
+
+            }
+
+
+            return resultReservation;
+        }
 
         //public async Task<IEnumerable<VilaIndexViewModel>> GetAllVillasAsync(string? UserId)
         //{

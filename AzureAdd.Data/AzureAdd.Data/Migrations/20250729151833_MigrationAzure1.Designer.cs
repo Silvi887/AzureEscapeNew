@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AzureAdd.Data.Migrations
 {
     [DbContext(typeof(AzureAddDbContext))]
-    [Migration("20250720015132_Migr1")]
-    partial class Migr1
+    [Migration("20250729151833_MigrationAzure1")]
+    partial class MigrationAzure1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -143,13 +143,13 @@ namespace AzureAdd.Data.Migrations
 
             modelBuilder.Entity("AzureAdd.DataModels.UserVilla", b =>
                 {
-                    b.Property<string>("UseriId")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("VillaId")
                         .HasColumnType("int");
 
-                    b.HasKey("UseriId", "VillaId");
+                    b.HasKey("UserId", "VillaId");
 
                     b.HasIndex("VillaId");
 
@@ -352,15 +352,15 @@ namespace AzureAdd.Data.Migrations
                         {
                             Id = "7699db7d-964f-4782-8209-d76562e0fece",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "38453b5d-9925-48ba-b15c-adbeaca6e8b5",
+                            ConcurrencyStamp = "2a899f2e-b230-4c5c-a4f3-acd82f39e1da",
                             Email = "admin@horizons.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@HORIZONS.COM",
                             NormalizedUserName = "ADMIN@HORIZONS.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFnDMTgLcsolp9fYfpWCEU5p4LjBiy8i2z2bRdjAhFV+nHcWDQhcON5qSaiMrUmzIw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHMx0BOfkUfj1nyOgJeV+diyCohTFK/rlEtl+C07Qviirckp2J2JYDWSY/N/KNGrhg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "23f38ea5-aafd-47b0-a9cf-4706a1555f0e",
+                            SecurityStamp = "3744f929-a445-4dd5-8fed-bd43369d43b2",
                             TwoFactorEnabled = false,
                             UserName = "admin@horizons.com"
                         });
@@ -474,7 +474,7 @@ namespace AzureAdd.Data.Migrations
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
-                        .HasForeignKey("UseriId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

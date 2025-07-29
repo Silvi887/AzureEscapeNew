@@ -89,7 +89,7 @@ namespace AzureEscape.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return this.RedirectToAction(nameof(Index));
+                return View("Views/Home/Index.cshtml");
 
             }
         }
@@ -108,6 +108,119 @@ namespace AzureEscape.Controllers
             return View("Views/Vila/AllReservations.cshtml", allreservations);
            // return View(allreservations);
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(string id) //Delete
+        {
+            int id1 = int.Parse(id);
+            var UserId = this.GetUserId();
+
+            DeleteReservationIndexViewModel selectedreservation = await vilaService.GetForDeleteReservation(id1, UserId);
+
+            if (selectedreservation != null)
+            {
+                return View("Views/Vila/DeleteReservation.cshtml", selectedreservation);
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+
+        public async Task<IActionResult> Delete(DeleteReservationIndexViewModel deletedres)
+        {
+
+            try
+            {
+
+                string? userid = this.GetUserId();
+
+                if (!ModelState.IsValid)
+                {
+
+                    return View(nameof(Index));
+                }
+                bool editreservation = await vilaService.DeleteReservation(userid, deletedres.IdBooking);
+
+                //deletedres.roomdrp = (IEnumerable<RoomViewModel>)await this.vacationService.RoomViewDataAsync();
+
+                if (editreservation == false)
+                {
+                    return View("Views/Vila/Edit.cshtml", deletedres);
+                }
+
+
+                return this.RedirectToAction(nameof(AllReservations));
+
+                // ViewBag.SuccessMessage = "Successful update of reservation!";
+                // return View("Views/Vacation/AllReservations.cshtml");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return this.RedirectToAction(nameof(Index));
+
+            }
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
+        {
+            int id1 = int.Parse(id);
+            var UserId = this.GetUserId();
+            EditBooking currentreservation = await vilaService.GetForEditReservation(id1, UserId);
+            //currentreservation.roomdrp = (IEnumerable<RoomViewModel>)await this.vacationService.RoomViewDataAsync();
+
+            if (this.ModelState.IsValid)
+            {
+                return View("Views/Vila/EditReservation.cshtml", currentreservation);
+            }
+
+            return View(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditBooking reservationmodel)
+        {
+
+            try
+            {
+
+                string? userid = this.GetUserId();
+
+                if (!ModelState.IsValid)
+                {
+
+                    return View(nameof(Index));
+                }
+                bool editreservation = await vilaService
+                                           .EditReservation(userid, reservationmodel);
+
+               // reservationmodel.roomdrp = (IEnumerable<RoomViewModel>)await this.vacationService.RoomViewDataAsync();
+
+                if (editreservation == false)
+                {
+                    return View("Views/Vila/EditReservation.cshtml", reservationmodel);
+                }
+
+
+
+                ViewBag.SuccessMessage = "Successful update of reservation!";
+                return View("Views/Vila/EditReservation.cshtml", reservationmodel);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return this.RedirectToAction(nameof(Index));
+
+            }
+
+
+        }
+
+
+
 
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AzureAdd.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Migr1 : Migration
+    public partial class MigrationAzure1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -282,14 +282,14 @@ namespace AzureAdd.Data.Migrations
                 columns: table => new
                 {
                     VillaId = table.Column<int>(type: "int", nullable: false),
-                    UseriId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserVilla", x => new { x.UseriId, x.VillaId });
+                    table.PrimaryKey("PK_UserVilla", x => new { x.UserId, x.VillaId });
                     table.ForeignKey(
-                        name: "FK_UserVilla_AspNetUsers_UseriId",
-                        column: x => x.UseriId,
+                        name: "FK_UserVilla_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -304,7 +304,7 @@ namespace AzureAdd.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "7699db7d-964f-4782-8209-d76562e0fece", 0, "38453b5d-9925-48ba-b15c-adbeaca6e8b5", "admin@horizons.com", true, false, null, "ADMIN@HORIZONS.COM", "ADMIN@HORIZONS.COM", "AQAAAAIAAYagAAAAEFnDMTgLcsolp9fYfpWCEU5p4LjBiy8i2z2bRdjAhFV+nHcWDQhcON5qSaiMrUmzIw==", null, false, "23f38ea5-aafd-47b0-a9cf-4706a1555f0e", false, "admin@horizons.com" });
+                values: new object[] { "7699db7d-964f-4782-8209-d76562e0fece", 0, "2a899f2e-b230-4c5c-a4f3-acd82f39e1da", "admin@horizons.com", true, false, null, "ADMIN@HORIZONS.COM", "ADMIN@HORIZONS.COM", "AQAAAAIAAYagAAAAEHMx0BOfkUfj1nyOgJeV+diyCohTFK/rlEtl+C07Qviirckp2J2JYDWSY/N/KNGrhg==", null, false, "3744f929-a445-4dd5-8fed-bd43369d43b2", false, "admin@horizons.com" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

@@ -22,7 +22,7 @@ namespace AzureAdd.Data
         public DbSet<Booking> Bookings { get; set; } = null!;
         public DbSet<TypePlace> TypePlaces { get; set; } = null!;
         public DbSet<Amenity> Amenities { get; set; } = null!;
-
+        public DbSet<UserVilla> UserVilla { get; set; } = null!;
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
@@ -60,7 +60,7 @@ namespace AzureAdd.Data
 
             builder.Entity<UserVilla>(entity =>
             {
-                entity.HasKey(ur => new { ur.UseriId, ur.VillaId });
+                entity.HasKey(ur => new { ur.UserId, ur.VillaId });
 
                 entity
              .HasOne(e => e.Villa)
@@ -71,7 +71,7 @@ namespace AzureAdd.Data
                 entity
              .HasOne(e => e.User)
              .WithMany()
-             .HasForeignKey(e => e.UseriId)
+             .HasForeignKey(e => e.UserId)
              .OnDelete(DeleteBehavior.Restrict);
 
             });

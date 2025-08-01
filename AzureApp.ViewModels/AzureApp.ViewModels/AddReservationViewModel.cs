@@ -12,7 +12,6 @@ namespace AzureApp.ViewModels
         //public int IdReservation { get; set; }
 
 
-
         [Required]
         public string StartDate { get; set; } = null!;
 
@@ -47,11 +46,6 @@ namespace AzureApp.ViewModels
         public string GuestEmail { get; set; } = "";
 
 
-        //[Required]
-        //public string RoomId { get; set; }
-
-        //[Required]
-        //public string HotelId { get; set; }
 
         [Required]
         public string VillaId { get; set; }

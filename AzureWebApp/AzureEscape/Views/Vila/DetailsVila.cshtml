@@ -1,0 +1,83 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using AzureApp.ViewModels;
+@model DetailsIndexVilla
+
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0">
+        <div class="row g-0">
+            <div class="col-md-5">
+                <img src="@Model.ImageUrl" class="img-fluid rounded-start" alt="Villa Image">
+            </div>
+            <div class="col-md-7">
+                <div class="card-body">
+                    <h2 class="card-title text-primary">@Model.VilaName</h2>
+                    <p class="card-text"><strong>📍 Town:</strong> @Model.TownName</p>
+                    <p class="card-text"><strong>🏷️ Type:</strong> @Model.TypePlace</p>
+                    <p class="card-text"><strong>🚪 Rooms:</strong> @Model.NumberofRooms</p>
+                    <p class="card-text"><strong>🛏️ Bedrooms:</strong> @Model.Bedrooms</p>
+                    <p class="card-text"><strong>🛁 Bathrooms:</strong> @Model.Bathrooms</p>
+                    <p class="card-text"><strong>👨‍👩‍👧 Adults:</strong> @Model.CountAdults</p>
+                    <p class="card-text"><strong>🧒 Children:</strong> @Model.CountChildren</p>
+                    <p class="card-text"><strong>🅿️ Parking:</strong> @Model.Parking</p>
+                  @*   <p class="card-text"><strong>👤 Guest ID:</strong> @Model.GuestId</p>
+                    <p class="card-text"><strong>🧑‍💼 Manager ID:</strong> @Model.ManagerId</p>
+                    <p class="card-text"><strong>🛡️ Is Manager:</strong> @(Model.IsManager ? "Yes" : "No")</p>
+                    <p class="card-text"><strong>💾 Saved:</strong> @(Model.IsSaved ? "Yes" : "No")</p>
+ *@
+                    <hr />
+                    <h5 class="text-secondary">📄 Villa Info</h5>
+                    <p class="card-text">@Model.VilaInfo</p>
+                    <div class="mt-4 d-flex gap-2">
+                      @if (User?.Identity?.IsAuthenticated == true && !Model.IsManager && !Model.IsSaved)
+                {
+                        <form asp-controller="Favorite" asp-action="GetFavorite" method="post" class="d-flex justify-content-center align-items-center flex-fill mx-1">
+                            <input type="hidden" name="id" value="@Model.IdVila" />
+                            <button type="submit" class="btn btn-success w-100">
+                                <i class="fas fa-heart"></i> Add to Favorites
+                            </button>
+                        </form>
+
+                }
+                   
+                        <a asp-action="Edit" asp-route-id="@Model.IdVila" class="btn btn-warning me-2">✏️ Edit</a>&nbsp;&nbsp;
+                        <a asp-action="Index" class="btn btn-secondary">🔙 Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* 
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="row g-0">
+            <div class="col-md-5">
+                <img src="@Model.ImageUrl" class="img-fluid rounded-start" alt="Villa Image">
+            </div>
+            <div class="col-md-7">
+                <div class="card-body">
+                    <h3 class="card-title text-primary">@Model.VilaName</h3>
+                    <p class="card-text"><strong>🏘️ Rooms:</strong> @Model.NumberofRooms</p>
+                    <p class="card-text"><strong>📍 Town:</strong> @Model.TownName</p>
+                    <p class="card-text"><strong>👤 Guest ID:</strong> @Model.GuestId</p>
+                    <p class="card-text"><strong>🧑‍💼 Manager ID:</strong> @Model.ManagerId</p>
+                    <p class="card-text"><strong>🛡️ Is Manager:</strong> @(Model.IsManager ? "Yes" : "No")</p>
+                    <p class="card-text"><strong>💾 Saved:</strong> @(Model.IsSaved ? "Yes" : "No")</p>
+                    <hr />
+                    <h5 class="text-secondary">📄 Villa Info</h5>
+                    <p class="card-text">@Model.VilaInfo</p>
+
+                    <div class="mt-4">
+                        <a asp-action="Edit" asp-route-id="@Model.IdVila" class="btn btn-warning me-2">✏️ Edit</a>
+                        <a asp-action="Index" class="btn btn-secondary">🔙 Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ *@

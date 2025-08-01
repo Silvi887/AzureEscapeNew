@@ -29,5 +29,7 @@ namespace AzureServises.Core.Interfaces
 
         Task<bool> EditReservation(string UserId, EditBooking editbooking);
 
+        Task<DetailsIndexVilla> GetVilaDetailsAsync(int? id1, string? UserId);
+
     }
 }

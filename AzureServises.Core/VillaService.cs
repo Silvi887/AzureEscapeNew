@@ -445,28 +445,43 @@ namespace AzureServises.Core
             return resultReservation;
         }
 
-        //public async Task<IEnumerable<VilaIndexViewModel>> GetAllVillasAsync(string? UserId)
-        //{
+        public async Task<DetailsIndexVilla> GetVilaDetailsAsync(int? id, string? UserId)
+        {
+            IdentityUser? currentUser = await  userManager.FindByIdAsync(UserId);
+            DetailsIndexVilla? viladetails = null;
+            VillaPenthhouse? CurrentDetailshotel =await  Dbcontext.VillasPenthhouses
+                .Include(h => h.Location)
+                .Include(h => h.Manager)
+                .Include(h=> h.TypePlace)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(h => h.IdVilla == id.Value);
 
 
-        //    var Allhotels = await Dbcontext.VillasPenthhouses.Where(v => v.IsDeleted == false)
-        //        .Select(h => new VilaIndexViewModel()
-        //        {
-        //            IdVilla=h.IdVilla,
-        //            NameVilla= h.NameVilla,
-        //            LocationName=h.Location.NameLocation,
-        //            NamePlace= h.Location.NameLocation,
-        //            VillaAddress=h.VillaAddress,
-        //            ImageUrl=h.ImageUrl,
-        //            CountAdults=h.CountAdults,
-        //            CountChildren=h.CountChildren,
-        //            Bedrooms=h.Bedrooms,
-        //            Bathrooms=h.Bathrooms,
-        //            Area=h.Area,
-        //            Parking=h.Parking
-        //        }).ToListAsync();
+            if (CurrentDetailshotel != null)
+            {
+                viladetails = new DetailsIndexVilla()
+                {
+                    IdVila = CurrentDetailshotel.IdVilla,
+                    VilaName = CurrentDetailshotel.NameVilla,
+                  //  Stars = CurrentDetailshotel.Stars,
+                   CountChildren= CurrentDetailshotel.CountChildren,
+                    CountAdults = CurrentDetailshotel.CountAdults,
+                    NumberofRooms = CurrentDetailshotel.CountRooms,
+                    Bedrooms= CurrentDetailshotel.Bedrooms,
+                    Bathrooms= CurrentDetailshotel.Bathrooms,
+                    Parking= CurrentDetailshotel.Parking,
+                    ImageUrl = CurrentDetailshotel.ImageUrl,
+                    VilaInfo = CurrentDetailshotel.VillaInfo,
+                    TownName = CurrentDetailshotel.Location.NameLocation,
+                    TypePlace= CurrentDetailshotel.TypePlace.NamePlace,
+                    ManagerId = CurrentDetailshotel.IDManager,
+                    IsManager = currentUser != null ? currentUser.Id == CurrentDetailshotel.IDManager : false,
 
-        //    return Allhotels;
-        //}
+                };
+
+            }
+
+            return viladetails;
+        }
     }
 }

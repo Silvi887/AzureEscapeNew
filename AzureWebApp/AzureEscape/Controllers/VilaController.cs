@@ -1,5 +1,6 @@
 ﻿using AzureApp.ViewModels;
 using AzureServises.Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -70,8 +71,13 @@ namespace AzureEscape.Controllers
 
                 if (isvalid==false)
                 {
+                    modelvila = new AddVillaIndexViewModel()
+                    {
+                        AllTownsModels = (IEnumerable<TownIndexViewModel>)await this.townService.TownViewDataAsync(),
+                        AllTypePlaces = (IEnumerable<TypePlaceIndexViewModel>)await this.townService.TypePlaceViewDataAsync(),
+                    };
 
-                    return this.RedirectToAction(nameof(Index));
+                    return View("Views/Vila/AddVilla.cshtml", modelvila);
 
                 }
 
@@ -85,16 +91,34 @@ namespace AzureEscape.Controllers
         
             catch (Exception ex)
             {
+
+                modelvila.AllTownsModels = (IEnumerable<TownIndexViewModel>)await this.townService.TownViewDataAsync();
+                modelvila.AllTypePlaces = (IEnumerable<TypePlaceIndexViewModel>)await this.townService.TypePlaceViewDataAsync();
                 Console.WriteLine(ex.Message);
-                return this.RedirectToAction(nameof(Index));
-           }
+                return View("Views/Vila/AddVilla.cshtml", modelvila);
+            }
 
 
 
     }
 
 
+        [AllowAnonymous]
 
-}
-        
+        [HttpGet]
+        public async Task<IActionResult> Details(string? id)
+        {
+            int id1 = int.Parse(id);
+            string? UserId = this.GetUserId();
+            var VilaDetails = await this.vilaService.GetVilaDetailsAsync(id1, UserId);
+
+
+            return View("Views/Vila/DetailsVila.cshtml", VilaDetails);
+        }
+
+
+
+
+    }
+
 }

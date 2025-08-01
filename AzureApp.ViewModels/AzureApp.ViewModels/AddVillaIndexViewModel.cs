@@ -53,12 +53,12 @@ namespace AzureApp.ViewModels
         [Required]
         [MaxLength(ValidationConstants.PlaceMaxLenght)]
         [MinLength(ValidationConstants.PlaceMinLenght)]
-        public string Area { get; set; } = null!;
+        public string Area { get; set; } = "";
 
         [Required]
         [MaxLength(ValidationConstants.PlaceMaxLenght)]
         [MinLength(ValidationConstants.PlaceMinLenght)]
-        public string Parking { get; set; } = null!;
+        public string Parking { get; set; } = "";
 
 
         public string LocationName { get; set; } = "";

@@ -67,7 +67,8 @@ namespace AzureEscape.Controllers
                 {
                     // return this.View(inAddReservation);
 
-                    return this.RedirectToAction(nameof(Add));
+                    ModelState.AddModelError(string.Empty, "Fatal error accure while adding a reservation!");
+                    return View("Views/Vila/AddReservation.cshtml", inAddReservation);
                 }
 
                 bool isvalid = await vilaService.AddBookingModel(UserId, inAddReservation);
@@ -76,7 +77,7 @@ namespace AzureEscape.Controllers
                 {
 
                     ModelState.AddModelError(string.Empty, "Fatal error accure while adding a reservation!");
-                    return this.RedirectToAction(nameof(Add));
+                    return this.RedirectToAction(nameof(AddBooking),"Reserve");
                 }
 
 
@@ -89,7 +90,7 @@ namespace AzureEscape.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return View("Views/Home/Index.cshtml");
+                return View("Views/Vila/Index.cshtml");
 
             }
         }

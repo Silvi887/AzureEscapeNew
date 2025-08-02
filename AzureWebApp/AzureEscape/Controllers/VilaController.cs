@@ -22,6 +22,7 @@ namespace AzureEscape.Controllers
             this.townService = townservice1;
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             string? UserId = this.GetUserId();
@@ -115,7 +116,6 @@ namespace AzureEscape.Controllers
 
             return View("Views/Vila/DetailsVila.cshtml", VilaDetails);
         }
-
 
 
 

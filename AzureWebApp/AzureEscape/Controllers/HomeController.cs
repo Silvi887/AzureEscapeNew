@@ -1,20 +1,40 @@
 using AzureEscape.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace AzureEscape.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly UserManager<IdentityUser?>? UserManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager)
         {
             _logger = logger;
+            this.UserManager = userManager;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
+
+            if (this.IsUserAuthenticated())
+            {
+                return RedirectToAction("Index", "Vila");
+            }
+
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId == null)
+            {
+
+                return View();
+                // return RedirectToAction("Index","Vacation");
+            }
             return View();
         }
 

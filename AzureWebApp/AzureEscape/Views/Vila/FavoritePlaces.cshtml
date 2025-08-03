@@ -7,8 +7,53 @@
 @using AzureApp.ViewModels
 @model IEnumerable<FavoriteVilaIndexViewModel>
 
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold text-primary">Favorite Places</h2>
+    </div>
+    <hr />
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="text-center mt-5">
+            <h4 class="text-secondary">You don't have any favorite hotels yet!</h4>
+            <p class="text-muted">Start exploring and adding hotels to your favorites.</p>
+        </div>
+    }
+    else
+    {
+        <div class="list-group">
+            @foreach (var hotel in Model)
+            {
+                <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3">
+                    <div class="d-flex align-items-center">
+                        <img src="@(!string.IsNullOrEmpty(hotel.ImageUrl) ? hotel.ImageUrl : Url.Content("~/images/default-image.jpg"))"
+                             class="favorite-img rounded me-3" style="width: 80px; height: 80px; object-fit: cover;" alt="Hotel Image" />
+                        <div>
+                            <h5 class="mb-1">@hotel.VilaName</h5>
+                            <p class="mb-0 text-muted"><small>Town: @hotel.TownName</small></p>
+                        </div>
+                    </div>
+                    <form asp-controller="Favorite" asp-action="DeleteFavorite" asp-route-id="@hotel.IdVila" method="post">
+                        <button type="submit" class="btn btn-outline-danger">
+                            <i class="fa fa-trash-alt me-1"></i> Remove
+                        </button>
+                    </form>
+                </div>
+            }
+        </div>
+    }
+
+    <div class="text-center mt-5">
+        <a asp-controller="Vila" asp-action="Index" class="btn btn-success">
+            <i class="fa fa-arrow-left me-1"></i> Back to All Hotels
+        </a>
+    </div>
+</div>
+
+@* 
 <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
-    <h2>Favorites hotels</h2>
+    <h2>Favorites Places</h2>
 </div>
 <hr />
 
@@ -53,3 +98,4 @@ else
         <i class="fas fa-arrow-left"></i> Back to List of All Hotels
     </a>
 </div>
+ *@

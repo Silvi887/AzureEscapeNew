@@ -13,8 +13,17 @@
 
 
     <hr />
-    <table id="Table1">
-
+    <div class="mx-auto" style="max-width: 900px;">
+    <table id="Table1" class="table table-hover table-bordered align-middle text-center">
+        <thead class="table-primary">
+            <tr>
+                <th>Villa Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
         @foreach (var res in Model)
         {
 
@@ -25,18 +34,18 @@
                 </td>
                 <td> <p>@res.StartDate</p></td>
                 <td> <p>@res.EndDate</p></td>
-                <td>
-                    @*  <div class="classBtns">
+					@* <td>
+                    <div class="classBtns">
 
                         <a asp-controller="Vacation" asp-action="Edit" asp-route-id="@res.IdReservation" class="btn btn-info w-100">
                             <i class="fas fa-info-circle"></i> Edit
-                        </a></div> *@
-                </td>
+                        </a></div> 
+                </td>*@
                 <td>
                     <div class="card-footer text-center">
                         <div class="d-flex justify-content-between align-items-center">
-                            <a asp-controller="Vila" asp-action="Index" class="btn btn-warning d-flex justify-content-center align-items-center flex-fill mx-1">
-                                <i class="fas fa-arrow-left"></i> Back
+                                <a asp-controller="Vila" asp-action="Index" class="btn btn-success">
+                                    <i class="fa fa-arrow-left  me-1"></i>  Back
                             </a>
                             @if (res.IsUserGuest && User?.Identity?.IsAuthenticated == true)@* && !Model.IsInUserFavorite *@
                             {
@@ -46,8 +55,8 @@
                                         <i class="fas fa-heart"></i> Add to Favorites</button>  *@
 
                                 </form>
-                                <a asp-controller="Reserve" asp-action="Edit" asp-route-id="@res.IdBooking" class="btn btn-primary d-flex justify-content-center align-items-center flex-fill mx-1">
-                                    <i class="fas fa-edit"></i> Edit
+                                <a asp-controller="Reserve" asp-action="Edit" asp-route-id="@res.IdBooking" class="btn btn-primary">
+                                        <i class="fa fa-edit  me-1"></i> Edit
                                 </a>
                             }
                             else
@@ -55,7 +64,7 @@
                             {
 
                                 <a asp-controller="Reserve" asp-action="Delete" asp-route-id="@res.IdBooking" class="btn btn-danger d-flex justify-content-center align-items-center flex-fill mx-1">
-                                    <i class="fas fa-trash"></i> Delete
+                                    <i class="fa fa-trash"></i> Delete
                                 </a>
                             }
                         </div>
@@ -65,7 +74,8 @@
             <tr>
             </tr>
         }
-    </table>
+        </tbody>
+    </table></div>
 
 
 

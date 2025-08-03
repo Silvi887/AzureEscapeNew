@@ -20,6 +20,8 @@
     <link rel="stylesheet" type="text/css" href="~/css/styles/bootstrap-4.1.2/bootstrap.min.css" />
     
     <link href="~/css/site.css" rel="stylesheet" />
+@*     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-papmFfZKZz2z+YwW+z+KZgZz+YwW+z+KZgZz+YwW+z+KZgZz+YwW+z+KZgZz+YwW+z+KZgZz+YwW+z+KZg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+ *@
   @*   <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AzureEscape.styles.css" asp-append-version="true" /> *@
@@ -43,10 +45,10 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">All Villas</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" asp-area="" asp-controller="Vila" asp-action="Index"> <i class="fas fa-list"></i>All Villas</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Vila" asp-action="Index"> <i class="fa fa-list"></i>All Villas</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" asp-controller="Vila" asp-action="AddVilla">
-                                            <i class="fas fa-plus"></i> Add Vila
+                                            <i class="fa fa-plus"></i> Add Vila
                                         </a>
 
                                         @if (User?.Identity?.IsAuthenticated == true && ViewBag.EmailConfirmed == true)
@@ -57,7 +59,7 @@
                                         else if (User?.Identity?.IsAuthenticated == true && ViewBag.EmailConfirmed == false)
                                         {
                                             <a class="dropdown-item" asp-controller="Favorite" asp-action="GetFavorite">
-                                                <i class="fas fa-plus"></i> Favorite Vila
+                                                <i class="fa fa-heart"></i> Favorite Vila
                                             </a>
                                         }
                                     </div>
@@ -114,7 +116,7 @@
     </header>
     <div class="backimage">
     </div>
-    <div class="container">
+    <div class="container_main">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

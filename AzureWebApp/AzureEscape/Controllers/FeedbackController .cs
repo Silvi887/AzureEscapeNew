@@ -86,7 +86,7 @@ namespace AzureEscape.Controllers
                 {
 
                     return RedirectToAction("Error", "Home");
-                    return View(modelFeedback);
+                   
                 }
 
                 bool isvalid = await vilaService.LeaveFeedBack(Userid, modelFeedback);

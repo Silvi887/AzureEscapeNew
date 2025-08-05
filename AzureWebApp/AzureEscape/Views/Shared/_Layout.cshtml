@@ -55,11 +55,7 @@
 
                                          }
 
-                                        @if (User?.Identity?.IsAuthenticated == true && ViewBag.EmailConfirmed == true)
-                                        {
-
-                                         
-                                        }
+                                      
                                         else if (User?.Identity?.IsAuthenticated == true && ViewBag.EmailConfirmed == false)
                                         {
                                             <a class="dropdown-item" asp-controller="Favorite" asp-action="GetFavorite">

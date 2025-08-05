@@ -17,22 +17,32 @@
                 <div class="card-body">
                     <h3 class="card-title text-center mb-4">Feedback for @Model.VillaName</h3>
 
+                    @if (TempData["FeedbackError"] != null)
+                    {
+                        <div class="alert alert-warning">
+                            @TempData["FeedbackError"]
+                        </div>
+                    }
                     @if (TempData["Success"] != null)
                     {
                         <div class="alert alert-success">@TempData["Success"]</div>
                     }
 
                     <form asp-action="LeaveFeedback" method="post">
-                        <input type="hidden" asp-for="BookingId" />
+                       @*  <input type="hidden" asp-for="BookingId" /> *@
+
+                        <select asp-for="IdBooking" class="form-select" asp-items="@(Model.idbookingsforuser != null ? new SelectList(Model.idbookingsforuser, "IdBooking", "StringIdBooking") : new SelectList(Enumerable.Empty<SelectListItem>()))">
+                            <option value="">Select Booking</option>
+                        </select>
                         <input type="hidden" asp-for="VillaId" />
                         <input type="hidden" value="" asp-for="VillaName" />
 
 
-                        <div class="mb-3">
-                            <label asp-for="BookingId" class="form-label" typeof="number">Id Booking</label>
-                            <input asp-for="BookingId" class="form-control" placeholder="John Doe" />
-                            <span asp-validation-for="BookingId" class="text-danger"></span>
-                        </div>
+                       @*  <div class="mb-3">
+                            <label asp-for="IdBooking" class="form-label" typeof="number">Id Booking</label>
+                            <input asp-for="IdBooking" class="form-control" placeholder="John Doe" />
+                            <span asp-validation-for="IdBooking" class="text-danger"></span>
+                        </div> *@
                         <div class="mb-3">
                             <label asp-for="ClientName" class="form-label">Your Name</label>
                             <input asp-for="ClientName" class="form-control" placeholder="John Doe" />

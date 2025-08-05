@@ -12,6 +12,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -180,7 +181,7 @@ namespace AzureServises.Core
             var reservations = await Dbcontext.Bookings
                                 .Include(r => r.VillaPenthhouse)
                                 .AsNoTracking()
-                                .Where(r => r.IsDeleted == false)   /* r.GuestId == Userid &&*/
+                                .Where(r => r.GuestId==user.Id && r.IsDeleted == false)   /* r.GuestId == Userid &&*/
                                 .Select(r => new AllReservationsViewModel()
                                 {
                                     IdBooking = r.IdBooking,
@@ -532,7 +533,7 @@ namespace AzureServises.Core
                 FeedBack feedback = new FeedBack()
                 {
 
-                    BookingId = leavefeedbackmodel.BookingId,
+                    BookingId = leavefeedbackmodel.IdBooking,
 
                     VillaId = leavefeedbackmodel.VillaId,
 
@@ -559,7 +560,7 @@ namespace AzureServises.Core
                 .Select(f => new BookingFeedbackViewModel()
                 {
 
-                    BookingId = f.BookingId,
+                    IdBooking = f.BookingId,
                     VillaId = f.VillaId,
                     VillaName = f.Villa.NameVilla,
                     ClientName = f.Guest.UserName,
@@ -569,5 +570,116 @@ namespace AzureServises.Core
 
             return AllFeedbackfromDB;
         }
-    }
+
+        public async Task<EditVilaViewModel> GetForEditVila(int? id, string? Userid)
+        {
+
+            IdentityUser? currentUser = await userManager.FindByIdAsync(Userid);
+            EditVilaViewModel currentreservation1 = null;
+
+            if (currentUser != null)
+            {
+                VillaPenthhouse? villa1 = await Dbcontext.VillasPenthhouses
+                    .Include(v=> v.Location)
+                    .Include(v=> v.TypePlace)
+                    .FirstOrDefaultAsync(v => v.IdVilla == id);
+
+
+                currentreservation1 = new EditVilaViewModel()
+                {
+
+                    IdVilla = villa1.IdVilla,
+
+
+
+                    NameVilla = villa1.NameVilla,
+
+                    NamePlace = villa1.TypePlace.NamePlace,
+
+                    VillaInfo = villa1.VillaInfo,
+
+                    VillaAddress = villa1.VillaAddress,
+
+                    ImageUrl = villa1.ImageUrl,
+
+                    CountRooms = villa1.CountRooms,
+
+
+                    CountAdults = villa1.CountAdults,
+
+                    CountChildren = villa1.CountChildren,
+
+                    Bedrooms = villa1.Bedrooms,
+
+                    Bathrooms = villa1.Bathrooms,
+
+                    Area = villa1.Area,
+
+                    Parking = villa1.Parking,
+
+
+                    LocationName = villa1.Location.NameLocation,
+
+                    IdTown = villa1.Location.IdLocation,
+                    IdTypePlace = villa1.TypePlace.IdTypePlace
+
+
+
+                };
+            }
+
+            return currentreservation1;
+            //throw new NotImplementedException();
+        }
+
+        public async Task<bool> EditVilla(string UserId, EditVilaViewModel editvilla)
+        {
+            IdentityUser userid = await userManager.FindByIdAsync(UserId);
+            bool resultReservation = false;
+
+            VillaPenthhouse? CurrentVila = await Dbcontext.VillasPenthhouses
+                                    .FindAsync(editvilla.IdVilla);
+
+            if (CurrentVila != null && userid!= null)
+            {
+
+                CurrentVila.NameVilla = editvilla.NameVilla;
+
+                         CurrentVila.IdPlace = editvilla.IdTypePlace;
+
+                         CurrentVila.VillaInfo = editvilla.VillaInfo;
+
+                         CurrentVila.VillaAddress = editvilla.VillaAddress;
+
+                         CurrentVila.ImageUrl = editvilla.ImageUrl;
+                         CurrentVila.CountRooms = editvilla.CountRooms;
+
+                         CurrentVila.CountAdults = editvilla.CountAdults;
+
+                         CurrentVila.CountChildren = editvilla.CountChildren;
+
+
+                         CurrentVila.Bedrooms = editvilla.Bedrooms;
+
+                         CurrentVila.Bathrooms = editvilla.Bathrooms;
+
+                         CurrentVila.Area = editvilla.Area;
+
+                         CurrentVila.Parking = editvilla.Parking;
+
+                         CurrentVila.LocationId = editvilla.IdTown;
+
+
+                         CurrentVila.IDManager = userid.Id;
+
+                        resultReservation = true;
+
+                this.Dbcontext.SaveChanges();
+
+            }
+
+            return resultReservation;
+
+        }
+        }
 }

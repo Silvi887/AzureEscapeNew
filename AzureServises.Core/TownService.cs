@@ -51,5 +51,23 @@ namespace AzureServises.Core
 
             return allPlaces;
         }
+
+        public async Task<IEnumerable<BookingIdforFeedback>> TypeIdBookingFeedback(string userid, string idvilla)
+        {
+
+            IEnumerable<BookingIdforFeedback> allidForFeedback =
+                await Dbcontext.Bookings
+                //.Include(b=> b.VillaPenthhouse)
+                .Where(f=> f.GuestId== userid && f.VillaId == int.Parse(idvilla))
+                .AsNoTracking()
+                .Select(t => new BookingIdforFeedback()
+                {
+                    IdBooking = t.IdBooking,
+                    StringIdBooking = t.IdBooking.ToString(),
+                }
+                ).ToListAsync();
+
+            return allidForFeedback;
+        }
     }
 }

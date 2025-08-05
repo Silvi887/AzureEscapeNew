@@ -47,9 +47,13 @@
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" asp-area="" asp-controller="Vila" asp-action="Index"> <i class="fa fa-list"></i>All Villas</a>
                                         <div class="dropdown-divider"></div>
+                                         @if (User?.Identity?.IsAuthenticated == true && User?.Identity?.Name == "admin@horizons.com")
+                                       {
                                         <a class="dropdown-item" asp-controller="Vila" asp-action="AddVilla">
                                             <i class="fa fa-plus"></i> Add Vila
                                         </a>
+
+                                         }
 
                                         @if (User?.Identity?.IsAuthenticated == true && ViewBag.EmailConfirmed == true)
                                         {

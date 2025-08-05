@@ -36,5 +36,9 @@ namespace AzureServises.Core.Interfaces
         Task<bool> LeaveFeedBack(string Userid, BookingFeedbackViewModel leavefeedbackmodel);
         Task<IEnumerable<BookingFeedbackViewModel>> GetAllFeedbacks(string? Userid);
 
+        Task<EditVilaViewModel> GetForEditVila(int? id, string? Userid);
+
+        Task<bool> EditVilla(string UserId, EditVilaViewModel editvilla);
+
     }
 }

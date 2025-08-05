@@ -11,5 +11,6 @@ namespace AzureServises.Core.Interfaces
     {
         Task<IEnumerable<TownIndexViewModel>> TownViewDataAsync();
         Task<IEnumerable<TypePlaceIndexViewModel>> TypePlaceViewDataAsync();
+        Task<IEnumerable<BookingIdforFeedback>> TypeIdBookingFeedback(string? userid, string idbooking);
     }
 }

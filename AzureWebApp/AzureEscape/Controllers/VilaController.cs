@@ -3,6 +3,7 @@ using AzureServises.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 
 
 
@@ -155,8 +156,80 @@ namespace AzureEscape.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> EditVilla(string id)
+        {
+
+            try
+            {
+
+                int id1 = int.Parse(id);
+                var UserId = this.GetUserId();
+                EditVilaViewModel currentvilla = await vilaService.GetForEditVila(id1, UserId);
+
+                currentvilla.AllTownsModels = (IEnumerable<TownIndexViewModel>)await this.townService.TownViewDataAsync();
+                currentvilla.AllTypePlaces = (IEnumerable<TypePlaceIndexViewModel>)await this.townService.TypePlaceViewDataAsync();
+
+                if (ModelState.IsValid)
+                {
+
+                    return View("Views/Vila/EditVilla.cshtml", currentvilla);
+
+                }
+
+                return RedirectToAction("Error", "Home");
+
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+        
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditVilla(EditVilaViewModel editvillamodel)
+        {
+
+            try
+            {
+
+                string? userid = this.GetUserId();
+
+                if (!ModelState.IsValid)
+                {
+
+                    return RedirectToAction("Error", "Home");
+                }
+
+                bool editvilla = await vilaService
+                                        .EditVilla(userid, editvillamodel);
+
+                // reservationmodel.roomdrp = (IEnumerable<RoomViewModel>)await this.vacationService.RoomViewDataAsync();
+
+                if (editvilla == false)
+                {
+                    return RedirectToAction("Error", "Home");
+                }
 
 
-    }
+                editvillamodel.AllTownsModels = (IEnumerable<TownIndexViewModel>)await this.townService.TownViewDataAsync();
+                editvillamodel.AllTypePlaces = (IEnumerable<TypePlaceIndexViewModel>)await this.townService.TypePlaceViewDataAsync();
+
+                ViewBag.SuccessMessage = "Successful update of villa!";
+                return View("Views/Vila/EditVilla.cshtml", editvillamodel);
+
+
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+
+
+            }
+
+
+            }
 
 }

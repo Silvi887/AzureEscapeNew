@@ -1,0 +1,114 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+
+@{
+    ViewData["Title"] = "Edit Vila";
+}
+
+@using AzureApp.ViewModels;
+@model EditVilaViewModel
+
+<div class="container py-5">
+    @if (ViewBag.SuccessMessage != null)
+    {
+        <div class="alert alert-success">
+            @ViewBag.SuccessMessage
+        </div>
+    }
+    <h2 class="text-center mb-4">Edit Villa Information</h2>
+
+    <form asp-action="EditVilla" method="post" class="row g-3">
+        <input type="hidden" asp-for="@Model.IdVilla" />
+
+        <div class="col-md-6">
+            <label asp-for="@Model.NameVilla" class="form-label">Villa Name</label>
+            <input asp-for="@Model.NameVilla" class="form-control" />
+            <span asp-validation-for="@Model.NameVilla" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="@Model.NamePlace" class="form-label">Place Name</label>
+            <input asp-for="@Model.NamePlace" class="form-control" />
+            <span asp-validation-for="@Model.NamePlace" class="text-danger"></span>
+        </div>
+
+        <div class="col-12">
+            <label asp-for="@Model.VillaInfo" class="form-label">Villa Info</label>
+            <textarea asp-for="@Model.VillaInfo" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="@Model.VillaInfo" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="@Model.VillaAddress" class="form-label">Address</label>
+            <input asp-for="@Model.VillaAddress" class="form-control" />
+            <span asp-validation-for="@Model.VillaAddress" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="@Model.ImageUrl" class="form-label">Image URL</label>
+            <input asp-for="@Model.ImageUrl" class="form-control" />
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="@Model.CountRooms" class="form-label">Rooms</label>
+            <input asp-for="@Model.CountRooms" class="form-control" />
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="@Model.CountAdults" class="form-label">Adults</label>
+            <input asp-for="@Model.CountAdults" class="form-control" />
+            <span asp-validation-for="@Model.CountAdults" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="@Model.CountChildren" class="form-label">Children</label>
+            <input asp-for="@Model.CountChildren" class="form-control" />
+            <span asp-validation-for="@Model.CountChildren" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="@Model.Bedrooms" class="form-label">Bedrooms</label>
+            <input asp-for="@Model.Bedrooms" class="form-control" />
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="@Model.Bathrooms" class="form-label">Bathrooms</label>
+            <input asp-for="@Model.Bathrooms" class="form-control" />
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="@Model.Area" class="form-label">Area</label>
+            <input asp-for="@Model.Area" class="form-control" />
+            <span asp-validation-for="@Model.Area" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="@Model.Parking" class="form-label">Parking</label>
+            <input asp-for="@Model.Parking" class="form-control" />
+            <span asp-validation-for="@Model.Parking" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="@Model.IdTown" class="form-label">Town</label>
+            <select asp-for="@Model.IdTown" asp-items="@(new SelectList(Model.AllTownsModels, "IdTown", "NameTown"))" class="form-select"></select>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="@Model.IdTypePlace" class="form-label">Type of Place</label>
+            <select asp-for="@Model.IdTypePlace" asp-items="@(new SelectList(Model.AllTypePlaces, "IdTypePlace", "NameTypePlace"))" class="form-select"></select>
+        </div>
+
+        <div class="col-12 text-center mt-4">
+            <button type="submit" class="btn btn-primary px-5">Save Changes</button>
+        </div>
+   
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

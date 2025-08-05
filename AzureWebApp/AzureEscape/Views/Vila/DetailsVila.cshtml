@@ -41,9 +41,13 @@
                         </form>
 
                 }
-                   
-                        <a asp-action="Edit" asp-route-id="@Model.IdVila" class="btn btn-warning me-2">✏️ Edit</a>&nbsp;&nbsp;
-                        <a asp-action="LeaveFeedback" asp-route-id="@Model.IdVila" asp-controller="FeedBack" class="btn btn-warning me-2">✏️ Feddback</a>&nbsp;&nbsp;
+                        @if (User?.Identity?.IsAuthenticated == true && User?.Identity?.Name == "admin@horizons.com")
+                        {
+
+                            <a asp-action="EditVilla" asp-route-id="@Model.IdVila" asp-controller="Vila" class="btn btn-warning me-2">✏️ Edit</a>
+                          
+                        }
+						&nbsp; &nbsp;<a asp-action="LeaveFeedback" asp-route-id="@Model.IdVila" asp-controller="FeedBack" class="btn btn-warning me-2">✏️ Feddback</a>&nbsp;&nbsp;
                         <a asp-action="Index" class="btn btn-secondary">🔙 Back to List</a>
                     </div>
                 </div>

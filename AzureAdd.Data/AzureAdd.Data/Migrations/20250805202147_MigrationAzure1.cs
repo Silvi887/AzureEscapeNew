@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AzureAdd.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AzureEscapeDb1 : Migration
+    public partial class MigrationAzure1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -341,7 +341,7 @@ namespace AzureAdd.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "7699db7d-964f-4782-8209-d76562e0fece", 0, "4d8d1d4f-b3dd-402d-b899-bc7021489b9e", "admin@horizons.com", true, false, null, "ADMIN@HORIZONS.COM", "ADMIN@HORIZONS.COM", "AQAAAAIAAYagAAAAEO7xb1mulmZ6Yqq/d/aYLB66nGcPWes1oZCNmvbkK7RwOdBkuglkcW1mxWoIVFigKQ==", null, false, "0fc4fff5-ef85-45af-acc8-c2d294ea5234", false, "admin@horizons.com" });
+                values: new object[] { "7699db7d-964f-4782-8209-d76562e0fece", 0, "f4c148b1-efdb-41cd-b573-957b6c67360a", "admin@horizons.com", true, false, null, "ADMIN@HORIZONS.COM", "ADMIN@HORIZONS.COM", "AQAAAAIAAYagAAAAEGqYNqwIQ6Wn6RBlihA/PVgGUkDdLyTTYQGJXYaGn9MCR3xR41xkA8/PlhicFVE3XA==", null, false, "729e3817-4a20-4ff3-aa77-c4a021e69f19", false, "admin@horizons.com" });
 
             migrationBuilder.InsertData(
                 table: "Locations",

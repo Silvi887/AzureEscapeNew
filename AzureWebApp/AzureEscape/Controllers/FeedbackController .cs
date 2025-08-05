@@ -9,13 +9,15 @@ namespace AzureEscape.Controllers
     {
 
         private readonly IVilla vilaService;
+        private readonly ITownService TownService;
 
         private readonly UserManager<IdentityUser?>? UserManager;
 
-        public FeedbackController(IVilla vilaService, UserManager<IdentityUser> userManager)
+        public FeedbackController(IVilla vilaService,ITownService townservice  , UserManager<IdentityUser> userManager)
         {
             this.vilaService = vilaService;
             this.UserManager = userManager;
+            this.TownService = townservice;
 
         }
         public IActionResult Index()
@@ -35,17 +37,31 @@ namespace AzureEscape.Controllers
             }
 
         [HttpGet]
-        public IActionResult LeaveFeedback(string bookingId, string id)
+        public async Task<IActionResult> LeaveFeedback(string bookingId, string id)
         {
 
             try
             {
 
-                var model = new BookingFeedbackViewModel
+                string? userid=this.GetUserId();
+
+
+
+                var allidsbookings = await this.TownService.TypeIdBookingFeedback(userid, id);
+
+                if (allidsbookings == null || !allidsbookings.Any())
                 {
-                    BookingId = 1,
+                    TempData["FeedbackError"] = "You don't have permission to leave feedback.";
+                   // return RedirectToAction("Index", "Home"); // Or redirect to a relevant page
+                }
+
+                var model =  new BookingFeedbackViewModel
+                {
+                   // BookingId = 1,
                     VillaId = int.Parse(id),
-                    VillaName = ""
+                    VillaName = "",
+                    idbookingsforuser= allidsbookings
+
                 };
                 return View("Views/Vila/LeaveFeedBacks.cshtml", model);
             }

@@ -13,10 +13,10 @@ namespace Azure.Constants
         public const int PlaceMinLenght = 3;
 
         public const int VillaMaxLenght = 100;
-        public const int VillaMinLenght = 10;
+        public const int VillaMinLenght = 5;
 
         public const int VillaAdressMaxLenght = 3000;
-        public const int VillaAdressMinLenght = 10;
+        public const int VillaAdressMinLenght = 5;
 
         public const int RoomMaxLenght = 100;
         public const int RoomMinLenght = 10;
@@ -29,7 +29,7 @@ namespace Azure.Constants
 
 
 
-        public const int DescriptionMinLenght = 10;
+        public const int DescriptionMinLenght = 5;
         public const int DescriptionMaxLenght = 3000;
 
         public const string DateFormat = "dd-MM-yyyy";

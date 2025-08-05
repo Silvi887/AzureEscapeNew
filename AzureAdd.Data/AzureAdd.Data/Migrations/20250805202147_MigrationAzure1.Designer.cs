@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AzureAdd.Data.Migrations
 {
     [DbContext(typeof(AzureAddDbContext))]
-    [Migration("20250804130158_AzureEscapeDb1")]
-    partial class AzureEscapeDb1
+    [Migration("20250805202147_MigrationAzure1")]
+    partial class MigrationAzure1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -423,15 +423,15 @@ namespace AzureAdd.Data.Migrations
                         {
                             Id = "7699db7d-964f-4782-8209-d76562e0fece",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4d8d1d4f-b3dd-402d-b899-bc7021489b9e",
+                            ConcurrencyStamp = "f4c148b1-efdb-41cd-b573-957b6c67360a",
                             Email = "admin@horizons.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@HORIZONS.COM",
                             NormalizedUserName = "ADMIN@HORIZONS.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEO7xb1mulmZ6Yqq/d/aYLB66nGcPWes1oZCNmvbkK7RwOdBkuglkcW1mxWoIVFigKQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGqYNqwIQ6Wn6RBlihA/PVgGUkDdLyTTYQGJXYaGn9MCR3xR41xkA8/PlhicFVE3XA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0fc4fff5-ef85-45af-acc8-c2d294ea5234",
+                            SecurityStamp = "729e3817-4a20-4ff3-aa77-c4a021e69f19",
                             TwoFactorEnabled = false,
                             UserName = "admin@horizons.com"
                         });

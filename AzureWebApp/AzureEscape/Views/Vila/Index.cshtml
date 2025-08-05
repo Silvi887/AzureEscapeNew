@@ -8,69 +8,119 @@
 @using AzureApp.ViewModels;
 @model List<VilaIndexViewModel>
 
+<div class="backimage">
+	<!-- Search section-->
+
+	<div class="search-overlay divsearch w-100">
+		
+		<div class="container">
+			<form asp-controller="Vila" asp-action="SearchVilaByDate" method="get" class="row g-3 p-3 rounded shadow">
+				<div class="col-md-4">
+					<label for="startDate" class="form-label">Start Date</label>
+					<input type="date" id="startDate" name="startDate" class="form-control" required />
+				</div>
+				<div class="col-md-4">
+					<label for="endDate" class="form-label">End Date</label>
+					<input type="date" id="endDate" name="endDate" class="form-control" required />
+				</div>
+				<div class="col-md-4 d-flex align-items-end">
+					<button type="submit" class="btn btn-primary w-100" style="background-color:#637496; color:#fff">
+						<i class="fa fa-search"></i> Search Villas
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
 
 <div class="text-center">
 	<h1 class="display-4">Holidays</h1>
-	<p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-	<hr />
+@* 		<p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+ *@	<hr />
 	<div class="container">
 
 		<div class="row4">
 			@foreach (var villa in Model)
 			{
-				<div>
+				<div class="classItem">
+					<img src=@villa.ImageUrl alt="" />
 
-					<!-- Box -->
-					<section class="section1">
-						@* <a href="#" class="image featured"> *@	@* </a> *@
+
+					<div class="classraiting"> <div><span class="nameplace-btn"> @villa.NamePlace</span></div>&nbsp;&nbsp; &nbsp;&nbsp;  Rating: ⭐ @villa.Raiting</div>
+					<h4> @villa.NameVilla </h4>
+					<ul>
+						<li><span> Address: </span>@villa.VillaAddress </li>
+						<li><span> Count Adults:</span>@villa.CountAdults</li>
+						<li> <span> Count Children: @villa.CountChildren</span> </li>
+						<li><span> Location Name: @villa.LocationName</span></li>
+						
+					</ul>
+
+					<div class="classBtns">
+						<a asp-controller="Vila" asp-action="Details" asp-route-id="@villa.IdVilla" class="btn btn-info">
+							<i class="fa fa-info-circle"></i> Details
+						</a>
+
+						@if (User?.Identity?.IsAuthenticated == true && ViewBag.EmailConfirmed == false)
+						{
+
+							<a asp-controller="Reserve" asp-action="AddBooking" asp-route-id="@($"{villa.IdVilla},{villa.NameVilla}")" class="btn btn-info w-70">
+								<i class="fa fa-calendar-check-o"></i> Make reservation
+							</a>
+
+							<form asp-controller="Favorite" asp-action="GetFavorite" asp-route-id="@villa.IdVilla" method="post" class="w-50">
+								<input type="hidden" name="id" value="@villa.IdVilla" />
+								<button type="submit" class="btn btn-success w-100">
+									<i class="fa fa-heart"></i> Favorites
+								</button>
+							</form>
+						}
+
+					</div>
+					
+
+				</div>
+			}
+
+
+		</div>
+	</div>
+</div>
+
+
+<!-- Box -->
+@* 	<section class="section1">
+						
 						<div class="image-wrapper">
 							<h2>
-
 								@villa.NameVilla
 							</h2>
-							<img src=@villa.ImageUrl alt="" />
-					
-						<div class="inner">
-							
+							<img src=@villa.ImageUrl alt="" />					
+					       <div class="inner">							
 							<p>@villa.VillaInfo</p>
-
-
 							<div>
-
 								<div>
-
-									
-									<p> <span> Address: </span>@villa.VillaAddress </p>
-									@*   <span asp-validation-for="@Model.Name" class="text-danger"></span> *@
+									<p> <span> Address: </span>@villa.VillaAddress </p> *@
+@*   <span asp-validation-for="@Model.Name" class="text-danger"></span> *@
+@* </div>
+								<div>
+									<p> <span> Count Adults:</span>@villa.CountAdults </p>			
 								</div>
-
 								<div>
-
-									<p> <span> Count Adults:</span>@villa.CountAdults </p>
-								
+								<p> <span> Count Children: @villa.CountChildren</span> </p>								
 								</div>
-
 								<div>
-
-									<p> <span> Count Children: @villa.CountChildren</span> </p>
-									
-								</div>
-
-								<div>
-
-										<p> <span> Location Name: @villa.LocationName</span> </p>
-
+									<p> <span> Location Name: @villa.LocationName</span> </p>
 								</div>
 								<div class="mb-3">
 
-										<p> <span> Details: @villa.VillaInfo</span> </p>
-
+								<p> <span> Details: @villa.VillaInfo</span> </p>
 								</div>
-						    </div>
-							
+						    </div>							
 							</div>
-							<div class="classBtns">
 
+
+							<div class="classBtns">
 								<a asp-controller="Vila" asp-action="Details" asp-route-id="@villa.IdVilla" class="btn btn-info">
 									<i class="fa fa-info-circle"></i> Details
 								</a>
@@ -93,13 +143,4 @@
 							</div>
 						</div>
 						
-					</section>
-
-				</div>
-			}
-
-
-		</div>
-	</div>
-</div>
-
+					</section> *@

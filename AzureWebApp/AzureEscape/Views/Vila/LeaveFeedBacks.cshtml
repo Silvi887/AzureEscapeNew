@@ -1,0 +1,72 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    ViewData["Title"] = "Add Hotel";
+}
+
+@using AzureApp.ViewModels;
+@model BookingFeedbackViewModel
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h3 class="card-title text-center mb-4">Feedback for @Model.VillaName</h3>
+
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success">@TempData["Success"]</div>
+                    }
+
+                    <form asp-action="LeaveFeedback" method="post">
+                        <input type="hidden" asp-for="BookingId" />
+                        <input type="hidden" asp-for="VillaId" />
+                        <input type="hidden" value="" asp-for="VillaName" />
+
+
+                        <div class="mb-3">
+                            <label asp-for="BookingId" class="form-label" typeof="number">Id Booking</label>
+                            <input asp-for="BookingId" class="form-control" placeholder="John Doe" />
+                            <span asp-validation-for="BookingId" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="ClientName" class="form-label">Your Name</label>
+                            <input asp-for="ClientName" class="form-control" placeholder="John Doe" />
+                            <span asp-validation-for="ClientName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="FeedbackMessage" class="form-label">Your Feedback</label>
+                            <textarea asp-for="FeedbackMessage" class="form-control" rows="5" placeholder="Share your experience..."></textarea>
+                            <span asp-validation-for="FeedbackMessage" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Rating" class="form-label">Rating</label>
+                            <select asp-for="Rating" class="form-select">
+                                <option value="">Select</option>
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <option value="@i">@i Star@(i > 1 ? "s" : "")</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Rating" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Submit Feedback</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

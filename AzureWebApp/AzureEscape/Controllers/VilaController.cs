@@ -35,6 +35,17 @@ namespace AzureEscape.Controllers
             return View("Views/Vila/Index.cshtml", Allvillas);
         }
 
+        [AllowAnonymous]
+        public async Task<IActionResult> SearchVilaByDate(string startDate, string endDate)
+        {
+            string? UserId = this.GetUserId();
+
+            IEnumerable<VilaIndexViewModel> AllVillasSearch = await this.vilaService.GetAllVillasSearch(UserId, startDate, endDate);
+
+            return View("Views/Vila/Index.cshtml", AllVillasSearch);
+
+        }
+
         [HttpGet]
         public async Task<IActionResult> AddVilla()
         {

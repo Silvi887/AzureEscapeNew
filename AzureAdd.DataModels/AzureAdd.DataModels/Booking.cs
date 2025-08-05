@@ -75,5 +75,8 @@ namespace AzureAdd.DataModels
         public virtual VillaPenthhouse VillaPenthhouse { get; set; } = null!;
 
         public bool IsDeleted { get; set; } = false;
+
+
+        public virtual ICollection<FeedBack> Feedbacks { get; set; } = new HashSet<FeedBack>();
     }
 }

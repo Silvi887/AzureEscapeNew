@@ -55,6 +55,10 @@ body {
     text-align: center;
 }
 
+.classItem {
+    background-color: #fafafa;
+}
+
 .classBtns {
     padding-left: 10px;
     max-width: 80%;
@@ -62,7 +66,7 @@ body {
     flex-direction: row;
    /* flex-wrap: wrap;*/
     gap: 1em;
-    justify-content: center;
+   /* justify-content: center;*/
 }
 
 @media only screen and (max-width: 991px) {
@@ -155,3 +159,27 @@ body {
     border-radius: 8px;
 }
 
+.row4 img{
+    width:300px;
+    border-radius:20px;
+}
+
+.nameplace-btn {
+    display: inline-block;
+    background-color: #fbd9cf; /* Light green */
+    color: #000;
+    padding: 3px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 10px;
+    margin-top:7px;
+}
+
+.classraiting{
+    display:flex;
+    gap:1em;
+    flex-direction:row;
+    justify-content:space-around;
+   
+}

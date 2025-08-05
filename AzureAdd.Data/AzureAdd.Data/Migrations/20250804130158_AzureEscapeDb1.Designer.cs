@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AzureAdd.Data.Migrations
 {
     [DbContext(typeof(AzureAddDbContext))]
-    [Migration("20250729151833_MigrationAzure1")]
-    partial class MigrationAzure1
+    [Migration("20250804130158_AzureEscapeDb1")]
+    partial class AzureEscapeDb1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -105,6 +105,43 @@ namespace AzureAdd.Data.Migrations
                     b.ToTable("Bookings");
                 });
 
+            modelBuilder.Entity("AzureAdd.DataModels.FeedBack", b =>
+                {
+                    b.Property<int>("IdFeedBack")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdFeedBack"));
+
+                    b.Property<int>("BookingId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FeedbackMessage")
+                        .IsRequired()
+                        .HasMaxLength(3000)
+                        .HasColumnType("nvarchar(3000)");
+
+                    b.Property<string>("GuestId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VillaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdFeedBack");
+
+                    b.HasIndex("BookingId");
+
+                    b.HasIndex("GuestId");
+
+                    b.HasIndex("VillaId");
+
+                    b.ToTable("FeedBacks");
+                });
+
             modelBuilder.Entity("AzureAdd.DataModels.Location", b =>
                 {
                     b.Property<int>("IdLocation")
@@ -121,6 +158,23 @@ namespace AzureAdd.Data.Migrations
                     b.HasKey("IdLocation");
 
                     b.ToTable("Locations");
+
+                    b.HasData(
+                        new
+                        {
+                            IdLocation = 1,
+                            NameLocation = "Sunny Beach"
+                        },
+                        new
+                        {
+                            IdLocation = 2,
+                            NameLocation = "Golden Sands"
+                        },
+                        new
+                        {
+                            IdLocation = 3,
+                            NameLocation = "Sozopol"
+                        });
                 });
 
             modelBuilder.Entity("AzureAdd.DataModels.TypePlace", b =>
@@ -139,6 +193,23 @@ namespace AzureAdd.Data.Migrations
                     b.HasKey("IdTypePlace");
 
                     b.ToTable("TypePlaces");
+
+                    b.HasData(
+                        new
+                        {
+                            IdTypePlace = 1,
+                            NamePlace = "vila"
+                        },
+                        new
+                        {
+                            IdTypePlace = 2,
+                            NamePlace = "penthhouse"
+                        },
+                        new
+                        {
+                            IdTypePlace = 3,
+                            NamePlace = "apartment"
+                        });
                 });
 
             modelBuilder.Entity("AzureAdd.DataModels.UserVilla", b =>
@@ -352,15 +423,15 @@ namespace AzureAdd.Data.Migrations
                         {
                             Id = "7699db7d-964f-4782-8209-d76562e0fece",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2a899f2e-b230-4c5c-a4f3-acd82f39e1da",
+                            ConcurrencyStamp = "4d8d1d4f-b3dd-402d-b899-bc7021489b9e",
                             Email = "admin@horizons.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@HORIZONS.COM",
                             NormalizedUserName = "ADMIN@HORIZONS.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHMx0BOfkUfj1nyOgJeV+diyCohTFK/rlEtl+C07Qviirckp2J2JYDWSY/N/KNGrhg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEO7xb1mulmZ6Yqq/d/aYLB66nGcPWes1oZCNmvbkK7RwOdBkuglkcW1mxWoIVFigKQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3744f929-a445-4dd5-8fed-bd43369d43b2",
+                            SecurityStamp = "0fc4fff5-ef85-45af-acc8-c2d294ea5234",
                             TwoFactorEnabled = false,
                             UserName = "admin@horizons.com"
                         });
@@ -470,6 +541,33 @@ namespace AzureAdd.Data.Migrations
                     b.Navigation("VillaPenthhouse");
                 });
 
+            modelBuilder.Entity("AzureAdd.DataModels.FeedBack", b =>
+                {
+                    b.HasOne("AzureAdd.DataModels.Booking", "Booking")
+                        .WithMany("Feedbacks")
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Guest")
+                        .WithMany()
+                        .HasForeignKey("GuestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AzureAdd.DataModels.VillaPenthhouse", "Villa")
+                        .WithMany("Feedbacks")
+                        .HasForeignKey("VillaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Booking");
+
+                    b.Navigation("Guest");
+
+                    b.Navigation("Villa");
+                });
+
             modelBuilder.Entity("AzureAdd.DataModels.UserVilla", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
@@ -567,6 +665,11 @@ namespace AzureAdd.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("AzureAdd.DataModels.Booking", b =>
+                {
+                    b.Navigation("Feedbacks");
+                });
+
             modelBuilder.Entity("AzureAdd.DataModels.Location", b =>
                 {
                     b.Navigation("VillasPenthhouses");
@@ -580,6 +683,8 @@ namespace AzureAdd.Data.Migrations
             modelBuilder.Entity("AzureAdd.DataModels.VillaPenthhouse", b =>
                 {
                     b.Navigation("AllBookings");
+
+                    b.Navigation("Feedbacks");
 
                     b.Navigation("UserVillas");
                 });

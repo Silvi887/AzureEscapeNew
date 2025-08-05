@@ -3,10 +3,36 @@
 }
 
 <link href="~/css/Stylefile1.css" rel="stylesheet" />
-<div class="text-center">
+@* <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div> *@
+
+<div class="backimage">
+    <!-- Search section-->
+
+    <div class="search-overlay divsearch w-100">
+        <div class="container"> 
+            <form asp-controller="Vila" asp-action="SearchVilaByDate" method="get" class="row g-3 p-3 rounded shadow">SearchVilaByDate
+                <div class="col-md-4">
+                    <label for="startDate" class="form-label">Start Date</label>
+                    <input type="date" id="startDate" name="startDate" class="form-control" required />
+                </div>
+                <div class="col-md-4">
+                    <label for="endDate" class="form-label">End Date</label>
+                    <input type="date" id="endDate" name="endDate" class="form-control" required />
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100" style="background-color:#637496; color:#fff">
+                        <i class="fa fa-search"></i> Search Villas
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+
+
 <!-- Facilities Test change1n -->
 
 <div class="facilities">

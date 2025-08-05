@@ -67,7 +67,7 @@ namespace AzureApp.ViewModels
 
         public string LocationName { get; set; } = "";
 
-      
+        public int Raiting { get; set; }
 
         //[Required]
         //public string IDManager { get; set; } = null!;

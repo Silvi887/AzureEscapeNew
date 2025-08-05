@@ -41,7 +41,7 @@
                         </div>
                         <nav class="main_nav">
                             <ul class="d-flex flex-row align-items-center justify-content-start">
-                                <li class="active"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                <li class="active"><a asp-controller="Home" asp-action="Index">  <i class="fa fa-home"></i>Home</a></li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">All Villas</a>
                                     <div class="dropdown-menu">
@@ -68,6 +68,14 @@
 
                                 <li class="nav-item">
                                     <a class="nav-link" asp-area="" asp-controller="Reserve" asp-action="AllReservations">All Reservation</a>
+                                </li>
+
+                                <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">
+                                    <i class="fa fa-phone"></i> Contact Us</a></li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="FeedBack" asp-action="AllFeedBacks">
+                                    <i class="fa fa-user-circle-o"></i> Feedbacks
+                                    </a>
                                 </li>
 
                                 @*    <li><a href="about.html">About us</a></li>
@@ -113,9 +121,8 @@
                 </div>
             </div>
         </nav> *@
-    </header>
-    <div class="backimage">
-    </div>
+    </header>   
+    
     <div class="container_main">
         <main role="main" class="pb-3">
             @RenderBody()

@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace AzureAdd.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class MigrationAzure1 : Migration
+    public partial class AzureEscapeDb1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -301,10 +303,65 @@ namespace AzureAdd.Data.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "FeedBacks",
+                columns: table => new
+                {
+                    IdFeedBack = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BookingId = table.Column<int>(type: "int", nullable: false),
+                    VillaId = table.Column<int>(type: "int", nullable: false),
+                    GuestId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FeedbackMessage = table.Column<string>(type: "nvarchar(3000)", maxLength: 3000, nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FeedBacks", x => x.IdFeedBack);
+                    table.ForeignKey(
+                        name: "FK_FeedBacks_AspNetUsers_GuestId",
+                        column: x => x.GuestId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FeedBacks_Bookings_BookingId",
+                        column: x => x.BookingId,
+                        principalTable: "Bookings",
+                        principalColumn: "IdBooking",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_FeedBacks_VillasPenthhouses_VillaId",
+                        column: x => x.VillaId,
+                        principalTable: "VillasPenthhouses",
+                        principalColumn: "IdVilla",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "7699db7d-964f-4782-8209-d76562e0fece", 0, "2a899f2e-b230-4c5c-a4f3-acd82f39e1da", "admin@horizons.com", true, false, null, "ADMIN@HORIZONS.COM", "ADMIN@HORIZONS.COM", "AQAAAAIAAYagAAAAEHMx0BOfkUfj1nyOgJeV+diyCohTFK/rlEtl+C07Qviirckp2J2JYDWSY/N/KNGrhg==", null, false, "3744f929-a445-4dd5-8fed-bd43369d43b2", false, "admin@horizons.com" });
+                values: new object[] { "7699db7d-964f-4782-8209-d76562e0fece", 0, "4d8d1d4f-b3dd-402d-b899-bc7021489b9e", "admin@horizons.com", true, false, null, "ADMIN@HORIZONS.COM", "ADMIN@HORIZONS.COM", "AQAAAAIAAYagAAAAEO7xb1mulmZ6Yqq/d/aYLB66nGcPWes1oZCNmvbkK7RwOdBkuglkcW1mxWoIVFigKQ==", null, false, "0fc4fff5-ef85-45af-acc8-c2d294ea5234", false, "admin@horizons.com" });
+
+            migrationBuilder.InsertData(
+                table: "Locations",
+                columns: new[] { "IdLocation", "NameLocation" },
+                values: new object[,]
+                {
+                    { 1, "Sunny Beach" },
+                    { 2, "Golden Sands" },
+                    { 3, "Sozopol" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TypePlaces",
+                columns: new[] { "IdTypePlace", "NamePlace" },
+                values: new object[,]
+                {
+                    { 1, "vila" },
+                    { 2, "penthhouse" },
+                    { 3, "apartment" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -356,6 +413,21 @@ namespace AzureAdd.Data.Migrations
                 column: "VillaId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FeedBacks_BookingId",
+                table: "FeedBacks",
+                column: "BookingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FeedBacks_GuestId",
+                table: "FeedBacks",
+                column: "GuestId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FeedBacks_VillaId",
+                table: "FeedBacks",
+                column: "VillaId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserVilla_VillaId",
                 table: "UserVilla",
                 column: "VillaId");
@@ -398,13 +470,16 @@ namespace AzureAdd.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Bookings");
+                name: "FeedBacks");
 
             migrationBuilder.DropTable(
                 name: "UserVilla");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Bookings");
 
             migrationBuilder.DropTable(
                 name: "VillasPenthhouses");

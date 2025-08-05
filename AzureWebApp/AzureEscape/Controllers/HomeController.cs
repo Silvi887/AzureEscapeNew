@@ -38,6 +38,35 @@ namespace AzureEscape.Controllers
             return View();
         }
 
+
+        [AllowAnonymous]
+        public IActionResult Contact()
+        {
+
+          
+
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+           
+            return View("Views/Vila/ContactUs.cshtml");
+        }
+
+
+        [AllowAnonymous]
+        public IActionResult Feedbacks()
+        {
+
+
+
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+
+            return View("Views/Vila/Feedbacks.cshtml");
+        }
+
+
+
+
         public IActionResult Privacy()
         {
             return View();

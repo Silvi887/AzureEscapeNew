@@ -5,6 +5,7 @@ using AzureApp.ViewModels;
 using AzureServises.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -197,13 +198,17 @@ namespace AzureServises.Core
         public async Task<IEnumerable<VilaIndexViewModel>> GetAllVillasAsync(string? UserId)
         {
 
-            var Allhotels = await Dbcontext.VillasPenthhouses.Where(v => v.IsDeleted == false)
+            var Allhotels = await Dbcontext.VillasPenthhouses
+                .Include(v=> v.Location)
+                .Include(v => v.TypePlace)
+                .Include(v=> v.Feedbacks)
+                .Where(v => v.IsDeleted == false)
                 .Select(h => new VilaIndexViewModel()
                 {
                     IdVilla = h.IdVilla,
                     NameVilla = h.NameVilla,
                     LocationName = h.Location.NameLocation,
-                    NamePlace = h.Location.NameLocation,
+                    NamePlace = h.TypePlace.NamePlace,
                     VillaAddress = h.VillaAddress,
                     ImageUrl = h.ImageUrl,
                     CountAdults = h.CountAdults,
@@ -211,7 +216,8 @@ namespace AzureServises.Core
                     Bedrooms = h.Bedrooms,
                     Bathrooms = h.Bathrooms,
                     Area = h.Area,
-                    Parking = h.Parking
+                    Parking = h.Parking,
+                    Raiting= h.Feedbacks.Sum(v => v.Rating)
                 }).ToListAsync();
 
             return Allhotels;
@@ -482,6 +488,86 @@ namespace AzureServises.Core
             }
 
             return viladetails;
+        }
+
+        public  async Task<IEnumerable<VilaIndexViewModel>> GetAllVillasSearch(string? UserId, string StartDate, string EndDate)
+        {
+
+            var startdate = DateTime.ParseExact(StartDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
+
+            var enddate = DateTime.ParseExact(EndDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
+
+            var AllVillasSearch = await Dbcontext.VillasPenthhouses
+                .Include(v => v.AllBookings)
+                .Where(v => !v.AllBookings.Any(b => b.StartDate >= startdate && b.EndDate <= enddate))
+                 .Select(h => new VilaIndexViewModel()
+                 {
+                     IdVilla = h.IdVilla,
+                     NameVilla = h.NameVilla,
+                     LocationName = h.Location.NameLocation,
+                     NamePlace = h.TypePlace.NamePlace,
+                     VillaAddress = h.VillaAddress,
+                     ImageUrl = h.ImageUrl,
+                     CountAdults = h.CountAdults,
+                     CountChildren = h.CountChildren,
+                     Bedrooms = h.Bedrooms,
+                     Bathrooms = h.Bathrooms,
+                     Area = h.Area,
+                     Parking = h.Parking
+                 }).Distinct().ToListAsync();
+
+            return AllVillasSearch;
+
+
+        }
+
+        public async Task<bool> LeaveFeedBack(string Userid, BookingFeedbackViewModel leavefeedbackmodel)
+        {
+            bool operationResult = false;
+            IdentityUser? user1 = await this.userManager.FindByIdAsync(Userid);
+
+
+            if (user1 != null)
+            {
+                FeedBack feedback = new FeedBack()
+                {
+
+                    BookingId = leavefeedbackmodel.BookingId,
+
+                    VillaId = leavefeedbackmodel.VillaId,
+
+                   GuestId = user1.Id,
+                   FeedbackMessage = leavefeedbackmodel.FeedbackMessage,    
+                   Rating= leavefeedbackmodel.Rating
+
+                  };
+
+                this.Dbcontext.FeedBacks.Add(feedback);
+                this.Dbcontext.SaveChanges();
+
+                operationResult = true;
+            }
+
+            return operationResult;
+        }
+
+        public async Task<IEnumerable<BookingFeedbackViewModel>> GetAllFeedbacks(string? Userid)
+        {
+            var AllFeedbackfromDB = await Dbcontext.FeedBacks
+                .Where(f=> f.GuestId== Userid)
+                .Include(f => f.Villa)
+                .Select(f => new BookingFeedbackViewModel()
+                {
+
+                    BookingId = f.BookingId,
+                    VillaId = f.VillaId,
+                    VillaName = f.Villa.NameVilla,
+                    ClientName = f.Guest.UserName,
+                    FeedbackMessage = f.FeedbackMessage,
+                    Rating = f.Rating
+                }).ToListAsync();
+
+            return AllFeedbackfromDB;
         }
     }
 }

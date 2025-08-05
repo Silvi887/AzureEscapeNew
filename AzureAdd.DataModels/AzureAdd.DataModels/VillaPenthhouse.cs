@@ -83,5 +83,7 @@ namespace AzureAdd.DataModels
         public virtual ICollection<Booking> AllBookings { get; set; } = new HashSet<Booking>();
 
         public virtual ICollection<UserVilla> UserVillas { get; set; } = new HashSet<UserVilla>();
+
+        public virtual ICollection<FeedBack> Feedbacks { get; set; } = new HashSet<FeedBack>();
     }
 }

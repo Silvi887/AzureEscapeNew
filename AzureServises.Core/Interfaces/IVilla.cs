@@ -11,6 +11,8 @@ namespace AzureServises.Core.Interfaces
     {
 
         Task<IEnumerable<VilaIndexViewModel>> GetAllVillasAsync(string? UserId);
+
+        Task<IEnumerable<VilaIndexViewModel>> GetAllVillasSearch(string? UserId, string StartDate, string EndDate);
         Task<bool> AddVilaModel(string Userid, AddVillaIndexViewModel vilamodel);
 
         Task<bool> AddBookingModel(string Userid, AddReservationViewModel reservationmodel);
@@ -30,6 +32,9 @@ namespace AzureServises.Core.Interfaces
         Task<bool> EditReservation(string UserId, EditBooking editbooking);
 
         Task<DetailsIndexVilla> GetVilaDetailsAsync(int? id1, string? UserId);
+
+        Task<bool> LeaveFeedBack(string Userid, BookingFeedbackViewModel leavefeedbackmodel);
+        Task<IEnumerable<BookingFeedbackViewModel>> GetAllFeedbacks(string? Userid);
 
     }
 }

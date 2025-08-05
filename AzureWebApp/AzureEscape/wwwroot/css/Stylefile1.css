@@ -10,8 +10,21 @@
     color: white;
     height: 600px;
     margin-bottom: 0px;
+    position: relative;
 }
 
 .text-center{
     margin-top:0px;
+}
+
+.backimage form {
+    background-color: #4c5c7e;
+    height:130px;
+}
+
+.divsearch {
+    position:absolute ;
+    bottom: 20px;
+    left: 0;
+    
 }

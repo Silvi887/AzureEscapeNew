@@ -21,21 +21,29 @@ namespace AzureEscape.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
-
-            if (this.IsUserAuthenticated())
-            {
-                return RedirectToAction("Index", "Vila");
-            }
-
-            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (userId == null)
+            try
             {
 
+
+                if (this.IsUserAuthenticated())
+                {
+                    return RedirectToAction("Index", "Vila");
+                }
+
+                string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if (userId == null)
+                {
+
+                    return View();
+                    // return RedirectToAction("Index","Vacation");
+                }
                 return View();
-                // return RedirectToAction("Index","Vacation");
             }
-            return View();
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home");
+            }
         }
 
 
@@ -43,12 +51,19 @@ namespace AzureEscape.Controllers
         public IActionResult Contact()
         {
 
-          
+            try
+            {
 
-            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-           
-            return View("Views/Vila/ContactUs.cshtml");
+                string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+
+                return View("Views/Vila/ContactUs.cshtml");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home");
+            }
         }
 
 
@@ -56,12 +71,20 @@ namespace AzureEscape.Controllers
         public IActionResult Feedbacks()
         {
 
+            try
+            {
 
 
-            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
 
-            return View("Views/Vila/Feedbacks.cshtml");
+                return View("Views/Vila/Feedbacks.cshtml");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home");
+            }
         }
 
 

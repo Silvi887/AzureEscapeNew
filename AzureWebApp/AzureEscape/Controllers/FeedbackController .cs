@@ -20,56 +20,98 @@ namespace AzureEscape.Controllers
         }
         public IActionResult Index()
         {
-            return View();
-        }
+
+            try
+            {
+
+
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home");
+
+            }
+            }
 
         [HttpGet]
         public IActionResult LeaveFeedback(string bookingId, string id)
         {
-            var model = new BookingFeedbackViewModel
+
+            try
             {
-                BookingId = 1,
-                VillaId = int.Parse(id),
-                 VillaName = ""
-            };
-            return View("Views/Vila/LeaveFeedBacks.cshtml", model);
-        }
+
+                var model = new BookingFeedbackViewModel
+                {
+                    BookingId = 1,
+                    VillaId = int.Parse(id),
+                    VillaName = ""
+                };
+                return View("Views/Vila/LeaveFeedBacks.cshtml", model);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home");
+
+            }
+            }
 
         [HttpPost]
         public async Task<IActionResult> LeaveFeedback(BookingFeedbackViewModel modelFeedback)
         {
 
-            string Userid= this.GetUserId();
-
-            modelFeedback.VillaName = "";
-            if (!ModelState.IsValid)
-            {
-            return View(modelFeedback);
-            }
-
-            bool isvalid = await vilaService.LeaveFeedBack(Userid, modelFeedback);
-            if (!isvalid)
+            try
             {
 
-                IEnumerable<VilaIndexViewModel> Allvillas = await this.vilaService.GetAllVillasAsync(Userid);
-                return View("Views/Vila/Index.cshtml");
+                string Userid = this.GetUserId();
 
-               // return View("Views/Vila/Index.cshtml", Allvillas);
+                modelFeedback.VillaName = "";
+                if (!ModelState.IsValid)
+                {
+
+                    return RedirectToAction("Error", "Home");
+                    return View(modelFeedback);
+                }
+
+                bool isvalid = await vilaService.LeaveFeedBack(Userid, modelFeedback);
+                if (!isvalid)
+                {
+
+                    IEnumerable<VilaIndexViewModel> Allvillas = await this.vilaService.GetAllVillasAsync(Userid);
+                    return RedirectToAction("Error", "Home");
+                    //  return View("Views/Vila/Index.cshtml");
+
+                    // return View("Views/Vila/Index.cshtml", Allvillas);
+                }
+
+                // Save feedback to DB or process it
+                TempData["Success"] = "Thanks for your feedback!";
+                return View("Views/Vila/LeaveFeedBacks.cshtml", modelFeedback);
             }
-
-            // Save feedback to DB or process it
-            TempData["Success"] = "Thanks for your feedback!";
-            return View("Views/Vila/LeaveFeedBacks.cshtml", modelFeedback);
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> AllFeedBacks()
         {
-            string Userid = this.GetUserId();
-            bool isvalid = false;
-            IEnumerable<BookingFeedbackViewModel> allfeedbacks = await this.vilaService.GetAllFeedbacks(Userid);
 
-            return View("Views/Vila/AllFeedBacks.cshtml", allfeedbacks);
-        }
+            try
+            {
+
+                string Userid = this.GetUserId();
+                bool isvalid = false;
+                IEnumerable<BookingFeedbackViewModel> allfeedbacks = await this.vilaService.GetAllFeedbacks(Userid);
+
+                return View("Views/Vila/AllFeedBacks.cshtml", allfeedbacks);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home");
+
+            }
+            }
     }
 }

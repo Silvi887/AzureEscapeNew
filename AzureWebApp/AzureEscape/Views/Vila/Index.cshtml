@@ -43,11 +43,11 @@
 			@foreach (var villa in Model)
 			{
 				<div class="classItem">
+					<h4> @villa.NameVilla </h4>
 					<img src=@villa.ImageUrl alt="" />
 
-
 					<div class="classraiting"> <div><span class="nameplace-btn"> @villa.NamePlace</span></div>&nbsp;&nbsp; &nbsp;&nbsp;  Rating: ⭐ @villa.Raiting</div>
-					<h4> @villa.NameVilla </h4>
+				
 					<ul>
 						<li><span> Address: </span>@villa.VillaAddress </li>
 						<li><span> Count Adults:</span>@villa.CountAdults</li>
@@ -58,7 +58,7 @@
 
 					<div class="classBtns">
 						<a asp-controller="Vila" asp-action="Details" asp-route-id="@villa.IdVilla" class="btn btn-info">
-							<i class="fa fa-info-circle"></i> Details
+							<i class="fa fa-info-circle"></i> More info
 						</a>
 
 						@if (User?.Identity?.IsAuthenticated == true && ViewBag.EmailConfirmed == false)

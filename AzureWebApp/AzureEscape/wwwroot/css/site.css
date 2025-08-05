@@ -56,7 +56,8 @@ body {
 }
 
 .classItem {
-    background-color: #fafafa;
+    background-color: #a5dce3;
+    /*   #fafafa;*/
 }
 
 .classBtns {
@@ -100,7 +101,7 @@ body {
 
     .row4 {
         display: flex;
-        /* flex-wrap:wrap;*/
+        flex-wrap:wrap;
         flex-direction: row;
         justify-content: space-around;
         gap: 2em;

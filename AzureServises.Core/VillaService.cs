@@ -554,7 +554,7 @@ namespace AzureServises.Core
         public async Task<IEnumerable<BookingFeedbackViewModel>> GetAllFeedbacks(string? Userid)
         {
             var AllFeedbackfromDB = await Dbcontext.FeedBacks
-                .Where(f=> f.GuestId== Userid)
+               // .Where(f=> f.GuestId== Userid)
                 .Include(f => f.Villa)
                 .Select(f => new BookingFeedbackViewModel()
                 {

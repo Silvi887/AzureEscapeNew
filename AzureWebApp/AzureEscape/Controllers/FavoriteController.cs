@@ -21,9 +21,19 @@ namespace AzureEscape.Controllers
 
         public async Task<IActionResult> Index()
         {
-            
-            return View("Views/Home/Index.cshtml");
-        }
+            try
+            {
+
+                return View("Views/Home/Index.cshtml");
+            }
+
+            catch (Exception ex)
+            {
+
+                return RedirectToAction("Error", "Home");
+
+            }
+            }
 
         [HttpGet]
         public async Task<IActionResult> GetFavorite()
@@ -47,7 +57,9 @@ namespace AzureEscape.Controllers
             {
                 Console.WriteLine(ex.Message);
 
-                return View("Views/Vila/FavoritePlaces.cshtml", AllPlaces);
+                return RedirectToAction("Error", "Home");
+
+                //  return View("Views/Vila/FavoritePlaces.cshtml", AllPlaces);
                 //return this.RedirectToAction(nameof(Index));
 
             }
@@ -74,7 +86,9 @@ namespace AzureEscape.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return this.RedirectToAction(nameof(Index));
+                return RedirectToAction("Error", "Home");
+
+              //  return this.RedirectToAction(nameof(Index));
 
             }
 
@@ -101,7 +115,8 @@ namespace AzureEscape.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return this.RedirectToAction(nameof(Index));
+                return RedirectToAction("Error", "Home");
+                // return this.RedirectToAction(nameof(Index));
 
             }
         }

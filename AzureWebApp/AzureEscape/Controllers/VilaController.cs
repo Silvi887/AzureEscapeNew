@@ -25,6 +25,10 @@ namespace AzureEscape.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
+
+            try
+            { 
+
             string? UserId = this.GetUserId();
             IEnumerable<VilaIndexViewModel> Allvillas = await this.vilaService.GetAllVillasAsync(UserId);
 
@@ -33,18 +37,31 @@ namespace AzureEscape.Controllers
 
             ViewBag.EmailConfirmed = user?.EmailConfirmed ?? false;
             return View("Views/Vila/Index.cshtml", Allvillas);
-        }
+            }
+            catch (Exception ex) {
+                return RedirectToAction("Error", "Home");
+            }
+            }
 
         [AllowAnonymous]
         public async Task<IActionResult> SearchVilaByDate(string startDate, string endDate)
         {
-            string? UserId = this.GetUserId();
 
-            IEnumerable<VilaIndexViewModel> AllVillasSearch = await this.vilaService.GetAllVillasSearch(UserId, startDate, endDate);
+            try
+            {
 
-            return View("Views/Vila/Index.cshtml", AllVillasSearch);
+                string? UserId = this.GetUserId();
 
-        }
+                IEnumerable<VilaIndexViewModel> AllVillasSearch = await this.vilaService.GetAllVillasSearch(UserId, startDate, endDate);
+
+                return View("Views/Vila/Index.cshtml", AllVillasSearch);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+
+            }
 
         [HttpGet]
         public async Task<IActionResult> AddVilla()
@@ -67,7 +84,9 @@ namespace AzureEscape.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return this.RedirectToAction(nameof(Index));
+                return RedirectToAction("Error", "Home");
+
+               // return this.RedirectToAction(nameof(Index));
             }
 
         }
@@ -120,12 +139,20 @@ namespace AzureEscape.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(string? id)
         {
-            int id1 = int.Parse(id);
-            string? UserId = this.GetUserId();
-            var VilaDetails = await this.vilaService.GetVilaDetailsAsync(id1, UserId);
+            try
+            {
+
+                int id1 = int.Parse(id);
+                string? UserId = this.GetUserId();
+                var VilaDetails = await this.vilaService.GetVilaDetailsAsync(id1, UserId);
 
 
-            return View("Views/Vila/DetailsVila.cshtml", VilaDetails);
+                return View("Views/Vila/DetailsVila.cshtml", VilaDetails);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home");
+            }
         }
 
 

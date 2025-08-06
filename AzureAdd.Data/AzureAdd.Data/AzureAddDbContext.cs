@@ -145,27 +145,7 @@ namespace AzureAdd.Data
            new Location { IdLocation = 3, NameLocation = "Sozopol" }
        );
 
-            ////
-            //var Location1 = new Location
-            //{
-
-            //    NameLocation= "Albena"
-            //};
-            //var Location2 = new Location
-            //{
-
-            //    NameLocation = "Ahtopol"
-            //};
-
-            //var Location3 = new Location
-            //{
-
-            //    NameLocation = "Golden sand"
-            //};
-
-            //builder.Entity<Location>().HasData(Location1);
-            //builder.Entity<Location>().HasData(Location2);
-            //builder.Entity<Location>().HasData(Location3);
+          
 
             //TypepLace
 
@@ -190,7 +170,67 @@ namespace AzureAdd.Data
             builder.Entity<TypePlace>().HasData(TypepLace2);
             builder.Entity<TypePlace>().HasData(TypepLace3);
 
+            builder.Entity<VillaPenthhouse>().HasData(
 
+                new VillaPenthhouse
+                {
+                    IdVilla=1,
+                    NameVilla= "Villa Rio",
+                    IdPlace=1,
+                    VillaInfo="This is Fantastic Place for relax and enjoy!",
+                    VillaAddress= "New str 17",
+                    ImageUrl= "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/44/d7/42/sol-nessebar-palace-all.jpg?w=900&h=500&s=1",
+                    CountRooms=4,
+                    CountAdults=2,
+                    CountChildren=3,
+                    Bedrooms=3,
+                    Bathrooms=4,
+                    Area="200m2",
+                    Parking="Yes",
+                    LocationId=2,
+                    IDManager= "7699db7d-964f-4782-8209-d76562e0fece",
+                    IsDeleted =false
+                },
+                 new VillaPenthhouse
+                 {
+                     IdVilla = 2,
+                     NameVilla = "Relax",
+                     IdPlace = 3,
+                     VillaInfo = "This is Fantastic Place for relax and enjoy!",
+                     VillaAddress = "Balcan str 25",
+                     ImageUrl = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2f/ab/45/e6/caption.jpg?w=900&h=500&s=1",
+                     CountRooms = 4,
+                     CountAdults = 4,
+                     CountChildren = 2,
+                     Bedrooms = 3,
+                     Bathrooms = 4,
+                     Area = "400m2",
+                     Parking = "Yes",
+                     LocationId = 2,
+                     IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                     IsDeleted = false
+                 },
+                  new VillaPenthhouse
+                  {
+                      IdVilla = 3,
+                      NameVilla = "Aphrodita",
+                      IdPlace = 2,
+                      VillaInfo = "This is Fantastic Place for relax and enjoy!",
+                      VillaAddress = "New str 15",
+                      ImageUrl = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/18/46/67/88/cook-s-club-sunny-beach.jpg?w=900&h=500&s=1",
+                      CountRooms = 6,
+                      CountAdults = 2,
+                      CountChildren = 2,
+                      Bedrooms = 3,
+                      Bathrooms = 4,
+                      Area = "500m2",
+                      Parking = "Yes",
+                      LocationId = 2,
+                      IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                      IsDeleted = false
+                  }
+
+                );
 
 
             base.OnModelCreating(builder);

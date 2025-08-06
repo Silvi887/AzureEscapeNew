@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AzureAdd.Data.Migrations
 {
     [DbContext(typeof(AzureAddDbContext))]
-    [Migration("20250805202147_MigrationAzure1")]
-    partial class MigrationAzure1
+    [Migration("20250806144811_AzureEscapeMigration1")]
+    partial class AzureEscapeMigration1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -300,6 +300,65 @@ namespace AzureAdd.Data.Migrations
                     b.HasIndex("LocationId");
 
                     b.ToTable("VillasPenthhouses");
+
+                    b.HasData(
+                        new
+                        {
+                            IdVilla = 1,
+                            Area = "200m2",
+                            Bathrooms = 4,
+                            Bedrooms = 3,
+                            CountAdults = 2,
+                            CountChildren = 3,
+                            CountRooms = 4,
+                            IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                            IdPlace = 1,
+                            ImageUrl = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/44/d7/42/sol-nessebar-palace-all.jpg?w=900&h=500&s=1",
+                            IsDeleted = false,
+                            LocationId = 2,
+                            NameVilla = "Villa Rio",
+                            Parking = "Yes",
+                            VillaAddress = "New str 17",
+                            VillaInfo = "This is Fantastic Place for relax and enjoy!"
+                        },
+                        new
+                        {
+                            IdVilla = 2,
+                            Area = "400m2",
+                            Bathrooms = 4,
+                            Bedrooms = 3,
+                            CountAdults = 4,
+                            CountChildren = 2,
+                            CountRooms = 4,
+                            IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                            IdPlace = 3,
+                            ImageUrl = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2f/ab/45/e6/caption.jpg?w=900&h=500&s=1",
+                            IsDeleted = false,
+                            LocationId = 2,
+                            NameVilla = "Relax",
+                            Parking = "Yes",
+                            VillaAddress = "Balcan str 25",
+                            VillaInfo = "This is Fantastic Place for relax and enjoy!"
+                        },
+                        new
+                        {
+                            IdVilla = 3,
+                            Area = "500m2",
+                            Bathrooms = 4,
+                            Bedrooms = 3,
+                            CountAdults = 2,
+                            CountChildren = 2,
+                            CountRooms = 6,
+                            IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                            IdPlace = 2,
+                            ImageUrl = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/18/46/67/88/cook-s-club-sunny-beach.jpg?w=900&h=500&s=1",
+                            IsDeleted = false,
+                            LocationId = 2,
+                            NameVilla = "Aphrodita",
+                            Parking = "Yes",
+                            VillaAddress = "New str 15",
+                            VillaInfo = "This is Fantastic Place for relax and enjoy!"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -423,15 +482,15 @@ namespace AzureAdd.Data.Migrations
                         {
                             Id = "7699db7d-964f-4782-8209-d76562e0fece",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f4c148b1-efdb-41cd-b573-957b6c67360a",
+                            ConcurrencyStamp = "98776ada-0b2c-40ac-8d2b-c18b911c389a",
                             Email = "admin@horizons.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@HORIZONS.COM",
                             NormalizedUserName = "ADMIN@HORIZONS.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGqYNqwIQ6Wn6RBlihA/PVgGUkDdLyTTYQGJXYaGn9MCR3xR41xkA8/PlhicFVE3XA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKNZ0JwEsm4tibh9x2ToUx4x6AOR1HYox94YM6yHW1DosUKtS7mDWxMMaOKyj+UiSg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "729e3817-4a20-4ff3-aa77-c4a021e69f19",
+                            SecurityStamp = "ce4f3b9d-6618-46be-81b7-0005db1418f0",
                             TwoFactorEnabled = false,
                             UserName = "admin@horizons.com"
                         });

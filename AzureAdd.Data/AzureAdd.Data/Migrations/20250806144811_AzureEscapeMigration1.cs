@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AzureAdd.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class MigrationAzure1 : Migration
+    public partial class AzureEscapeMigration1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -341,7 +341,7 @@ namespace AzureAdd.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "7699db7d-964f-4782-8209-d76562e0fece", 0, "f4c148b1-efdb-41cd-b573-957b6c67360a", "admin@horizons.com", true, false, null, "ADMIN@HORIZONS.COM", "ADMIN@HORIZONS.COM", "AQAAAAIAAYagAAAAEGqYNqwIQ6Wn6RBlihA/PVgGUkDdLyTTYQGJXYaGn9MCR3xR41xkA8/PlhicFVE3XA==", null, false, "729e3817-4a20-4ff3-aa77-c4a021e69f19", false, "admin@horizons.com" });
+                values: new object[] { "7699db7d-964f-4782-8209-d76562e0fece", 0, "98776ada-0b2c-40ac-8d2b-c18b911c389a", "admin@horizons.com", true, false, null, "ADMIN@HORIZONS.COM", "ADMIN@HORIZONS.COM", "AQAAAAIAAYagAAAAEKNZ0JwEsm4tibh9x2ToUx4x6AOR1HYox94YM6yHW1DosUKtS7mDWxMMaOKyj+UiSg==", null, false, "ce4f3b9d-6618-46be-81b7-0005db1418f0", false, "admin@horizons.com" });
 
             migrationBuilder.InsertData(
                 table: "Locations",
@@ -361,6 +361,16 @@ namespace AzureAdd.Data.Migrations
                     { 1, "vila" },
                     { 2, "penthhouse" },
                     { 3, "apartment" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "VillasPenthhouses",
+                columns: new[] { "IdVilla", "Area", "Bathrooms", "Bedrooms", "CountAdults", "CountChildren", "CountRooms", "IDManager", "IdPlace", "ImageUrl", "IsDeleted", "LocationId", "NameVilla", "Parking", "VillaAddress", "VillaInfo" },
+                values: new object[,]
+                {
+                    { 1, "200m2", 4, 3, 2, 3, 4, "7699db7d-964f-4782-8209-d76562e0fece", 1, "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/44/d7/42/sol-nessebar-palace-all.jpg?w=900&h=500&s=1", false, 2, "Villa Rio", "Yes", "New str 17", "This is Fantastic Place for relax and enjoy!" },
+                    { 2, "400m2", 4, 3, 4, 2, 4, "7699db7d-964f-4782-8209-d76562e0fece", 3, "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2f/ab/45/e6/caption.jpg?w=900&h=500&s=1", false, 2, "Relax", "Yes", "Balcan str 25", "This is Fantastic Place for relax and enjoy!" },
+                    { 3, "500m2", 4, 3, 2, 2, 6, "7699db7d-964f-4782-8209-d76562e0fece", 2, "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/18/46/67/88/cook-s-club-sunny-beach.jpg?w=900&h=500&s=1", false, 2, "Aphrodita", "Yes", "New str 15", "This is Fantastic Place for relax and enjoy!" }
                 });
 
             migrationBuilder.CreateIndex(

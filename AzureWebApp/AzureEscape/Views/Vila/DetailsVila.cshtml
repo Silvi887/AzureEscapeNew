@@ -56,33 +56,3 @@
     </div>
 </div>
 
-@* 
-<div class="container mt-5">
-    <div class="card shadow-lg">
-        <div class="row g-0">
-            <div class="col-md-5">
-                <img src="@Model.ImageUrl" class="img-fluid rounded-start" alt="Villa Image">
-            </div>
-            <div class="col-md-7">
-                <div class="card-body">
-                    <h3 class="card-title text-primary">@Model.VilaName</h3>
-                    <p class="card-text"><strong>🏘️ Rooms:</strong> @Model.NumberofRooms</p>
-                    <p class="card-text"><strong>📍 Town:</strong> @Model.TownName</p>
-                    <p class="card-text"><strong>👤 Guest ID:</strong> @Model.GuestId</p>
-                    <p class="card-text"><strong>🧑‍💼 Manager ID:</strong> @Model.ManagerId</p>
-                    <p class="card-text"><strong>🛡️ Is Manager:</strong> @(Model.IsManager ? "Yes" : "No")</p>
-                    <p class="card-text"><strong>💾 Saved:</strong> @(Model.IsSaved ? "Yes" : "No")</p>
-                    <hr />
-                    <h5 class="text-secondary">📄 Villa Info</h5>
-                    <p class="card-text">@Model.VilaInfo</p>
-
-                    <div class="mt-4">
-                        <a asp-action="Edit" asp-route-id="@Model.IdVila" class="btn btn-warning me-2">✏️ Edit</a>
-                        <a asp-action="Index" class="btn btn-secondary">🔙 Back to List</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
- *@

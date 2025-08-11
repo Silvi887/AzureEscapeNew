@@ -289,10 +289,14 @@ namespace AzureServises.Core
         {
             bool isdeleted = false;
             IdentityUser? curentuser = await userManager.FindByIdAsync(Userid);
-            VillaPenthhouse? hoteltoremove = await Dbcontext.VillasPenthhouses.SingleOrDefaultAsync(h => h.IdVilla == id);
+            UserVilla? hoteltoremove = await Dbcontext.UserVilla
+                
+                            .SingleOrDefaultAsync(h => h.VillaId == id && h.UserId== curentuser.Id);
             if (curentuser != null && hoteltoremove != null)
             {
-                hoteltoremove.IsDeleted = true;
+
+                this.Dbcontext.Remove(hoteltoremove);
+               // hoteltoremove.IsDeleted = true;
 
 
                 await this.Dbcontext.SaveChangesAsync();

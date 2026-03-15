@@ -39,10 +39,67 @@
  *@	<hr />
 	<div class="container">
 
-		<div class="row4">
+		<div class="row g-4">
+			@*  row4 *@
 			@foreach (var villa in Model)
 			{
-				<div class="classItem">
+				<div class="col-lg-4 col-md-6">
+					<div class="villa-card shadow-sm">
+
+						<div class="villa-image">
+							<img src="@villa.ImageUrl" alt="@villa.NameVilla" style="height:200px;object-fit:cover;" />
+							<span class="rating-badge">⭐ @villa.Raiting</span>
+						</div>
+
+						<div class="villa-body">
+							<h4 class="villa-title">@villa.NameVilla</h4>
+
+							<span class="place-badge">@villa.NamePlace</span>
+
+							<div class="villa-info">
+								<div><strong>📍 Address:</strong> @villa.VillaAddress</div>
+								<div><strong>👨 Adults:</strong> @villa.CountAdults</div>
+								<div><strong>👶 Children:</strong> @villa.CountChildren</div>
+								<div><strong>🌍 Location:</strong> @villa.LocationName</div>
+							</div>
+
+							<div class="villa-buttons">
+
+								<a asp-controller="Vila"
+								   asp-action="Details"
+								   asp-route-id="@villa.IdVilla"
+								   class="btn btn-outline-primary">
+									<i class="fa fa-info-circle"></i> Details
+								</a>
+
+								@if (User?.Identity?.IsAuthenticated == true && ViewBag.EmailConfirmed == false)
+								{
+									<a asp-controller="Reserve"
+									   asp-action="AddBooking"
+									   asp-route-id="@($"{villa.IdVilla},{villa.NameVilla}")"
+									   class="btn btn-primary">
+										<i class="fa fa-calendar-check-o"></i> Reserve
+									</a>
+
+									<form asp-controller="Favorite"
+										  asp-action="GetFavorite"
+										  asp-route-id="@villa.IdVilla"
+										  method="post">
+
+										<input type="hidden" name="id" value="@villa.IdVilla" />
+
+										<button type="submit" class="btn btn-danger">
+											<i class="fa fa-heart"></i>
+										</button>
+									</form>
+								}
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+				@* <div class="classItem">
 					<h4> @villa.NameVilla </h4>
 					<img src=@villa.ImageUrl alt="" />
 
@@ -79,7 +136,7 @@
 					</div>
 					
 
-				</div>
+				</div> *@
 			}
 
 

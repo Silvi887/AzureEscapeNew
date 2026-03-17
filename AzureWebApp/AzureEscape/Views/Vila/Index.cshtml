@@ -75,12 +75,18 @@
 
 								@if (User?.Identity?.IsAuthenticated == true && ViewBag.EmailConfirmed == false)
 								{
-									<a asp-controller="Reserve"
+									@* <a asp-controller="Reserve"
 									   asp-action="AddBooking"
 									   asp-route-id="@($"{villa.IdVilla},{villa.NameVilla},{villa.Pricepernight}")"
 									   class="btn btn-primary">
 										<i class="fa fa-calendar-check-o"></i> Reserve
-									</a>
+									</a> *@
+									<button class="btn btn-primary reserveBtn"
+											data-id="@villa.IdVilla"
+											data-name="@villa.NameVilla"
+											data-price="@villa.Pricepernight">
+										<i class="fa fa-calendar-check-o"></i> Reserve
+									</button>
 
 									<form asp-controller="Favorite"
 										  asp-action="GetFavorite"
@@ -100,6 +106,8 @@
 
 					</div>
 				</div>
+
+				
 				@* <div class="classItem">
 					<h4> @villa.NameVilla </h4>
 					<img src=@villa.ImageUrl alt="" />
@@ -144,4 +152,76 @@
 		</div>
 	</div>
 </div>
+<script>
+
+	document.querySelectorAll(".reserveBtn").forEach(btn => {
+
+		btn.addEventListener("click", function () {
+
+			const villaId = this.dataset.id;
+			const villaName = this.dataset.name;
+			const price = this.dataset.price;
+
+			Swal.fire({
+				title: "Add Reservation",
+				width: 600,
+				html: `
+					<form id="popupForm" method="post" action="/Reserve/Add">
+
+						<input type="hidden" name="VillaId" value="${villaId}">
+						<input type="hidden" name="pricepernight" id="price" value="${price}">
+
+						<p><strong>${villaName}</strong></p>
+
+						<input type="date" id="start" name="StartDate" class="swal2-input">
+						<input type="date" id="end" name="EndDate" class="swal2-input">
+
+						<input type="number" name="AdultsCount" placeholder="Adults" class="swal2-input">
+						<input type="number" name="ChildrenCount" placeholder="Children" class="swal2-input">
+
+						<input type="text" name="GuestFirstName" placeholder="First Name" class="swal2-input">
+						<input type="text" name="LastNameG" placeholder="Last Name" class="swal2-input">
+						<input type="email" name="GuestEmail" placeholder="Email" class="swal2-input">
+
+						<div id="totalBox" style="margin-top:10px;font-weight:bold;"></div>
+
+					</form>
+				`,
+				showCancelButton: true,
+				confirmButtonText: "Book",
+				didOpen: () => {
+
+					const start = document.getElementById("start");
+					const end = document.getElementById("end");
+					const totalBox = document.getElementById("totalBox");
+
+					function calculate() {
+						if (!start.value || !end.value) return;
+
+						let s = new Date(start.value);
+						let e = new Date(end.value);
+
+						let nights = (e - s) / (1000 * 60 * 60 * 24);
+
+						if (nights > 0) {
+							let total = nights * price;
+							totalBox.innerHTML = `Nights: ${nights} | Total: €${total}`;
+						} else {
+							totalBox.innerHTML = "";
+						}
+					}
+
+					start.addEventListener("change", calculate);
+					end.addEventListener("change", calculate);
+				},
+				preConfirm: () => {
+					document.getElementById("popupForm").submit();
+				}
+			});
+
+		});
+
+	});
+
+</script>
 

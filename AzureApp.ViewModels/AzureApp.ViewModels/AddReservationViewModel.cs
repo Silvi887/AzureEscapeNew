@@ -19,40 +19,47 @@ namespace AzureApp.ViewModels
         public string EndDate { get; set; } = null!;
 
         [Required]
+        [Range(1,20,ErrorMessage ="Adults count must be at least one!")]
         public int AdultsCount { get; set; } = 0;
 
 
         [Required]
+        [Range(0,20,ErrorMessage ="Children count cannot be negative!")]
         public int ChildrenCount { get; set; } = 0;
 
 
-        [Required]
+        [Required(ErrorMessage ="You have to fill your First Name!")]
         public string GuestFirstName { get; set; } = "";
 
 
-        [Required]
+        [Required(ErrorMessage = "You have to fill your Last Name!")]
         public string LastNameG { get; set; } = "";
 
-        [Required]
+        [Required(ErrorMessage = "You have to fill your Date of Birth !")]
         public string DateofBirth { get; set; } = null!;
 
+
+         [StringLength(200)]
         public string? GuestAddress { get; set; }
 
+        [Phone(ErrorMessage = "Invalid phone number.")]
         public string? GuestPhoneNumber { get; set; }
 
 
 
-        [Required]
+        [Required(ErrorMessage = "Email is required.")]
         public string GuestEmail { get; set; } = "";
 
 
 
-        [Required]
+        //[Required]
         public string VillaId { get; set; }
         public bool IsGuest { get; set; }//user is autor of recipe
 
-        [Required]
+       
         public string VilaName { get; set; } = "";
+
+        public decimal pricepernight { get;set; }
 
 
         //public IEnumerable<RoomViewModel> roomdrp = null!;

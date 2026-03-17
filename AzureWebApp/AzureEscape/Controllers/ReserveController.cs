@@ -35,6 +35,7 @@ namespace AzureEscape.Controllers
                 {
                     VillaId = ArrVilaName[0],
                     VilaName = ArrVilaName[1],
+                    pricepernight=decimal.Parse(ArrVilaName[2]),
                     // 
                     StartDate = DateTime.UtcNow.ToString("yyyy-MM-dd"),
                     EndDate = DateTime.UtcNow.ToString("yyyy-MM-dd"),

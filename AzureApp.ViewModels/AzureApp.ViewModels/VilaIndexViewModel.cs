@@ -67,6 +67,12 @@ namespace AzureApp.ViewModels
 
         public string LocationName { get; set; } = "";
 
+
+        [Required]
+        [Range(1, 10000)]
+        [Display(Name = "Price Per Night")]
+        public decimal Pricepernight { get;set; }
+
         public int Raiting { get; set; }
 
         //[Required]

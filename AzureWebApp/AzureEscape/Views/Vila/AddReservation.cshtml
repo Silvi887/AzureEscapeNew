@@ -17,33 +17,37 @@
 
 <h2 class="mb-4">Add a New Reservation</h2>
 
-<div class="card shadow-sm">
+
+<div class="card shadow-sm" ng-app="reservationApp" ng-controller="reservationCtrl">
+@* <div class="card shadow-sm"> *@
     <div class="card-body">
         <form asp-action="Add" method="post">
             <div class="row g-3">
 
                 <div class="col-md-6 form-floating">
-                    <input asp-for="@Model.VilaName" class="form-control" placeholder="Name Vila" />
-                    <label asp-for="@Model.VilaName"></label>
-                    <span asp-validation-for="@Model.VilaName" class="text-danger"></span>
+                    @* <input asp-for="@Model.VilaName" class="form-control" placeholder="@Model.VilaName" /> *@
+                    <label asp-for="@Model.VilaName">@Model.VilaName</label>
                     <input asp-for="@Model.VillaId" type="hidden" aria-required="true" />
+                    <input asp-for="@Model.pricepernight" type="hidden" aria-required="true" ng-init="pricePerNight=@Model.pricepernight" />
                 </div>
                 <div class="col-md-6 form-floating">
-                    <input asp-for="@Model.StartDate" class="form-control" type="date" placeholder="Start Date" />
+                    <input id="startDate" asp-for="@Model.StartDate" class="form-control" type="date" placeholder="Start Date" ng-model="startDate" />
                     <label asp-for="@Model.StartDate"></label>
-                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                    @* <span id="date1Err" asp-validation-for="StartDate" ></span> *@
+                    <span id="date1Err" asp-validation-for="StartDate" class="text-danger"></span> 
                 </div>
 
                 <div class="col-md-6 form-floating">
-                    <input asp-for="@Model.EndDate" class="form-control" type="date" placeholder="End Date" />
+                    <input id="endDate" asp-for="@Model.EndDate" class="form-control" type="date" placeholder="End Date" ng-model="endDate" />
                     <label asp-for="@Model.EndDate"></label>
-                    <span asp-validation-for="@Model.EndDate" class="text-danger"></span>
+                   <span id="date2Err" asp-validation-for="@Model.EndDate" class="text-danger"></span> 
+                    @* <span id="date2Err" asp-validation-for="@Model.EndDate"></span> *@
                 </div>
 
                 <div class="col-md-6 form-floating">
-                    <input asp-for="@Model.AdultsCount" class="form-control" placeholder="Adults Count" />
+                    <input id="adultsCount" asp-for="@Model.AdultsCount" class="form-control" placeholder="Adults Count" />
                     <label asp-for="@Model.AdultsCount"></label>
-                    <span asp-validation-for="@Model.AdultsCount" class="text-danger"></span>
+                    <span id="erradultscount" asp-validation-for="@Model.AdultsCount" class="text-danger" ></span>
                 </div>
 
                 <div class="col-md-6 form-floating">
@@ -54,38 +58,42 @@
 
                 <div class="col-md-6 form-floating">
                     <input asp-for="@Model.GuestFirstName" class="form-control" placeholder="First Name" />
-                    <label asp-for="@Model.GuestFirstName"></label>
+                    <label asp-for="@Model.GuestFirstName">FirstName</label>
                     <span asp-validation-for="@Model.GuestFirstName" class="text-danger"></span>
                 </div>
 
                 <div class="col-md-6 form-floating">
                     <input asp-for="@Model.LastNameG" class="form-control" placeholder="Last Name" />
-                    <label asp-for="@Model.LastNameG"></label>
+                    <label asp-for="@Model.LastNameG">Last Name</label>
                     <span asp-validation-for="@Model.LastNameG" class="text-danger"></span>
                 </div>
 
                 <div class="col-md-6 form-floating">
                     <input asp-for="@Model.DateofBirth" class="form-control" type="date" placeholder="Date of Birth" />
-                    <label asp-for="@Model.DateofBirth"></label>
+                    <label asp-for="@Model.DateofBirth">Date of Birth</label>
                     <span asp-validation-for="@Model.DateofBirth" class="text-danger"></span>
                 </div>
 
                 <div class="col-md-6 form-floating">
                     <input asp-for="@Model.GuestAddress" class="form-control" placeholder="Address" />
-                    <label asp-for="@Model.GuestAddress"></label>
+                    <label asp-for="@Model.GuestAddress">Address</label>
                     <span asp-validation-for="@Model.GuestAddress" class="text-danger"></span>
                 </div>
 
                 <div class="col-md-6 form-floating">
                     <input asp-for="@Model.GuestPhoneNumber" class="form-control" placeholder="Phone Number" />
-                    <label asp-for="@Model.GuestPhoneNumber"></label>
+                    <label asp-for="@Model.GuestPhoneNumber">Phone Number</label>
                     <span asp-validation-for="@Model.GuestPhoneNumber" class="text-danger"></span>
                 </div>
 
                 <div class="col-md-6 form-floating">
                     <input asp-for="@Model.GuestEmail" class="form-control" placeholder="Email" />
-                    <label asp-for="@Model.GuestEmail"></label>
+                    <label asp-for="@Model.GuestEmail">Email</label>
                     <span asp-validation-for="@Model.GuestEmail" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <h5>Total Nights: {{ nights }}</h5>
+                    <h4>Total Price: {{ totalPrice() | currency:"€" }}</h4>
                 </div>
 
             </div>
@@ -103,16 +111,126 @@
         </form>
     </div>
 </div>
+
+
+<script>
+
+    var app = angular.module("reservationApp", []);
+
+    app.controller("reservationCtrl", function ($scope) {
+
+        $scope.pricePerNight = 0;
+
+        $scope.totalPrice = function () {
+
+            if (!$scope.startDate || !$scope.endDate)
+                return 0;
+
+            let start = new Date($scope.startDate);
+            let end = new Date($scope.endDate);
+
+            let diffTime = end - start;
+
+            let nights = diffTime / (1000 * 60 * 60 * 24);
+
+            if (nights < 0) nights = 0;
+
+            $scope.nights = nights;
+
+            return nights * $scope.pricePerNight;
+        };
+
+    });
+
+</script>
 @* 
 
+@section Scripts {
 
-          @*Test git3n  @if (ViewBag.SuccessMessage != null)
-            {
-                <div class="alert alert-success">
-                    @ViewBag.SuccessMessage
-                </div>
-            } *@
-       @*  </form>
-    </div>
-</div>
- *@
+    <script>
+
+            document.addEventListener("DOMContentLoaded", function () {
+
+        const form = document.querySelector("form[asp-action='Add']");
+
+        form.addEventListener("submit", function (e) {
+            if (!validateReservationForm()) {
+                e.preventDefault(); // stop form submission if invalid
+            }
+        });
+
+
+     function validateReservationForm() {
+    let isValid = true;
+
+    // Clear previous error messages
+        // Clear previous error messages
+             document.getElementById("date1Err").innerText = "";
+             document.getElementById("date2Err").innerText = "";
+             document.getElementById("erradultscount").innerText = "";
+
+
+
+                 // Get values from inputs
+            const adultsCount = document.getElementById("adultsCount").value;
+
+            // Validate adults count
+            const adultsNum = Number(adultsCount);
+            if (!adultsCount || !Number.isInteger(adultsNum) || adultsNum <= 0) {
+                document.getElementById("erradultscount").innerText = "Adults count must be a positive integer!";
+                isValid = false;
+            }
+
+
+           
+
+
+    // const startDate = document.getElementById("startDate").value;
+    // const endDate = document.getElementById("endDate").value;
+    // const adultsCount = document.getElementById("adultsCount").value;
+
+    // // Check required fields
+    // if (!startDate) {
+    //     document.getElementById("date1Err").innerText = "Start Date is required.";
+    //     isValid = false;
+    // }
+    // if (!endDate) {
+    //     document.getElementById("date2Err").innerText = "End Date is required.";
+    //     isValid = false;
+    // }
+
+    //         function parseDate(dateStr) {
+    //         const parts = dateStr.split(".");
+    //         // parts[0] = dd, parts[1] = MM, parts[2] = yyyy
+    //         return new Date(parts[2], parts[1] - 1, parts[0]); // Month is 0-based
+    //     }
+
+    //                 if(startDate && endDate && parseDate(endDate) < parseDate(startDate)){
+    //         document.getElementById("date1Err").innerText = "Start Date must be before ednDate!.";
+    //         isValid = false;
+    // }
+
+         // Validate adults count
+            // const adultsNum = Number(adultsCount);
+            // if (!adultsCount || !Number.isInteger(adultsNum) || adultsNum <= 0) {
+            //     document.getElementById("erradultscount").innerText = "Adults count must be a positive integer!";
+            //     isValid = false;
+            // }
+
+
+        //   if ( (!Number.isInteger(Number(adultsCount)) || Number(adultsCount) <= 0)) {
+
+        //           document.getElementById("erradultscount").innerHTML="Err Count!";
+        //     // alert("Adults count must be a positive number.");
+        //     isValid = false;
+        // }
+
+        return isValid;
+            // your validation code here
+        }
+        
+    </script> *@
+   @*  @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+} *@

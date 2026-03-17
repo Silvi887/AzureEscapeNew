@@ -74,6 +74,12 @@ namespace AzureAdd.DataModels
         [ForeignKey(nameof(VillaId))]
         public virtual VillaPenthhouse VillaPenthhouse { get; set; } = null!;
 
+
+
+        [Required]
+        [Column(TypeName = "decimal(10,2)")]
+        public decimal TotalPricePrice { get; set; }
+
         public bool IsDeleted { get; set; } = false;
 
 

@@ -189,6 +189,7 @@ namespace AzureAdd.Data
                     Parking="Yes",
                     LocationId=2,
                     IDManager= "7699db7d-964f-4782-8209-d76562e0fece",
+                    PricePerNight=100,
                     IsDeleted =false
                 },
                  new VillaPenthhouse
@@ -208,6 +209,7 @@ namespace AzureAdd.Data
                      Parking = "Yes",
                      LocationId = 2,
                      IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                     PricePerNight = 180,
                      IsDeleted = false
                  },
                   new VillaPenthhouse
@@ -227,6 +229,7 @@ namespace AzureAdd.Data
                       Parking = "Yes",
                       LocationId = 2,
                       IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                      PricePerNight = 340,
                       IsDeleted = false
                   }
 

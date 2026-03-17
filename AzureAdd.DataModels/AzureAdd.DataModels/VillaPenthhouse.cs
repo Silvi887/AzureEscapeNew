@@ -80,6 +80,11 @@ namespace AzureAdd.DataModels
 
         public bool IsDeleted { get; set; } = false;
 
+
+        [Required]
+        [Column(TypeName = "decimal(10,2)")]
+        public decimal PricePerNight { get; set; }
+
         public virtual ICollection<Booking> AllBookings { get; set; } = new HashSet<Booking>();
 
         public virtual ICollection<UserVilla> UserVillas { get; set; } = new HashSet<UserVilla>();

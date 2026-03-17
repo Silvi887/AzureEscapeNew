@@ -218,6 +218,7 @@ namespace AzureServises.Core
                     Bathrooms = h.Bathrooms,
                     Area = h.Area,
                     Parking = h.Parking,
+                    Pricepernight=h.PricePerNight,
                     Raiting= h.Feedbacks.Sum(v => v.Rating)
                 }).ToListAsync();
 

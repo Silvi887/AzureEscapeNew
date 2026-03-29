@@ -28,3 +28,25 @@
     left: 0;
     
 }
+.swal-split-form .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.swal-split-form label {
+    font-size: 13px;
+    margin-bottom: 3px;
+}
+
+.swal-split-form input {
+    height: 36px;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.total-box {
+    margin-top: 10px;
+    font-weight: bold;
+    text-align: center;
+}

@@ -35,7 +35,7 @@ namespace AzureEscape.Controllers
                 {
                     VillaId = ArrVilaName[0],
                     VilaName = ArrVilaName[1],
-                    pricepernight=decimal.Parse(ArrVilaName[2]),
+                    //pricepernight=decimal.Parse(ArrVilaName[2]),
                     // 
                     StartDate = DateTime.UtcNow.ToString("yyyy-MM-dd"),
                     EndDate = DateTime.UtcNow.ToString("yyyy-MM-dd"),
@@ -70,6 +70,8 @@ namespace AzureEscape.Controllers
                 {
                     // return this.View(inAddReservation);
 
+
+                    //   return Ok();
                     ModelState.AddModelError(string.Empty, "Fatal error accure while adding a reservation!");
                     return View("Views/Vila/AddReservation.cshtml", inAddReservation);
                 }
@@ -82,11 +84,14 @@ namespace AzureEscape.Controllers
                     ModelState.AddModelError(string.Empty, "Fatal error accure while adding a reservation!");
                     return this.RedirectToAction(nameof(AddBooking),"Reserve");
                 }
+                return Ok();
 
+                // inAddReservation.roomdrp = (IEnumerable<RoomViewModel>)await this.vacationService.RoomViewDataAsync();
+                //  ViewBag.SuccessMessage = "Successful reservation!";
+                //  return View("Views/Vila/AddReservation.cshtml", inAddReservation);
 
-               // inAddReservation.roomdrp = (IEnumerable<RoomViewModel>)await this.vacationService.RoomViewDataAsync();
-                ViewBag.SuccessMessage = "Successful reservation!";
-                return View("Views/Vila/AddReservation.cshtml", inAddReservation);
+                //return RedirectToAction("AllReservations", "Reserve");
+              //  return View("Views/Vila/Index.cshtml");
 
             }
 

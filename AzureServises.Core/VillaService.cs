@@ -64,7 +64,8 @@ namespace AzureServises.Core
                         DateOfBirth = DateTime.ParseExact(reservationmodel.DateofBirth, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None),
                         Address = reservationmodel.GuestAddress,
                         Email = reservationmodel.GuestEmail,
-                        NumberOfPhone = reservationmodel.GuestPhoneNumber
+                        NumberOfPhone = reservationmodel.GuestPhoneNumber,
+                        TotalPricePrice=reservationmodel.TotalPrice
 
                     };
 

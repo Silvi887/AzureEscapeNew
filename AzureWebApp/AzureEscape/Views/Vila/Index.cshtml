@@ -162,86 +162,83 @@
 			const villaName = this.dataset.name;
 			const price = this.dataset.price;
 
-			Swal.fire({
+			Swal.fire({						/* sweet alert  */
 				title: "Add Reservation",
 				width: 800,
-				html: `
-							<form id="popupForm" method="post" action="/Reserve/Add"class="swal-split-form">
+				html: `  <form id="popupForm" method="post"  action="/Reserve/Add" class="swal-form">
 
-		<input type="hidden" name="VillaId" value="${villaId}">
-		<input type="hidden" name="pricepernight" id="price" value="${price}">
+						  <input type="hidden" name="VillaId" value="${villaId}">
+						  <input type="hidden" name="pricepernight" id="price" value="${price}">
+						  <input type="hidden" name="TotalPrice" id="totalPrice">
+						  <!-- Guest Information -->
+						  <fieldset class="form-section">
+							<legend>Guest Information</legend>
 
-		<div class="split-container">
+							<div class="form-group">
+							  <label for="firstName">First Name</label>
+							  <input id="firstName" type="text" name="GuestFirstName">
+							</div>
 
-			<!-- LEFT COLUMN -->
-			<div class="column">
+							<div class="form-group">
+							  <label for="lastName">Last Name</label>
+							  <input id="lastName" type="text" name="LastNameG">
+							</div>
 
-				<div class="form-group">
-					<label>Last Name</label>
-					<input type="text" name="LastNameG">
-				</div>
+							<div class="form-group">
+							  <label for="email">Email</label>
+							  <input id="email" type="email" name="GuestEmail">
+							</div>
 
-				<div class="form-group">
-					<label>Children Count</label>
-					<input type="number" name="ChildrenCount">
-				</div>
+							<div class="form-group">
+							  <label for="phone">Phone Number</label>
+							  <input id="phone" type="text" name="GuestPhoneNumber">
+							</div>
 
-				<div class="form-group">
-					<label>Address</label>
-					<input type="text" name="Address">
-				</div>
+							<div class="form-group">
+							  <label for="datebirth">Date of Birth</label>
+							  <input id="datebirth" type="date" name="DateofBirth">
+							</div>
 
-				<div class="form-group">
-					<label>Email</label>
-					<input type="email" name="GuestEmail">
-				</div>
+							<div class="form-group">
+							  <label for="address">Address</label>
+							  <input id="address" type="text" name="GuestAddress">
+							</div>
+						  </fieldset>
 
-			</div>
+						  <!-- Reservation Details -->
+						  <fieldset class="form-section">
+							<legend>Reservation Details</legend>
 
-			<!-- RIGHT COLUMN -->
-			<div class="column">
+							<div class="form-group">
+							  <label for="start">Start Date</label>
+							  <input id="start" type="date" name="StartDate">
+							   <span id="date1Err" asp-validation-for="StartDate" class="text-danger"></span>
+							</div>
 
-				<div class="form-group">
-					<label>Start Date</label>
-					<input type="date" id="start" name="StartDate">
-				</div>
+							<div class="form-group">
+							  <label for="end">End Date</label>
+							  <input id="end" type="date" name="EndDate">
+							</div>
 
-				<div class="form-group">
-					<label>End Date</label>
-					<input type="date" id="end" name="EndDate">
-				</div>
+							<div class="form-group">
+							  <label for="adults">Adults Count</label>
+							  <input id="adults" type="number" name="AdultsCount">
+							</div>
 
-				<div class="form-group">
-					<label>Adults Count</label>
-					<input type="number" name="AdultsCount">
-				</div>
+							<div class="form-group">
+							  <label for="children">Children Count</label>
+							  <input id="children" type="number" name="ChildrenCount">
+							</div>
+						  </fieldset>
 
-				<div class="form-group">
-					<label>First Name</label>
-					<input type="text" name="GuestFirstName">
-				</div>
+						  <!-- Summary -->
+						  <div class="form-summary">
+							<p class="villa-title"><strong>${villaName}</strong></p>
+							<div id="totalBox" class="total-box"></div>
+						  </div>
 
-				<div class="form-group">
-					<label>Date of Birth</label>
-					<input type="date" name="DateOfBirth">
-				</div>
-
-				<div class="form-group">
-					<label>Phone Number</label>
-					<input type="text" name="PhoneNumber">
-				</div>
-
-			</div>
-
-		</div>
-
-		<p class="villa-title"><strong>${villaName}</strong></p>
-
-		<div id="totalBox" class="total-box"></div>
-
-	</form>
-
-				`,
+						</form>`,
+	
 				showCancelButton: true,
 				confirmButtonText: "Book",
 				didOpen: () => {
@@ -249,7 +246,7 @@
 					const start = document.getElementById("start");
 					const end = document.getElementById("end");
 					const totalBox = document.getElementById("totalBox");
-
+					const totalprice= document.getElementById("totalPrice");
 					function calculate() {
 						if (!start.value || !end.value) return;
 
@@ -261,6 +258,7 @@
 						if (nights > 0) {
 							let total = nights * price;
 							totalBox.innerHTML = `Nights: ${nights} | Total: €${total}`;
+							totalprice.value=total;
 						} else {
 							totalBox.innerHTML = "";
 						}
@@ -269,14 +267,92 @@
 					start.addEventListener("change", calculate);
 					end.addEventListener("change", calculate);
 				},
-				preConfirm: () => {
-					document.getElementById("popupForm").submit();
-				}
+					preConfirm: async () => { /*validations for input fields */
+
+		let errors = [];
+
+		const start = document.getElementById("start").value;
+		const end = document.getElementById("end").value;
+		const adults = document.getElementById("adults").value;
+		const firstName = document.getElementById("firstName").value;
+		const txtlastName=document.getElementById("lastName").value;
+		const txtphone=document.getElementById("phone").value;
+		const txtdateofbirth=document.getElementById("datebirth").value;
+
+
+		if (!firstName) errors.push("First Name is required");
+		if (!start) errors.push("Start Date is required");
+		if (!end) errors.push("End Date is required");
+		if(!txtlastName) errors.push("LastName is Required!");
+		if(!txtphone) errors.push("Phone Number is required!");
+		if(!txtdateofbirth) errors.push("You have to fill dateofbirth!");
+
+		if (start && end) {
+			let s = new Date(start);
+			let e = new Date(end);
+			if (e <= s) errors.push("End Date must be after Start Date");
+		}
+
+		if (!adults || adults <= 0) {
+			errors.push("Adults must be greater than 0");
+		}
+
+		if (errors.length > 0) {
+			Swal.showValidationMessage(errors.join("<br>"));
+			return false;
+		}
+		 // ✅ SEND DATA WITH AJAX
+	    const form = document.getElementById("popupForm");
+		const formData = new FormData(form);
+
+	    try {
+		const response = await fetch('/Reserve/Add', {
+			method: 'POST',
+			body: formData
+		});
+
+		// if (!response.ok) {
+		// 	Swal.showValidationMessage("Error saving reservation");
+		// 	return false;
+		// }
+		if (!response.ok) {
+			throw new Error();
+		}
+
+		return true;
+
+		} catch (error) {
+			Swal.showValidationMessage("Server error");
+			return false;
+		}
+	
+		}
+		}).then((result) => {
+		if (result.isConfirmed) {
+			Swal.fire({
+				icon: 'success',
+				title: 'Successful reservation!',
+				confirmButtonColor: '#28a745'
+			}).then(() => {
+				location.reload();
 			});
+		}
+	});
+	
+
+		
 
 		});
 
 	});
 
 </script>
+@* @section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+} *@
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}
 

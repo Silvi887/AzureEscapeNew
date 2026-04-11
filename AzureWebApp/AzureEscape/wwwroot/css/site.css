@@ -252,3 +252,44 @@ body {
     gap: 10px;
     flex-wrap: wrap;
 }
+/*  table style 05042026*/
+.form-group {
+    display: grid;
+    grid-template-columns: 160px auto; /* label | input */
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+.form-group label {
+    text-align: right;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.form-group input {
+    width: 220px; /* fixed smaller width */
+    padding: 4px 6px;
+    font-size: 14px;
+   
+}
+
+.form-section {
+    border: 1px solid #ddd;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+}
+/* Make date inputs same size */
+.form-group input[type="date"] {
+    width: 180px;
+}
+
+
+    .form-section legend {
+        padding: 0 6px;
+        font-weight: bold;
+    }
+
+.form-summary {
+    margin-top: 10px;
+}

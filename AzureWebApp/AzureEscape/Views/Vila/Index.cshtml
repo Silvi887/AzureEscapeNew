@@ -84,7 +84,9 @@
 									<button class="btn btn-primary reserveBtn"
 											data-id="@villa.IdVilla"
 											data-name="@villa.NameVilla"
-											data-price="@villa.Pricepernight">
+											data-price="@villa.Pricepernight"
+											data-bcountadults="@villa.CountAdults"
+											data-bcountchildren="@villa.CountChildren">
 										<i class="fa fa-calendar-check-o"></i> Reserve
 									</button>
 
@@ -162,12 +164,16 @@
 			const villaName = this.dataset.name;
 			const price = this.dataset.price;
 
+			var adultscount=parseInt(this.dataset.bcountadults);
+			var childrencount=parseInt(this.dataset.bcountchildren);
+
+
 			Swal.fire({						/* sweet alert  */
 				title: "Add Reservation",
 				width: 800,
-				html: `  <form id="popupForm" method="post"  action="/Reserve/Add" class="swal-form">
+				html: `  <form id="popupForm" class="swal-form">
 
-						  <input type="hidden" name="VillaId" value="${villaId}">
+						  <input type="hidden" name="VillaId" id="idvilla" value="${villaId}">
 						  <input type="hidden" name="pricepernight" id="price" value="${price}">
 						  <input type="hidden" name="TotalPrice" id="totalPrice">
 						  <!-- Guest Information -->
@@ -211,13 +217,13 @@
 
 							<div class="form-group">
 							  <label for="start">Start Date</label>
-							  <input id="start" type="date" name="StartDate">
+							  <input id="start" type="text" name="StartDate">
 							   <span id="date1Err" asp-validation-for="StartDate" class="text-danger"></span>
 							</div>
 
 							<div class="form-group">
 							  <label for="end">End Date</label>
-							  <input id="end" type="date" name="EndDate">
+							  <input id="end" type="text" name="EndDate">
 							</div>
 
 							<div class="form-group">
@@ -241,7 +247,36 @@
 	
 				showCancelButton: true,
 				confirmButtonText: "Book",
-				didOpen: () => {
+				didOpen: async () => {
+
+					 const villaId = document.getElementById("idvilla").value;
+
+					const response = await fetch(`/ReservationApi/GetAllDates?idvilla=${villaId}`);
+					const reservedRanges = await response.json();
+
+
+					  const disabledDates = reservedRanges.map(r => ({
+					  from: flatpickr.parseDate(r.startDate, "Y-m-d"),
+					  to: flatpickr.parseDate(r.endDate, "Y-m-d")
+					}));
+
+					const startEl = document.querySelector("#start");
+					const endEl = document.querySelector("#end");
+
+					if (startEl._flatpickr) startEl._flatpickr.destroy();
+					if (endEl._flatpickr) endEl._flatpickr.destroy();
+
+
+					  window.startPicker = flatpickr("#start", {
+						minDate: "today",
+						disable: disabledDates
+					});
+
+					 window.endPicker = flatpickr("#end", {
+						minDate: "today",
+						disable: disabledDates
+					});
+					//availabledates
 
 					const start = document.getElementById("start");
 					const end = document.getElementById("end");
@@ -253,6 +288,9 @@
 						let s = new Date(start.value);
 						let e = new Date(end.value);
 
+
+						console.log(s);
+						console.log(e);
 						let nights = (e - s) / (1000 * 60 * 60 * 24);
 
 						if (nights > 0) {
@@ -273,7 +311,8 @@
 
 		const start = document.getElementById("start").value;
 		const end = document.getElementById("end").value;
-		const adults = document.getElementById("adults").value;
+		const adults = parseInt(document.getElementById("adults").value);
+		const children =parseInt(document.getElementById("children").value);
 		const firstName = document.getElementById("firstName").value;
 		const txtlastName=document.getElementById("lastName").value;
 		const txtphone=document.getElementById("phone").value;
@@ -296,6 +335,15 @@
 		if (!adults || adults <= 0) {
 			errors.push("Adults must be greater than 0");
 		}
+		else if(adults > adultscount)
+		{
+		errors.push("Adults must be equal or less than the count in villa!");
+		}
+
+		if(children > childrencount)
+		{
+		errors.push("Children must be equal or less than the count in villa!");
+		}
 
 		if (errors.length > 0) {
 			Swal.showValidationMessage(errors.join("<br>"));
@@ -311,10 +359,7 @@
 			body: formData
 		});
 
-		// if (!response.ok) {
-		// 	Swal.showValidationMessage("Error saving reservation");
-		// 	return false;
-		// }
+	
 		if (!response.ok) {
 			throw new Error();
 		}

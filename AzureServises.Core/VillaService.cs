@@ -687,5 +687,67 @@ namespace AzureServises.Core
             return resultReservation;
 
         }
+
+        public async Task<EditVilaViewModel> GetVilaTemplate(int? id, string Userid)
+        {
+
+            IdentityUser? currentUser = await userManager.FindByIdAsync(Userid);
+
+            EditVilaViewModel currentreservation1 = null;
+
+            if (currentUser != null)
+            {
+                VillaPenthhouse? villa1 = await Dbcontext.VillasPenthhouses
+                    .Include(v => v.Location)
+                    .Include(v => v.TypePlace)
+                    .FirstOrDefaultAsync(v => v.IdVilla == id);
+
+
+                currentreservation1 = new EditVilaViewModel()
+                {
+
+                    IdVilla = villa1.IdVilla,
+
+
+
+                    NameVilla = villa1.NameVilla,
+
+                    NamePlace = villa1.TypePlace.NamePlace,
+
+                    VillaInfo = villa1.VillaInfo,
+
+                    VillaAddress = villa1.VillaAddress,
+
+                    ImageUrl = villa1.ImageUrl,
+
+                    CountRooms = villa1.CountRooms,
+
+
+                    CountAdults = villa1.CountAdults,
+
+                    CountChildren = villa1.CountChildren,
+
+                    Bedrooms = villa1.Bedrooms,
+
+                    Bathrooms = villa1.Bathrooms,
+
+                    Area = villa1.Area,
+
+                    Parking = villa1.Parking,
+
+
+                    LocationName = villa1.Location.NameLocation,
+
+                    IdTown = villa1.Location.IdLocation,
+                    IdTypePlace = villa1.TypePlace.IdTypePlace
+
+
+
+                };
+            }
+
+            return currentreservation1;
+
         }
+    }
 }

@@ -36,6 +36,7 @@ namespace AzureEscape
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IVilla,VillaService>();
             builder.Services.AddScoped<ITownService, TownService>();
+            builder.Services.AddScoped<IAvailableDates, AvailableDates>();
 
 
             var app = builder.Build();

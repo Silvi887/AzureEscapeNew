@@ -43,9 +43,9 @@
                             </form>
                             @*  @if (User?.Identity?.IsAuthenticated == true && User?.Identity?.Name == "admin@horizons.com") *@
                             @*  @if (this.User.Identity?.IsAuthenticated ?? false)
-                        { *@
+                        { asp-action="EditVilla" asp-route-id="@Model.IdVila" asp-controller="Vila" *@  
 
-                            <a asp-action="EditVilla" asp-route-id="@Model.IdVila" asp-controller="Vila" class="btn btn-warning ml-1">✏️ Edit</a>
+                            <a data-id="@Model.IdVila"  class="btn btn-warning editVillaBtn ml-1">✏️ Edit</a>
                             <a asp-action="LeaveFeedback" asp-route-id="@Model.IdVila" asp-controller="FeedBack" class="btn btn-warning ml-1">✏️ Feddback</a>
                             <a asp-action="Index" class="btn btn-secondary ml-1">🔙 Back to List</a>
 
@@ -56,4 +56,75 @@
         </div>
     </div>
 </div>
+<script>
+    var buttonEdit=document.querySelector(".editVillaBtn");
+        buttonEdit.addEventListener("click", async function () {
+
+            const villaId = this.dataset.id;
+
+            // ✅ Load partial view
+            const response = await fetch(`/VilaPartial/EditVillaPartial?id=${villaId}`);
+
+            if (!response.ok) {
+                Swal.fire("Error", "Cannot load form", "error");
+                return;
+            }
+
+            const html = await response.text();
+
+            console.log(html);
+            Swal.fire({
+                title: "Edit Villa",
+                html: html,
+                width: 700,
+                showCancelButton: true,
+                confirmButtonText: "Save",
+
+                didOpen:async () => {
+                    // Optional: re-init validation if needed
+                },
+
+                preConfirm: async () => {
+
+                    const form = document.getElementById("editVillaForm");
+                    const formData = new FormData(form);
+
+                   
+
+                    try {
+                          const vId = this.dataset.id;
+                        const res = await fetch('/VilaPartial/EditVilla', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        console.log("Status:", res.status);
+
+                            if (!res.ok) {
+                const errorText = await res.text();
+                Swal.showValidationMessage(errorText);
+                return false;
+                }
+
+                        return true;
+
+                    } catch {
+                        Swal.showValidationMessage("Error saving changes");
+                        return false;
+                    }
+                }
+
+            }).then(result => {
+                if (result.isConfirmed) {
+                    Swal.fire("Success", "Villa updated!", "success")
+                        .then(() => location.reload());
+                }
+            });
+
+        });
+
+    
+</script>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
 

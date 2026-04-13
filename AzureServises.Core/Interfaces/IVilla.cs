@@ -40,5 +40,7 @@ namespace AzureServises.Core.Interfaces
 
         Task<bool> EditVilla(string UserId, EditVilaViewModel editvilla);
 
+        Task<EditVilaViewModel> GetVilaTemplate(int? id, string Userid);
+
     }
 }

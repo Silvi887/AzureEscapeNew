@@ -56,7 +56,8 @@
                                         <i class="fas fa-heart"></i> Add to Favorites</button>  *@
 
                                 </form>
-                                <a asp-controller="Reserve" asp-action="Edit" asp-route-id="@res.IdBooking" class="btn btn-primary">
+                               @*  asp-controller="Reserve" asp-action="Edit" asp-route-id="@res.IdBooking" *@
+                                        <a data-id="@res.IdBooking" class="btn btn-primary">
                                         <i class="fa fa-edit  me-1"></i> Edit
                                 </a>
                             }
@@ -77,7 +78,77 @@
         }
         </tbody>
     </table></div>
-
-
-
 </div>
+<script>
+    document.querySelectorAll(".btn-primary").forEach(btn=>{
+
+    
+        btn.addEventListener("click", async function () {
+
+            const villaId = this.dataset.id;
+
+            // ✅ Load partial view
+             const response = await fetch(`/EditBookingPartial/Edit?id=${villaId}`);
+
+            if (!response.ok) {
+                Swal.fire("Error", "Cannot load form", "error");
+                return;
+            }
+
+            const html = await response.text();
+
+            console.log(html);
+            Swal.fire({
+                title: "Edit Villa",
+                html: html,
+                width: 700,
+                showCancelButton: true,
+                confirmButtonText: "Save",
+
+                didOpen:async () => {
+                    // Optional: re-init validation if needed
+                },
+
+                preConfirm: async () => {
+
+                    const form = document.getElementById("FormEditBooking");
+                    const formData = new FormData(form);
+
+
+
+                    try {
+                          const vId = this.dataset.id;
+                         const res = await fetch('/EditBookingPartial/Edit', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        console.log("Status:", res.status);
+
+                            if (!res.ok) {
+                const errorText = await res.text();
+                Swal.showValidationMessage(errorText);
+                return false;
+                }
+
+                        return true;
+
+                    } catch {
+                        Swal.showValidationMessage("Error saving changes");
+                        return false;
+                    }
+                }
+
+            }).then(result => {
+                if (result.isConfirmed) {
+                    Swal.fire("Success", "Reservation updated!", "success")
+                        .then(() => location.reload());
+                }
+            });
+
+        })
+        });
+
+</script>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

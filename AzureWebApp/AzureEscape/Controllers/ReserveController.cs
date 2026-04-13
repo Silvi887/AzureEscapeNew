@@ -91,7 +91,8 @@ namespace AzureEscape.Controllers
                 //  return View("Views/Vila/AddReservation.cshtml", inAddReservation);
 
                 //return RedirectToAction("AllReservations", "Reserve");
-              //  return View("Views/Vila/Index.cshtml");
+              
+                //  return View("Views/Vila/Index.cshtml");
 
             }
 

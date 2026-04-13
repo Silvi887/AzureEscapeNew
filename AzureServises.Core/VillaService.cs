@@ -197,14 +197,21 @@ namespace AzureServises.Core
             return reservations;
         }
 
-        public async Task<IEnumerable<VilaIndexViewModel>> GetAllVillasAsync(string? UserId)
+        //public async Task<IEnumerable<VilaIndexViewModel>> GetAllVillasAsync(string? UserId, int page, int pageSize)
+        public async Task<PagedResult<VilaIndexViewModel>> GetAllVillasAsync(string? UserId, int page, int pageSize)
         {
+            var query = Dbcontext.VillasPenthhouses.AsQueryable();
 
-            var Allhotels = await Dbcontext.VillasPenthhouses
-                .Include(v=> v.Location)
+            int totalItems = await query.CountAsync();
+
+
+            var Allhotels = //await Dbcontext.VillasPenthhouses
+                await query.Include(v => v.Location)
                 .Include(v => v.TypePlace)
-                .Include(v=> v.Feedbacks)
+                .Include(v => v.Feedbacks)
                 .Where(v => v.IsDeleted == false)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)              
                 .Select(h => new VilaIndexViewModel()
                 {
                     IdVilla = h.IdVilla,
@@ -223,7 +230,13 @@ namespace AzureServises.Core
                     Raiting= h.Feedbacks.Sum(v => v.Rating)
                 }).ToListAsync();
 
-            return Allhotels;
+            return new PagedResult<VilaIndexViewModel>
+            {
+                Items = Allhotels,
+                CurrentPage = page,
+                TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize)
+            };
+            // return Allhotels;
         }
 
         public async Task<IEnumerable<FavoriteVilaIndexViewModel>> GetFavoritePlaces(string? Userid)

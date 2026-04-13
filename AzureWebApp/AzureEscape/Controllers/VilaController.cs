@@ -24,14 +24,19 @@ namespace AzureEscape.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page=1)
         {
 
             try
             { 
 
             string? UserId = this.GetUserId();
-            IEnumerable<VilaIndexViewModel> Allvillas = await this.vilaService.GetAllVillasAsync(UserId);
+                //Pagination
+            int pageSize = 3; // how many villas per page
+
+            var  Allvillas = await this.vilaService.GetAllVillasAsync(UserId, page, pageSize);
+
+           // IEnumerable<VilaIndexViewModel> Allvillas = await this.vilaService.GetAllVillasAsync(UserId);
 
             var user = await UserManager.FindByIdAsync(UserId);
 
@@ -39,7 +44,7 @@ namespace AzureEscape.Controllers
             ViewBag.EmailConfirmed = user?.EmailConfirmed ?? false;
             return View("Views/Vila/Index.cshtml", Allvillas);
             }
-            catch (Exception ex) {
+            catch (Exception ex) { 
                 return RedirectToAction("Error", "Home");
             }
             }

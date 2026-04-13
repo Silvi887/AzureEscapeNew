@@ -6,7 +6,7 @@
 
 
 @using AzureApp.ViewModels;
-@model List<VilaIndexViewModel>
+@model PagedResult<VilaIndexViewModel>
 
 <div class="backimage">
 	<!-- Search section-->
@@ -41,7 +41,7 @@
 
 		<div class="row g-4">
 			@*  row4 *@
-			@foreach (var villa in Model)
+			@foreach (var villa in Model.Items)
 			{
 				<div class="col-lg-4 col-md-6">
 					<div class="villa-card shadow-sm">
@@ -108,7 +108,7 @@
 
 					</div>
 				</div>
-
+				
 				
 				@* <div class="classItem">
 					<h4> @villa.NameVilla </h4>
@@ -152,8 +152,19 @@
 
 
 		</div>
+	
+	</div>
+	<div>
+		@for (int i = 1; i <= Model.TotalPages; i++)
+		{
+			<a asp-action="Index" asp-route-page="@i"
+			   class="btn @(i == Model.CurrentPage ? "btn-primary" : "btn-secondary")">
+				@i
+			</a>
+		}
 	</div>
 </div>
+
 <script>
 
 	document.querySelectorAll(".reserveBtn").forEach(btn => {

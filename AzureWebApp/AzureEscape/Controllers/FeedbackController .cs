@@ -93,7 +93,7 @@ namespace AzureEscape.Controllers
                 if (!isvalid)
                 {
 
-                    IEnumerable<VilaIndexViewModel> Allvillas = await this.vilaService.GetAllVillasAsync(Userid);
+                 //   IEnumerable<VilaIndexViewModel> Allvillas = await this.vilaService.GetAllVillasAsync(Userid);
                     return RedirectToAction("Error", "Home");
                     //  return View("Views/Vila/Index.cshtml");
 

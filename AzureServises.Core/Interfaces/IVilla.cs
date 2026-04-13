@@ -10,7 +10,7 @@ namespace AzureServises.Core.Interfaces
     public interface IVilla
     {
 
-        Task<IEnumerable<VilaIndexViewModel>> GetAllVillasAsync(string? UserId);
+        Task<PagedResult<VilaIndexViewModel>> GetAllVillasAsync(string? UserId, int page, int pageSize);
 
         Task<IEnumerable<VilaIndexViewModel>> GetAllVillasSearch(string? UserId, string StartDate, string EndDate);
         Task<bool> AddVilaModel(string Userid, AddVillaIndexViewModel vilamodel);

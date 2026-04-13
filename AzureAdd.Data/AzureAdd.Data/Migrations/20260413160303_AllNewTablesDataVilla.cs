@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AzureAdd.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AzureEscapeMigration1 : Migration
+    public partial class AllNewTablesDataVilla : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -217,7 +217,8 @@ namespace AzureAdd.Data.Migrations
                     Parking = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     LocationId = table.Column<int>(type: "int", nullable: false),
                     IDManager = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    PricePerNight = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -260,6 +261,7 @@ namespace AzureAdd.Data.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NumberOfPhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     VillaId = table.Column<int>(type: "int", nullable: false),
+                    TotalPricePrice = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -341,7 +343,7 @@ namespace AzureAdd.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "7699db7d-964f-4782-8209-d76562e0fece", 0, "98776ada-0b2c-40ac-8d2b-c18b911c389a", "admin@horizons.com", true, false, null, "ADMIN@HORIZONS.COM", "ADMIN@HORIZONS.COM", "AQAAAAIAAYagAAAAEKNZ0JwEsm4tibh9x2ToUx4x6AOR1HYox94YM6yHW1DosUKtS7mDWxMMaOKyj+UiSg==", null, false, "ce4f3b9d-6618-46be-81b7-0005db1418f0", false, "admin@horizons.com" });
+                values: new object[] { "7699db7d-964f-4782-8209-d76562e0fece", 0, "0e6f3e3c-d052-4a3e-9c68-c295fdc20e89", "admin@horizons.com", true, false, null, "ADMIN@HORIZONS.COM", "ADMIN@HORIZONS.COM", "AQAAAAIAAYagAAAAEPiv+09a1ZOteP6ME55H2EXwJD/RPqoXWWdjfRs+iyFIyCzn70rwq6FnKMy8ntmPCA==", null, false, "4d8e3cac-096a-4b42-82eb-3662256f72d0", false, "admin@horizons.com" });
 
             migrationBuilder.InsertData(
                 table: "Locations",
@@ -350,7 +352,14 @@ namespace AzureAdd.Data.Migrations
                 {
                     { 1, "Sunny Beach" },
                     { 2, "Golden Sands" },
-                    { 3, "Sozopol" }
+                    { 3, "Sozopol" },
+                    { 4, "Nessebar" },
+                    { 5, "Albena" },
+                    { 6, "Borovets" },
+                    { 7, "Bansko" },
+                    { 8, "Pamporovo" },
+                    { 9, "Varna" },
+                    { 10, "Burgas" }
                 });
 
             migrationBuilder.InsertData(
@@ -360,17 +369,35 @@ namespace AzureAdd.Data.Migrations
                 {
                     { 1, "vila" },
                     { 2, "penthhouse" },
-                    { 3, "apartment" }
+                    { 3, "apartment" },
+                    { 4, "Studio" },
+                    { 5, "House" },
+                    { 6, "Bungalow" },
+                    { 7, "Hotel Room" },
+                    { 8, "Guest House" }
                 });
 
             migrationBuilder.InsertData(
                 table: "VillasPenthhouses",
-                columns: new[] { "IdVilla", "Area", "Bathrooms", "Bedrooms", "CountAdults", "CountChildren", "CountRooms", "IDManager", "IdPlace", "ImageUrl", "IsDeleted", "LocationId", "NameVilla", "Parking", "VillaAddress", "VillaInfo" },
+                columns: new[] { "IdVilla", "Area", "Bathrooms", "Bedrooms", "CountAdults", "CountChildren", "CountRooms", "IDManager", "IdPlace", "ImageUrl", "IsDeleted", "LocationId", "NameVilla", "Parking", "PricePerNight", "VillaAddress", "VillaInfo" },
                 values: new object[,]
                 {
-                    { 1, "200m2", 4, 3, 2, 3, 4, "7699db7d-964f-4782-8209-d76562e0fece", 1, "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/44/d7/42/sol-nessebar-palace-all.jpg?w=900&h=500&s=1", false, 2, "Villa Rio", "Yes", "New str 17", "This is Fantastic Place for relax and enjoy!" },
-                    { 2, "400m2", 4, 3, 4, 2, 4, "7699db7d-964f-4782-8209-d76562e0fece", 3, "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2f/ab/45/e6/caption.jpg?w=900&h=500&s=1", false, 2, "Relax", "Yes", "Balcan str 25", "This is Fantastic Place for relax and enjoy!" },
-                    { 3, "500m2", 4, 3, 2, 2, 6, "7699db7d-964f-4782-8209-d76562e0fece", 2, "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/18/46/67/88/cook-s-club-sunny-beach.jpg?w=900&h=500&s=1", false, 2, "Aphrodita", "Yes", "New str 15", "This is Fantastic Place for relax and enjoy!" }
+                    { 1, "200m2", 4, 3, 2, 3, 4, "7699db7d-964f-4782-8209-d76562e0fece", 1, "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/44/d7/42/sol-nessebar-palace-all.jpg?w=900&h=500&s=1", false, 2, "Villa Rio", "Yes", 100m, "New str 17", "This is Fantastic Place for relax and enjoy!" },
+                    { 2, "400m2", 4, 3, 4, 2, 4, "7699db7d-964f-4782-8209-d76562e0fece", 3, "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2f/ab/45/e6/caption.jpg?w=900&h=500&s=1", false, 2, "Relax", "Yes", 180m, "Balcan str 25", "This is Fantastic Place for relax and enjoy!" },
+                    { 3, "500m2", 4, 3, 2, 2, 6, "7699db7d-964f-4782-8209-d76562e0fece", 2, "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/18/46/67/88/cook-s-club-sunny-beach.jpg?w=900&h=500&s=1", false, 2, "Aphrodita", "Yes", 340m, "New str 15", "This is Fantastic Place for relax and enjoy!" },
+                    { 4, "140m2", 2, 2, 4, 2, 3, "7699db7d-964f-4782-8209-d76562e0fece", 5, "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85", false, 7, "Mountain Escape", "Yes", 130m, "Pine Street 8", "Cozy mountain house with fireplace and forest view." },
+                    { 5, "300m2", 3, 3, 6, 2, 6, "7699db7d-964f-4782-8209-d76562e0fece", 2, "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688", false, 9, "Luxury Penthouse Sky", "Yes", 350m, "City Center 101", "Modern penthouse with panoramic city views." },
+                    { 6, "180m2", 2, 3, 5, 3, 4, "7699db7d-964f-4782-8209-d76562e0fece", 5, "https://images.unsplash.com/photo-1572120360610-d971b9d7767c", false, 3, "Family Holiday Home", "Yes", 160m, "Green Park 5", "Perfect for families with kids, large garden included." },
+                    { 7, "270m2", 3, 4, 6, 2, 5, "7699db7d-964f-4782-8209-d76562e0fece", 1, "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2", false, 2, "Sunset Paradise", "Yes", 240m, "Sunset Blvd 77", "Enjoy stunning sunsets over the sea every evening." },
+                    { 8, "45m2", 1, 1, 2, 0, 1, "7699db7d-964f-4782-8209-d76562e0fece", 4, "https://images.unsplash.com/photo-1554995207-c18c203602cb", false, 10, "Budget Stay Studio", "No", 60m, "Beach Street 3", "Affordable and comfortable place near the beach." },
+                    { 9, "260m2", 3, 4, 6, 2, 5, "7699db7d-964f-4782-8209-d76562e0fece", 1, "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6", false, 2, "Ocean Breeze Villa", "Yes", 280m, "Ocean Drive 12", "Beautiful seaside villa with private pool." },
+                    { 10, "210m2", 2, 2, 4, 1, 4, "7699db7d-964f-4782-8209-d76562e0fece", 2, "https://images.unsplash.com/photo-1493809842364-78817add7ffb", false, 9, "City Lights Penthouse", "Yes", 320m, "Downtown 55", "Luxury penthouse with skyline view." },
+                    { 11, "150m2", 2, 2, 4, 2, 3, "7699db7d-964f-4782-8209-d76562e0fece", 5, "https://images.unsplash.com/photo-1568605114967-8130f3a36994", false, 4, "Green Garden House", "Yes", 120m, "Garden Road 6", "Quiet house surrounded by nature." },
+                    { 12, "90m2", 1, 1, 3, 1, 2, "7699db7d-964f-4782-8209-d76562e0fece", 6, "https://images.unsplash.com/photo-1505691723518-36a5ac3be353", false, 2, "Beachfront Bungalow", "No", 140m, "Coastline 1", "Relax right on the beach with amazing views." },
+                    { 13, "80m2", 1, 1, 2, 1, 2, "7699db7d-964f-4782-8209-d76562e0fece", 7, "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa", false, 8, "Luxury Hotel Suite", "Yes", 200m, "Hotel Avenue 99", "Premium hotel room with all services included." },
+                    { 14, "130m2", 2, 2, 4, 2, 3, "7699db7d-964f-4782-8209-d76562e0fece", 8, "https://images.unsplash.com/photo-1523217582562-09d0def993a6", false, 6, "Cozy Guest House", "Yes", 110m, "Village Center 10", "Warm and welcoming guest house." },
+                    { 15, "120m2", 2, 2, 4, 1, 3, "7699db7d-964f-4782-8209-d76562e0fece", 3, "https://images.unsplash.com/photo-1493666438817-866a91353ca9", false, 9, "Modern Apartment Plus", "No", 150m, "Central Blvd 45", "Stylish apartment in the heart of the city." },
+                    { 16, "320m2", 3, 3, 6, 2, 5, "7699db7d-964f-4782-8209-d76562e0fece", 2, "https://images.unsplash.com/photo-1501183638710-841dd1904471", false, 9, "Elite Sky Penthouse", "Yes", 400m, "Sky Tower 200", "Top floor penthouse with private jacuzzi." }
                 });
 
             migrationBuilder.CreateIndex(

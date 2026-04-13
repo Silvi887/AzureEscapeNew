@@ -116,9 +116,9 @@ namespace AzureAdd.Data
             .OnDelete(DeleteBehavior.Restrict);
 
                 entity
-             .HasOne(f => f.Guest)
-             .WithMany()
-             .HasForeignKey(f => f.GuestId);
+            .HasOne(f => f.Guest)
+            .WithMany()
+            .HasForeignKey(f => f.GuestId);
 
 
             });
@@ -140,37 +140,34 @@ namespace AzureAdd.Data
 
 
             builder.Entity<Location>().HasData(
-           new Location { IdLocation = 1, NameLocation = "Sunny Beach" },
-           new Location { IdLocation = 2, NameLocation = "Golden Sands" },
-           new Location { IdLocation = 3, NameLocation = "Sozopol" }
+            new Location { IdLocation = 1, NameLocation = "Sunny Beach" },
+            new Location { IdLocation = 2, NameLocation = "Golden Sands" },
+            new Location { IdLocation = 3, NameLocation = "Sozopol" },
+            new Location { IdLocation = 4, NameLocation = "Nessebar" },
+            new Location { IdLocation = 5, NameLocation = "Albena" },
+            new Location { IdLocation = 6, NameLocation = "Borovets" },
+            new Location { IdLocation = 7, NameLocation = "Bansko" },
+            new Location { IdLocation = 8, NameLocation = "Pamporovo" },
+            new Location { IdLocation = 9, NameLocation = "Varna" },
+            new Location { IdLocation = 10, NameLocation = "Burgas" }
        );
 
           
 
             //TypepLace
 
-            var TypepLace1 = new TypePlace
-            {
-                IdTypePlace=1,
-                NamePlace = "vila"
-            };
-            var TypepLace2 = new TypePlace
-            {
-                IdTypePlace = 2,
-                NamePlace = "penthhouse"
-            };
+            builder.Entity<TypePlace>().HasData(
+            new TypePlace { IdTypePlace = 1, NamePlace = "vila" },
+            new TypePlace { IdTypePlace = 2, NamePlace = "penthhouse" },
+            new TypePlace { IdTypePlace = 3, NamePlace = "apartment" },
+            new TypePlace { IdTypePlace = 4, NamePlace = "Studio" },
+            new TypePlace { IdTypePlace = 5, NamePlace = "House" },
+            new TypePlace { IdTypePlace = 6, NamePlace = "Bungalow" },
+            new TypePlace { IdTypePlace = 7, NamePlace = "Hotel Room" },
+            new TypePlace { IdTypePlace = 8, NamePlace = "Guest House" }
+                );
 
-            var TypepLace3 = new TypePlace
-            {
-                IdTypePlace = 3,
-                NamePlace = "apartment"
-            };
-
-            builder.Entity<TypePlace>().HasData(TypepLace1);
-            builder.Entity<TypePlace>().HasData(TypepLace2);
-            builder.Entity<TypePlace>().HasData(TypepLace3);
-
-            builder.Entity<VillaPenthhouse>().HasData(
+           builder.Entity<VillaPenthhouse>().HasData(
 
                 new VillaPenthhouse
                 {
@@ -231,9 +228,280 @@ namespace AzureAdd.Data
                       IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
                       PricePerNight = 340,
                       IsDeleted = false
-                  }
+                  },
+                     new VillaPenthhouse
+                     {
+                         IdVilla = 4,
+                         NameVilla = "Mountain Escape",
+                         IdPlace = 5,
+                         VillaInfo = "Cozy mountain house with fireplace and forest view.",
+                         VillaAddress = "Pine Street 8",
+                         ImageUrl = "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85",
+                         CountRooms = 3,
+                         CountAdults = 4,
+                         CountChildren = 2,
+                         Bedrooms = 2,
+                         Bathrooms = 2,
+                         Area = "140m2",
+                         Parking = "Yes",
+                         LocationId = 7,
+                         IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                         PricePerNight = 130,
+                         IsDeleted = false
+                     },
 
-                );
+                    new VillaPenthhouse
+                    {
+                        IdVilla = 5,
+                        NameVilla = "Luxury Penthouse Sky",
+                        IdPlace = 2,
+                        VillaInfo = "Modern penthouse with panoramic city views.",
+                        VillaAddress = "City Center 101",
+                        ImageUrl = "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688",
+                        CountRooms = 6,
+                        CountAdults = 6,
+                        CountChildren = 2,
+                        Bedrooms = 3,
+                        Bathrooms = 3,
+                        Area = "300m2",
+                        Parking = "Yes",
+                        LocationId = 9,
+                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        PricePerNight = 350,
+                        IsDeleted = false
+                    },
+
+                    new VillaPenthhouse
+                    {
+                        IdVilla = 6,
+                        NameVilla = "Family Holiday Home",
+                        IdPlace = 5,
+                        VillaInfo = "Perfect for families with kids, large garden included.",
+                        VillaAddress = "Green Park 5",
+                        ImageUrl = "https://images.unsplash.com/photo-1572120360610-d971b9d7767c",
+                        CountRooms = 4,
+                        CountAdults = 5,
+                        CountChildren = 3,
+                        Bedrooms = 3,
+                        Bathrooms = 2,
+                        Area = "180m2",
+                        Parking = "Yes",
+                        LocationId = 3,
+                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        PricePerNight = 160,
+                        IsDeleted = false
+                    },
+
+                    new VillaPenthhouse
+                    {
+                        IdVilla = 7,
+                        NameVilla = "Sunset Paradise",
+                        IdPlace = 1,
+                        VillaInfo = "Enjoy stunning sunsets over the sea every evening.",
+                        VillaAddress = "Sunset Blvd 77",
+                        ImageUrl = "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2",
+                        CountRooms = 5,
+                        CountAdults = 6,
+                        CountChildren = 2,
+                        Bedrooms = 4,
+                        Bathrooms = 3,
+                        Area = "270m2",
+                        Parking = "Yes",
+                        LocationId = 2,
+                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        PricePerNight = 240,
+                        IsDeleted = false
+                    },
+
+                    new VillaPenthhouse
+                    {
+                        IdVilla = 8,
+                        NameVilla = "Budget Stay Studio",
+                        IdPlace = 4,
+                        VillaInfo = "Affordable and comfortable place near the beach.",
+                        VillaAddress = "Beach Street 3",
+                        ImageUrl = "https://images.unsplash.com/photo-1554995207-c18c203602cb",
+                        CountRooms = 1,
+                        CountAdults = 2,
+                        CountChildren = 0,
+                        Bedrooms = 1,
+                        Bathrooms = 1,
+                        Area = "45m2",
+                        Parking = "No",
+                        LocationId = 10,
+                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        PricePerNight = 60,
+                        IsDeleted = false
+                        },
+                    new VillaPenthhouse
+                    {
+                        IdVilla = 9,
+                        NameVilla = "Ocean Breeze Villa",
+                        IdPlace = 1,
+                        VillaInfo = "Beautiful seaside villa with private pool.",
+                        VillaAddress = "Ocean Drive 12",
+                        ImageUrl = "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6",
+                        CountRooms = 5,
+                        CountAdults = 6,
+                        CountChildren = 2,
+                        Bedrooms = 4,
+                        Bathrooms = 3,
+                        Area = "260m2",
+                        Parking = "Yes",
+                        LocationId = 2,
+                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        PricePerNight = 280,
+                        IsDeleted = false
+                    },
+
+                    new VillaPenthhouse
+                    {
+                        IdVilla = 10,
+                        NameVilla = "City Lights Penthouse",
+                        IdPlace = 2,
+                        VillaInfo = "Luxury penthouse with skyline view.",
+                        VillaAddress = "Downtown 55",
+                        ImageUrl = "https://images.unsplash.com/photo-1493809842364-78817add7ffb",
+                        CountRooms = 4,
+                        CountAdults = 4,
+                        CountChildren = 1,
+                        Bedrooms = 2,
+                        Bathrooms = 2,
+                        Area = "210m2",
+                        Parking = "Yes",
+                        LocationId = 9,
+                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        PricePerNight = 320,
+                        IsDeleted = false
+                    },
+
+                    new VillaPenthhouse
+                    {
+                        IdVilla = 11,
+                        NameVilla = "Green Garden House",
+                        IdPlace = 5,
+                        VillaInfo = "Quiet house surrounded by nature.",
+                        VillaAddress = "Garden Road 6",
+                        ImageUrl = "https://images.unsplash.com/photo-1568605114967-8130f3a36994",
+                        CountRooms = 3,
+                        CountAdults = 4,
+                        CountChildren = 2,
+                        Bedrooms = 2,
+                        Bathrooms = 2,
+                        Area = "150m2",
+                        Parking = "Yes",
+                        LocationId = 4,
+                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        PricePerNight = 120,
+                        IsDeleted = false
+                    },
+
+                    new VillaPenthhouse
+                    {
+                        IdVilla = 12,
+                        NameVilla = "Beachfront Bungalow",
+                        IdPlace = 6,
+                        VillaInfo = "Relax right on the beach with amazing views.",
+                        VillaAddress = "Coastline 1",
+                        ImageUrl = "https://images.unsplash.com/photo-1505691723518-36a5ac3be353",
+                        CountRooms = 2,
+                        CountAdults = 3,
+                        CountChildren = 1,
+                        Bedrooms = 1,
+                        Bathrooms = 1,
+                        Area = "90m2",
+                        Parking = "No",
+                        LocationId = 2,
+                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        PricePerNight = 140,
+                        IsDeleted = false
+                    },
+
+                    new VillaPenthhouse
+                    {
+                        IdVilla = 13,
+                        NameVilla = "Luxury Hotel Suite",
+                        IdPlace = 7,
+                        VillaInfo = "Premium hotel room with all services included.",
+                        VillaAddress = "Hotel Avenue 99",
+                        ImageUrl = "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa",
+                        CountRooms = 2,
+                        CountAdults = 2,
+                        CountChildren = 1,
+                        Bedrooms = 1,
+                        Bathrooms = 1,
+                        Area = "80m2",
+                        Parking = "Yes",
+                        LocationId = 8,
+                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        PricePerNight = 200,
+                        IsDeleted = false
+                    },
+
+                    new VillaPenthhouse
+                    {
+                        IdVilla = 14,
+                        NameVilla = "Cozy Guest House",
+                        IdPlace = 8,
+                        VillaInfo = "Warm and welcoming guest house.",
+                        VillaAddress = "Village Center 10",
+                        ImageUrl = "https://images.unsplash.com/photo-1523217582562-09d0def993a6",
+                        CountRooms = 3,
+                        CountAdults = 4,
+                        CountChildren = 2,
+                        Bedrooms = 2,
+                        Bathrooms = 2,
+                        Area = "130m2",
+                        Parking = "Yes",
+                        LocationId = 6,
+                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        PricePerNight = 110,
+                        IsDeleted = false
+                    },
+
+                    new VillaPenthhouse
+                    {
+                        IdVilla = 15,
+                        NameVilla = "Modern Apartment Plus",
+                        IdPlace = 3,
+                        VillaInfo = "Stylish apartment in the heart of the city.",
+                        VillaAddress = "Central Blvd 45",
+                        ImageUrl = "https://images.unsplash.com/photo-1493666438817-866a91353ca9",
+                        CountRooms = 3,
+                        CountAdults = 4,
+                        CountChildren = 1,
+                        Bedrooms = 2,
+                        Bathrooms = 2,
+                        Area = "120m2",
+                        Parking = "No",
+                        LocationId = 9,
+                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        PricePerNight = 150,
+                        IsDeleted = false
+                    },
+
+                    new VillaPenthhouse
+                    {
+                        IdVilla = 16,
+                        NameVilla = "Elite Sky Penthouse",
+                        IdPlace = 2,
+                        VillaInfo = "Top floor penthouse with private jacuzzi.",
+                        VillaAddress = "Sky Tower 200",
+                        ImageUrl = "https://images.unsplash.com/photo-1501183638710-841dd1904471",
+                        CountRooms = 5,
+                        CountAdults = 6,
+                        CountChildren = 2,
+                        Bedrooms = 3,
+                        Bathrooms = 3,
+                        Area = "320m2",
+                        Parking = "Yes",
+                        LocationId = 9,
+                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        PricePerNight = 400,
+                        IsDeleted = false
+                    }
+
+           );
 
 
             base.OnModelCreating(builder);

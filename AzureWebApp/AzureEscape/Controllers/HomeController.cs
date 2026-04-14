@@ -1,3 +1,4 @@
+using AzureAdd.DataModels;
 using AzureEscape.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -10,9 +11,9 @@ namespace AzureEscape.Controllers
     public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly UserManager<IdentityUser?>? UserManager;
+        private readonly UserManager<ApplicationUser?>? UserManager;
 
-        public HomeController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager)
+        public HomeController(ILogger<HomeController> logger, UserManager<ApplicationUser> userManager)
         {
             _logger = logger;
             this.UserManager = userManager;

@@ -1,4 +1,5 @@
 using AzureAdd.Data;
+using AzureAdd.DataModels;
 using AzureServises.Core;
 using AzureServises.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -18,7 +19,7 @@ namespace AzureEscape
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
                 options.SignIn.RequireConfirmedAccount = false;
@@ -29,6 +30,7 @@ namespace AzureEscape
                 options.Password.RequireNonAlphanumeric = false;
 
             })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<AzureAddDbContext>();
 
 
@@ -40,7 +42,13 @@ namespace AzureEscape
 
 
             var app = builder.Build();
+            //seed roles
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                ApplicationUserSeeder.Seed(services);
+            }
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -67,5 +75,6 @@ namespace AzureEscape
 
             app.Run();
         }
+
     }
 }

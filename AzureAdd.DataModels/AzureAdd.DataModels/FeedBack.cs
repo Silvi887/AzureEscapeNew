@@ -36,7 +36,7 @@ namespace AzureAdd.DataModels
 
        
         [ForeignKey(nameof(GuestId))]     // have collection in Guest
-        public virtual IdentityUser Guest { get; set; } = null!;
+        public virtual ApplicationUser Guest { get; set; } = null!;
 
         [Required]
         [MaxLength(ValidationConstants.DescriptionMaxLenght)]

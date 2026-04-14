@@ -37,7 +37,7 @@ namespace AzureAdd.DataModels
         public string GuestId { get; set; } = null!;
 
         [ForeignKey(nameof(GuestId))]
-        public virtual IdentityUser Guest { get; set; } = null!;
+        public virtual ApplicationUser Guest { get; set; } = null!;
 
         [Required]
         [MaxLength(ValidationConstants.GuestMaxLenght)]

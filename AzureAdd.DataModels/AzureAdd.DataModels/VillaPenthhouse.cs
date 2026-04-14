@@ -72,11 +72,11 @@ namespace AzureAdd.DataModels
         public virtual Location Location { get; set; } = null!;
 
 
-        [Required]
-        public string IDManager { get; set; } = null!;
+       
+        public string? IDManager { get; set; }
 
         [ForeignKey(nameof(IDManager))]
-        public virtual IdentityUser Manager { get; set; } = null!;
+        public virtual ApplicationUser? Manager { get; set; } 
 
         public bool IsDeleted { get; set; } = false;
 

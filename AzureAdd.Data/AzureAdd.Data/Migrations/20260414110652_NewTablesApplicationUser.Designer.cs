@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AzureAdd.Data.Migrations
 {
     [DbContext(typeof(AzureAddDbContext))]
-    [Migration("20260413160303_AllNewTablesDataVilla")]
-    partial class AllNewTablesDataVilla
+    [Migration("20260414110652_NewTablesApplicationUser")]
+    partial class NewTablesApplicationUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.17")
+                .HasAnnotation("ProductVersion", "8.0.23")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -41,6 +41,71 @@ namespace AzureAdd.Data.Migrations
                     b.HasKey("IdAmenity");
 
                     b.ToTable("Amenities");
+                });
+
+            modelBuilder.Entity("AzureAdd.DataModels.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("AzureAdd.DataModels.Booking", b =>
@@ -215,6 +280,31 @@ namespace AzureAdd.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("AzureAdd.DataModels.Manager", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasComment("Manager identifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasComment("Manager's user entity");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Manager");
+                });
+
             modelBuilder.Entity("AzureAdd.DataModels.TypePlace", b =>
                 {
                     b.Property<int>("IdTypePlace")
@@ -319,7 +409,6 @@ namespace AzureAdd.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("IDManager")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("IdPlace")
@@ -333,6 +422,9 @@ namespace AzureAdd.Data.Migrations
 
                     b.Property<int>("LocationId")
                         .HasColumnType("int");
+
+                    b.Property<Guid?>("ManagerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("NameVilla")
                         .IsRequired()
@@ -365,6 +457,8 @@ namespace AzureAdd.Data.Migrations
 
                     b.HasIndex("LocationId");
 
+                    b.HasIndex("ManagerId");
+
                     b.ToTable("VillasPenthhouses");
 
                     b.HasData(
@@ -377,7 +471,6 @@ namespace AzureAdd.Data.Migrations
                             CountAdults = 2,
                             CountChildren = 3,
                             CountRooms = 4,
-                            IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
                             IdPlace = 1,
                             ImageUrl = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/44/d7/42/sol-nessebar-palace-all.jpg?w=900&h=500&s=1",
                             IsDeleted = false,
@@ -397,7 +490,6 @@ namespace AzureAdd.Data.Migrations
                             CountAdults = 4,
                             CountChildren = 2,
                             CountRooms = 4,
-                            IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
                             IdPlace = 3,
                             ImageUrl = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2f/ab/45/e6/caption.jpg?w=900&h=500&s=1",
                             IsDeleted = false,
@@ -417,7 +509,6 @@ namespace AzureAdd.Data.Migrations
                             CountAdults = 2,
                             CountChildren = 2,
                             CountRooms = 6,
-                            IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
                             IdPlace = 2,
                             ImageUrl = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/18/46/67/88/cook-s-club-sunny-beach.jpg?w=900&h=500&s=1",
                             IsDeleted = false,
@@ -437,7 +528,6 @@ namespace AzureAdd.Data.Migrations
                             CountAdults = 4,
                             CountChildren = 2,
                             CountRooms = 3,
-                            IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
                             IdPlace = 5,
                             ImageUrl = "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85",
                             IsDeleted = false,
@@ -457,7 +547,6 @@ namespace AzureAdd.Data.Migrations
                             CountAdults = 6,
                             CountChildren = 2,
                             CountRooms = 6,
-                            IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
                             IdPlace = 2,
                             ImageUrl = "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688",
                             IsDeleted = false,
@@ -477,7 +566,6 @@ namespace AzureAdd.Data.Migrations
                             CountAdults = 5,
                             CountChildren = 3,
                             CountRooms = 4,
-                            IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
                             IdPlace = 5,
                             ImageUrl = "https://images.unsplash.com/photo-1572120360610-d971b9d7767c",
                             IsDeleted = false,
@@ -497,7 +585,6 @@ namespace AzureAdd.Data.Migrations
                             CountAdults = 6,
                             CountChildren = 2,
                             CountRooms = 5,
-                            IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
                             IdPlace = 1,
                             ImageUrl = "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2",
                             IsDeleted = false,
@@ -517,7 +604,6 @@ namespace AzureAdd.Data.Migrations
                             CountAdults = 2,
                             CountChildren = 0,
                             CountRooms = 1,
-                            IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
                             IdPlace = 4,
                             ImageUrl = "https://images.unsplash.com/photo-1554995207-c18c203602cb",
                             IsDeleted = false,
@@ -537,7 +623,6 @@ namespace AzureAdd.Data.Migrations
                             CountAdults = 6,
                             CountChildren = 2,
                             CountRooms = 5,
-                            IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
                             IdPlace = 1,
                             ImageUrl = "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6",
                             IsDeleted = false,
@@ -557,7 +642,6 @@ namespace AzureAdd.Data.Migrations
                             CountAdults = 4,
                             CountChildren = 1,
                             CountRooms = 4,
-                            IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
                             IdPlace = 2,
                             ImageUrl = "https://images.unsplash.com/photo-1493809842364-78817add7ffb",
                             IsDeleted = false,
@@ -577,7 +661,6 @@ namespace AzureAdd.Data.Migrations
                             CountAdults = 4,
                             CountChildren = 2,
                             CountRooms = 3,
-                            IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
                             IdPlace = 5,
                             ImageUrl = "https://images.unsplash.com/photo-1568605114967-8130f3a36994",
                             IsDeleted = false,
@@ -597,7 +680,6 @@ namespace AzureAdd.Data.Migrations
                             CountAdults = 3,
                             CountChildren = 1,
                             CountRooms = 2,
-                            IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
                             IdPlace = 6,
                             ImageUrl = "https://images.unsplash.com/photo-1505691723518-36a5ac3be353",
                             IsDeleted = false,
@@ -617,7 +699,6 @@ namespace AzureAdd.Data.Migrations
                             CountAdults = 2,
                             CountChildren = 1,
                             CountRooms = 2,
-                            IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
                             IdPlace = 7,
                             ImageUrl = "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa",
                             IsDeleted = false,
@@ -637,7 +718,6 @@ namespace AzureAdd.Data.Migrations
                             CountAdults = 4,
                             CountChildren = 2,
                             CountRooms = 3,
-                            IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
                             IdPlace = 8,
                             ImageUrl = "https://images.unsplash.com/photo-1523217582562-09d0def993a6",
                             IsDeleted = false,
@@ -657,9 +737,7 @@ namespace AzureAdd.Data.Migrations
                             CountAdults = 4,
                             CountChildren = 1,
                             CountRooms = 3,
-                            IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
                             IdPlace = 3,
-                            ImageUrl = "https://images.unsplash.com/photo-1493666438817-866a91353ca9",
                             IsDeleted = false,
                             LocationId = 9,
                             NameVilla = "Modern Apartment Plus",
@@ -677,7 +755,6 @@ namespace AzureAdd.Data.Migrations
                             CountAdults = 6,
                             CountChildren = 2,
                             CountRooms = 5,
-                            IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
                             IdPlace = 2,
                             ImageUrl = "https://images.unsplash.com/photo-1501183638710-841dd1904471",
                             IsDeleted = false,
@@ -740,89 +817,6 @@ namespace AzureAdd.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "7699db7d-964f-4782-8209-d76562e0fece",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "0e6f3e3c-d052-4a3e-9c68-c295fdc20e89",
-                            Email = "admin@horizons.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@HORIZONS.COM",
-                            NormalizedUserName = "ADMIN@HORIZONS.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPiv+09a1ZOteP6ME55H2EXwJD/RPqoXWWdjfRs+iyFIyCzn70rwq6FnKMy8ntmPCA==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "4d8e3cac-096a-4b42-82eb-3662256f72d0",
-                            TwoFactorEnabled = false,
-                            UserName = "admin@horizons.com"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -912,8 +906,8 @@ namespace AzureAdd.Data.Migrations
 
             modelBuilder.Entity("AzureAdd.DataModels.Booking", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Guest")
-                        .WithMany()
+                    b.HasOne("AzureAdd.DataModels.ApplicationUser", "Guest")
+                        .WithMany("AllBookings")
                         .HasForeignKey("GuestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -937,8 +931,8 @@ namespace AzureAdd.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Guest")
-                        .WithMany()
+                    b.HasOne("AzureAdd.DataModels.ApplicationUser", "Guest")
+                        .WithMany("AllFeedbackss")
                         .HasForeignKey("GuestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -956,10 +950,21 @@ namespace AzureAdd.Data.Migrations
                     b.Navigation("Villa");
                 });
 
+            modelBuilder.Entity("AzureAdd.DataModels.Manager", b =>
+                {
+                    b.HasOne("AzureAdd.DataModels.ApplicationUser", "User")
+                        .WithOne("Manager")
+                        .HasForeignKey("AzureAdd.DataModels.Manager", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("AzureAdd.DataModels.UserVilla", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
+                    b.HasOne("AzureAdd.DataModels.ApplicationUser", "User")
+                        .WithMany("UserVillas")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -977,11 +982,10 @@ namespace AzureAdd.Data.Migrations
 
             modelBuilder.Entity("AzureAdd.DataModels.VillaPenthhouse", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Manager")
-                        .WithMany()
+                    b.HasOne("AzureAdd.DataModels.ApplicationUser", "Manager")
+                        .WithMany("VillaPenths")
                         .HasForeignKey("IDManager")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("AzureAdd.DataModels.TypePlace", "TypePlace")
                         .WithMany("VillasPenthhouses")
@@ -994,6 +998,10 @@ namespace AzureAdd.Data.Migrations
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("AzureAdd.DataModels.Manager", null)
+                        .WithMany("ManagedVillas")
+                        .HasForeignKey("ManagerId");
 
                     b.Navigation("Location");
 
@@ -1013,7 +1021,7 @@ namespace AzureAdd.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("AzureAdd.DataModels.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1022,7 +1030,7 @@ namespace AzureAdd.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("AzureAdd.DataModels.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1037,7 +1045,7 @@ namespace AzureAdd.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("AzureAdd.DataModels.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1046,11 +1054,24 @@ namespace AzureAdd.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("AzureAdd.DataModels.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AzureAdd.DataModels.ApplicationUser", b =>
+                {
+                    b.Navigation("AllBookings");
+
+                    b.Navigation("AllFeedbackss");
+
+                    b.Navigation("Manager");
+
+                    b.Navigation("UserVillas");
+
+                    b.Navigation("VillaPenths");
                 });
 
             modelBuilder.Entity("AzureAdd.DataModels.Booking", b =>
@@ -1061,6 +1082,11 @@ namespace AzureAdd.Data.Migrations
             modelBuilder.Entity("AzureAdd.DataModels.Location", b =>
                 {
                     b.Navigation("VillasPenthhouses");
+                });
+
+            modelBuilder.Entity("AzureAdd.DataModels.Manager", b =>
+                {
+                    b.Navigation("ManagedVillas");
                 });
 
             modelBuilder.Entity("AzureAdd.DataModels.TypePlace", b =>

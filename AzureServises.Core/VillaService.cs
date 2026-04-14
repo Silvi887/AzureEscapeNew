@@ -22,9 +22,9 @@ namespace AzureServises.Core
     {
 
         private readonly AzureAddDbContext Dbcontext;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public VillaService(AzureAddDbContext pDbcontext, UserManager<IdentityUser> usermanager)
+        public VillaService(AzureAddDbContext pDbcontext, UserManager<ApplicationUser> usermanager)
         {
             this.Dbcontext = pDbcontext;
             this.userManager = usermanager;
@@ -118,7 +118,9 @@ namespace AzureServises.Core
             try
             {
                 bool operationResult = false;
-                IdentityUser? user1 = await this.userManager.FindByIdAsync(Userid);
+                ApplicationUser? user1 = await this.userManager.Users.FirstOrDefaultAsync(u => u.Id == Userid);
+                    
+                    //FindByIdAsync(Guid.Parse(Userid));
 
 
                 if (user1 != null)
@@ -179,18 +181,39 @@ namespace AzureServises.Core
         public async Task<IEnumerable<AllReservationsViewModel>> GetAllReservations(string? Userid)
         {
             IdentityUser? user = await userManager.FindByIdAsync(Userid);
-            var reservations = await Dbcontext.Bookings
-                                .Include(r => r.VillaPenthhouse)
-                                .AsNoTracking()
-                                .Where(r => r.GuestId==user.Id && r.IsDeleted == false)   /* r.GuestId == Userid &&*/
-                                .Select(r => new AllReservationsViewModel()
-                                {
-                                    IdBooking = r.IdBooking,
-                                    VilaName = r.VillaPenthhouse.NameVilla,
-                                    StartDate = r.StartDate.ToString(ValidationConstants.DateFormat),
-                                    EndDate = r.EndDate.ToString(ValidationConstants.DateFormat),
-                                    IsUserGuest = user != null ? r.GuestId == user.Id : false,
-                                }).ToListAsync();
+
+            var reservations = new List<AllReservationsViewModel>();
+            if (user.EmailConfirmed = true)
+            {
+                reservations = await Dbcontext.Bookings
+                             .Include(r => r.VillaPenthhouse)
+                             .AsNoTracking()
+                             .Where(r => r.IsDeleted == false)   /* r.GuestId == Userid &&*/
+                             .Select(r => new AllReservationsViewModel()
+                             {
+                                 IdBooking = r.IdBooking,
+                                 VilaName = r.VillaPenthhouse.NameVilla,
+                                 StartDate = r.StartDate.ToString(ValidationConstants.DateFormat),
+                                 EndDate = r.EndDate.ToString(ValidationConstants.DateFormat),
+                                 IsUserGuest = user != null ? r.GuestId == user.Id : false,
+                             }).ToListAsync();
+            }
+            else
+            {
+
+                 reservations = await Dbcontext.Bookings
+                                    .Include(r => r.VillaPenthhouse)
+                                    .AsNoTracking()
+                                    .Where(r => r.GuestId == user.Id && r.IsDeleted == false)   /* r.GuestId == Userid &&*/
+                                    .Select(r => new AllReservationsViewModel()
+                                    {
+                                        IdBooking = r.IdBooking,
+                                        VilaName = r.VillaPenthhouse.NameVilla,
+                                        StartDate = r.StartDate.ToString(ValidationConstants.DateFormat),
+                                        EndDate = r.EndDate.ToString(ValidationConstants.DateFormat),
+                                        IsUserGuest = user != null ? r.GuestId == user.Id : false,
+                                    }).ToListAsync();
+            }
 
 
 

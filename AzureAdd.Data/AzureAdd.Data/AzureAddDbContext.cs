@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace AzureAdd.Data
 {
-    public class AzureAddDbContext : IdentityDbContext
+    public class AzureAddDbContext : IdentityDbContext<ApplicationUser>
     {
         public AzureAddDbContext(DbContextOptions<AzureAddDbContext> options) : base(options)
         {
@@ -47,7 +47,7 @@ namespace AzureAdd.Data
 
 
                 entity.HasOne(h => h.Manager)
-                .WithMany()
+                .WithMany(u=> u.VillaPenths)
                 .HasForeignKey(h => h.IDManager)
                 .OnDelete(DeleteBehavior.Restrict);
 
@@ -72,7 +72,7 @@ namespace AzureAdd.Data
 
                 entity
              .HasOne(e => e.User)
-             .WithMany()
+             .WithMany(u=> u.UserVillas)
              .HasForeignKey(e => e.UserId)
              .OnDelete(DeleteBehavior.Restrict);
 
@@ -84,7 +84,7 @@ namespace AzureAdd.Data
                 entityres.HasKey(r => r.IdBooking);
 
                 entityres.HasOne(g => g.Guest)
-                        .WithMany()
+                        .WithMany(u=> u.AllBookings)
                         .HasForeignKey(g => g.GuestId);
 
                 //entityres.HasOne(r => r.Room)
@@ -117,25 +117,48 @@ namespace AzureAdd.Data
 
                 entity
             .HasOne(f => f.Guest)
-            .WithMany()
+            .WithMany(u=> u.AllFeedbackss)
             .HasForeignKey(f => f.GuestId);
 
 
             });
 
-             var defaultUser = new IdentityUser
+            builder.Entity<Manager>(entity =>
             {
-                Id = "7699db7d-964f-4782-8209-d76562e0fece",
-                UserName = "admin@horizons.com",
-                NormalizedUserName = "ADMIN@HORIZONS.COM",
-                Email = "admin@horizons.com",
-                NormalizedEmail = "ADMIN@HORIZONS.COM",
-                EmailConfirmed = true,
-                PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(
-           new IdentityUser { UserName = "admin@horizons.com" },
-           "Admin123!")
-            };
-            builder.Entity<IdentityUser>().HasData(defaultUser);
+                entity
+               .HasKey(m => m.Id);
+
+                entity
+                    .Property(m => m.IsDeleted)
+                    .HasDefaultValue(false);
+
+                entity
+                    .HasOne(m => m.User)
+                    .WithOne(u => u.Manager)
+                    .HasForeignKey<Manager>(m => m.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity
+                    .HasIndex(m => new { m.UserId })
+                    .IsUnique();
+
+                entity
+                    .HasQueryFilter(m => m.IsDeleted == false);
+            });
+
+          //  var defaultUser = new IdentityUser
+          //  {
+          //      Id = "7699db7d-964f-4782-8209-d76562e0fece",
+          //      UserName = "admin@horizons.com",
+          //      NormalizedUserName = "ADMIN@HORIZONS.COM",
+          //      Email = "admin@horizons.com",
+          //      NormalizedEmail = "ADMIN@HORIZONS.COM",
+          //      EmailConfirmed = true,
+          //      PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(
+          //new IdentityUser { UserName = "admin@horizons.com" },
+          //"Admin123!")
+          //  };
+          //  builder.Entity<IdentityUser>().HasData(defaultUser);
 
 
 
@@ -185,7 +208,7 @@ namespace AzureAdd.Data
                     Area="200m2",
                     Parking="Yes",
                     LocationId=2,
-                    IDManager= "7699db7d-964f-4782-8209-d76562e0fece",
+                    IDManager=null, /*"7699db7d-964f-4782-8209-d76562e0fece",*/
                     PricePerNight=100,
                     IsDeleted =false
                 },
@@ -205,7 +228,7 @@ namespace AzureAdd.Data
                      Area = "400m2",
                      Parking = "Yes",
                      LocationId = 2,
-                     IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                     IDManager =null, //"7699db7d-964f-4782-8209-d76562e0fece",
                      PricePerNight = 180,
                      IsDeleted = false
                  },
@@ -225,7 +248,7 @@ namespace AzureAdd.Data
                       Area = "500m2",
                       Parking = "Yes",
                       LocationId = 2,
-                      IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                      IDManager =null, //"7699db7d-964f-4782-8209-d76562e0fece",
                       PricePerNight = 340,
                       IsDeleted = false
                   },
@@ -245,7 +268,7 @@ namespace AzureAdd.Data
                          Area = "140m2",
                          Parking = "Yes",
                          LocationId = 7,
-                         IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                         IDManager =null, //"7699db7d-964f-4782-8209-d76562e0fece",
                          PricePerNight = 130,
                          IsDeleted = false
                      },
@@ -266,7 +289,7 @@ namespace AzureAdd.Data
                         Area = "300m2",
                         Parking = "Yes",
                         LocationId = 9,
-                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        IDManager = null,//"7699db7d-964f-4782-8209-d76562e0fece",
                         PricePerNight = 350,
                         IsDeleted = false
                     },
@@ -287,7 +310,7 @@ namespace AzureAdd.Data
                         Area = "180m2",
                         Parking = "Yes",
                         LocationId = 3,
-                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        IDManager =null, //"7699db7d-964f-4782-8209-d76562e0fece",
                         PricePerNight = 160,
                         IsDeleted = false
                     },
@@ -308,7 +331,7 @@ namespace AzureAdd.Data
                         Area = "270m2",
                         Parking = "Yes",
                         LocationId = 2,
-                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        IDManager = null, //"7699db7d-964f-4782-8209-d76562e0fece",
                         PricePerNight = 240,
                         IsDeleted = false
                     },
@@ -329,7 +352,7 @@ namespace AzureAdd.Data
                         Area = "45m2",
                         Parking = "No",
                         LocationId = 10,
-                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        IDManager = null,  //"7699db7d-964f-4782-8209-d76562e0fece",
                         PricePerNight = 60,
                         IsDeleted = false
                         },
@@ -349,7 +372,7 @@ namespace AzureAdd.Data
                         Area = "260m2",
                         Parking = "Yes",
                         LocationId = 2,
-                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        IDManager = null,//"7699db7d-964f-4782-8209-d76562e0fece",
                         PricePerNight = 280,
                         IsDeleted = false
                     },
@@ -370,7 +393,7 @@ namespace AzureAdd.Data
                         Area = "210m2",
                         Parking = "Yes",
                         LocationId = 9,
-                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        IDManager = null,//"7699db7d-964f-4782-8209-d76562e0fece",
                         PricePerNight = 320,
                         IsDeleted = false
                     },
@@ -391,7 +414,7 @@ namespace AzureAdd.Data
                         Area = "150m2",
                         Parking = "Yes",
                         LocationId = 4,
-                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        IDManager = null,  //"7699db7d-964f-4782-8209-d76562e0fece",
                         PricePerNight = 120,
                         IsDeleted = false
                     },
@@ -412,7 +435,7 @@ namespace AzureAdd.Data
                         Area = "90m2",
                         Parking = "No",
                         LocationId = 2,
-                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        IDManager = null,//"7699db7d-964f-4782-8209-d76562e0fece",
                         PricePerNight = 140,
                         IsDeleted = false
                     },
@@ -433,7 +456,7 @@ namespace AzureAdd.Data
                         Area = "80m2",
                         Parking = "Yes",
                         LocationId = 8,
-                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        IDManager = null,//"7699db7d-964f-4782-8209-d76562e0fece",
                         PricePerNight = 200,
                         IsDeleted = false
                     },
@@ -454,7 +477,7 @@ namespace AzureAdd.Data
                         Area = "130m2",
                         Parking = "Yes",
                         LocationId = 6,
-                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        IDManager = null,//"7699db7d-964f-4782-8209-d76562e0fece",
                         PricePerNight = 110,
                         IsDeleted = false
                     },
@@ -466,7 +489,7 @@ namespace AzureAdd.Data
                         IdPlace = 3,
                         VillaInfo = "Stylish apartment in the heart of the city.",
                         VillaAddress = "Central Blvd 45",
-                        ImageUrl = "https://images.unsplash.com/photo-1493666438817-866a91353ca9",
+                        ImageUrl = null,//"https://images.unsplash.com/photo-1493666438817-866a91353ca9",
                         CountRooms = 3,
                         CountAdults = 4,
                         CountChildren = 1,
@@ -475,7 +498,7 @@ namespace AzureAdd.Data
                         Area = "120m2",
                         Parking = "No",
                         LocationId = 9,
-                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        IDManager = null, //"7699db7d-964f-4782-8209-d76562e0fece",
                         PricePerNight = 150,
                         IsDeleted = false
                     },
@@ -496,7 +519,7 @@ namespace AzureAdd.Data
                         Area = "320m2",
                         Parking = "Yes",
                         LocationId = 9,
-                        IDManager = "7699db7d-964f-4782-8209-d76562e0fece",
+                        IDManager = null,//"7699db7d-964f-4782-8209-d76562e0fece",
                         PricePerNight = 400,
                         IsDeleted = false
                     }

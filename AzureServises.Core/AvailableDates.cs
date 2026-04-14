@@ -1,4 +1,5 @@
 ﻿using AzureAdd.Data;
+using AzureAdd.DataModels;
 using AzureApp.ViewModels;
 using AzureServises.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -16,9 +17,9 @@ namespace AzureServises.Core
 
 
         private readonly AzureAddDbContext Dbcontext;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public AvailableDates(AzureAddDbContext villaDbcontext, UserManager<IdentityUser> usermanager)
+        public AvailableDates(AzureAddDbContext villaDbcontext, UserManager<ApplicationUser> usermanager)
         {
             this.Dbcontext = villaDbcontext;
             this.userManager = usermanager;

@@ -1,4 +1,5 @@
-﻿using AzureApp.ViewModels;
+﻿using AzureAdd.DataModels;
+using AzureApp.ViewModels;
 using AzureServises.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +10,9 @@ namespace AzureEscape.Controllers
     {
         private readonly IVilla vilaService;
        
-        private readonly UserManager<IdentityUser?>? UserManager;
+        private readonly UserManager<ApplicationUser?>? UserManager;
 
-        public ReserveController(IVilla vilaService, UserManager<IdentityUser> userManager)
+        public ReserveController(IVilla vilaService, UserManager<ApplicationUser> userManager)
         {
             this.vilaService = vilaService;
             this.UserManager = userManager;

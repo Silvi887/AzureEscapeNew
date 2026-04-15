@@ -55,8 +55,10 @@
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" asp-area="" asp-controller="Vila" asp-action="Index"> <i class="fa fa-list"></i>All Villas</a>
                                         <div class="dropdown-divider"></div>
-                                         @if (User?.Identity?.IsAuthenticated == true && User?.Identity?.Name == "admin@horizons.com")
-                                       {
+                                        @*  @if (User?.Identity?.IsAuthenticated == true && User?.Identity?.Name == "admin@horizons.com")
+                                       { *@
+                                        @if (User?.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
+                                        {
                                         <a class="dropdown-item" asp-controller="Vila" asp-action="AddVilla">
                                             <i class="fa fa-plus"></i> Add Vila
                                         </a>
@@ -64,7 +66,7 @@
                                          }
 
                                       
-                                        else if (User?.Identity?.IsAuthenticated == true && ViewBag.EmailConfirmed == false)
+                                        else if (User?.Identity?.IsAuthenticated == true && User.IsInRole("User"))
                                         {
                                             <a class="dropdown-item" asp-controller="Favorite" asp-action="GetFavorite">
                                                 <i class="fa fa-heart"></i> Favorite Vila

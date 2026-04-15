@@ -37,7 +37,7 @@ namespace AzureServises.Core
 
 
                 bool operationResult = false;
-                IdentityUser? user1 = await this.userManager.FindByIdAsync(Userid);
+                ApplicationUser? user1 = await this.userManager.FindByIdAsync(Userid);
 
                 //string? UserId = this.GetUserId();
                 //int idroom = int.Parse(reservationmodel.RoomId);
@@ -180,10 +180,10 @@ namespace AzureServises.Core
 
         public async Task<IEnumerable<AllReservationsViewModel>> GetAllReservations(string? Userid)
         {
-            IdentityUser? user = await userManager.FindByIdAsync(Userid);
+            ApplicationUser? user = await userManager.FindByIdAsync(Userid);
 
             var reservations = new List<AllReservationsViewModel>();
-            if (user.EmailConfirmed = true)
+            if (await userManager.IsInRoleAsync(user, "Admin"))
             {
                 reservations = await Dbcontext.Bookings
                              .Include(r => r.VillaPenthhouse)
@@ -204,7 +204,7 @@ namespace AzureServises.Core
                  reservations = await Dbcontext.Bookings
                                     .Include(r => r.VillaPenthhouse)
                                     .AsNoTracking()
-                                    .Where(r => r.GuestId == user.Id && r.IsDeleted == false)   /* r.GuestId == Userid &&*/
+                                    .Where(r => r.GuestId == user.Id && r.IsDeleted == false)   
                                     .Select(r => new AllReservationsViewModel()
                                     {
                                         IdBooking = r.IdBooking,
@@ -265,7 +265,7 @@ namespace AzureServises.Core
         public async Task<IEnumerable<FavoriteVilaIndexViewModel>> GetFavoritePlaces(string? Userid)
         {
             bool issuccessfavorite = false;
-            IdentityUser? curentuser = await userManager.FindByIdAsync(Userid);
+            ApplicationUser? curentuser = await userManager.FindByIdAsync(Userid);
             IEnumerable<FavoriteVilaIndexViewModel>? favoritehotel = null;
 
 
@@ -291,7 +291,7 @@ namespace AzureServises.Core
         public async Task<bool> FavoritePlaces(string Userid, int favoritehotelid)
         {
             bool issuccessfavorite = false;
-            IdentityUser? curentuser = await userManager.FindByIdAsync(Userid);
+            ApplicationUser? curentuser = await userManager.FindByIdAsync(Userid);
 
             VillaPenthhouse? currentPlace1 = await Dbcontext.VillasPenthhouses.FindAsync(favoritehotelid);
 
@@ -326,7 +326,7 @@ namespace AzureServises.Core
         public async Task<bool> RemoveFavorite(string Userid, int? id)
         {
             bool isdeleted = false;
-            IdentityUser? curentuser = await userManager.FindByIdAsync(Userid);
+            ApplicationUser? curentuser = await userManager.FindByIdAsync(Userid);
             UserVilla? hoteltoremove = await Dbcontext.UserVilla
                 
                             .SingleOrDefaultAsync(h => h.VillaId == id && h.UserId== curentuser.Id);
@@ -350,7 +350,7 @@ namespace AzureServises.Core
         public async Task<DeleteReservationIndexViewModel> GetForDeleteReservation(int? id, string? Userid)
         {
 
-            IdentityUser? currentUser = await userManager.FindByIdAsync(Userid);
+            ApplicationUser? currentUser = await userManager.FindByIdAsync(Userid);
             DeleteReservationIndexViewModel? reservation1 = null;
 
             if (currentUser != null)
@@ -397,7 +397,7 @@ namespace AzureServises.Core
 
             bool issuccessdelete = false;
 
-            IdentityUser? curentuser = await userManager.FindByIdAsync(Userid);
+            ApplicationUser? curentuser = await userManager.FindByIdAsync(Userid);
 
             Booking? currentReservation = await Dbcontext.Bookings.FindAsync(id);
 
@@ -417,7 +417,7 @@ namespace AzureServises.Core
         public async Task<EditBooking> GetForEditReservation(int? id, string? Userid)
         {
 
-            IdentityUser? currentUser = await userManager.FindByIdAsync(Userid);
+            ApplicationUser? currentUser = await userManager.FindByIdAsync(Userid);
             EditBooking reservation1 = null;
 
             if (currentUser != null)
@@ -456,7 +456,7 @@ namespace AzureServises.Core
 
         public async Task<bool> EditReservation(string UserId, EditBooking editbooking)
         {
-            IdentityUser userid = await userManager.FindByIdAsync(UserId);
+            ApplicationUser userid = await userManager.FindByIdAsync(UserId);
             bool resultReservation = false;
 
             Booking? CurrentReservation = await Dbcontext.Bookings
@@ -496,7 +496,7 @@ namespace AzureServises.Core
 
         public async Task<DetailsIndexVilla> GetVilaDetailsAsync(int? id, string? UserId)
         {
-            IdentityUser? currentUser = await  userManager.FindByIdAsync(UserId);
+            ApplicationUser? currentUser = await  userManager.FindByIdAsync(UserId);
             DetailsIndexVilla? viladetails = null;
             VillaPenthhouse? CurrentDetailshotel =await  Dbcontext.VillasPenthhouses
                 .Include(h => h.Location)
@@ -567,7 +567,7 @@ namespace AzureServises.Core
         public async Task<bool> LeaveFeedBack(string Userid, BookingFeedbackViewModel leavefeedbackmodel)
         {
             bool operationResult = false;
-            IdentityUser? user1 = await this.userManager.FindByIdAsync(Userid);
+            ApplicationUser? user1 = await this.userManager.FindByIdAsync(Userid);
 
 
             if (user1 != null)
@@ -616,7 +616,7 @@ namespace AzureServises.Core
         public async Task<EditVilaViewModel> GetForEditVila(int? id, string? Userid)
         {
 
-            IdentityUser? currentUser = await userManager.FindByIdAsync(Userid);
+            ApplicationUser? currentUser = await userManager.FindByIdAsync(Userid);
             EditVilaViewModel currentreservation1 = null;
 
             if (currentUser != null)
@@ -676,7 +676,7 @@ namespace AzureServises.Core
 
         public async Task<bool> EditVilla(string UserId, EditVilaViewModel editvilla)
         {
-            IdentityUser userid = await userManager.FindByIdAsync(UserId);
+            ApplicationUser userid = await userManager.FindByIdAsync(UserId);
             bool resultReservation = false;
 
             VillaPenthhouse? CurrentVila = await Dbcontext.VillasPenthhouses
@@ -727,7 +727,7 @@ namespace AzureServises.Core
         public async Task<EditVilaViewModel> GetVilaTemplate(int? id, string Userid)
         {
 
-            IdentityUser? currentUser = await userManager.FindByIdAsync(Userid);
+            ApplicationUser? currentUser = await userManager.FindByIdAsync(Userid);
 
             EditVilaViewModel currentreservation1 = null;
 

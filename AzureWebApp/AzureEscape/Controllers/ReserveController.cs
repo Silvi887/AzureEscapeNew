@@ -147,12 +147,12 @@ namespace AzureEscape.Controllers
                 {
                     return View("Views/Vila/DeleteReservation.cshtml", selectedreservation);
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index","Vila");
             }
             catch (Exception ex)
             {
 
-                return RedirectToAction("Error", "Home");
+                return RedirectToAction("Index", "Vila");
 
             }
             }

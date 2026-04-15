@@ -4,6 +4,8 @@ using AzureServises.Core;
 using AzureServises.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace AzureEscape
 {
@@ -48,7 +50,28 @@ namespace AzureEscape
             {
                 var services = scope.ServiceProvider;
                 ApplicationUserSeeder.Seed(services);
+
+                 ApplicationUserSeeder.SeedRoles(services);
             }
+
+            //roles
+            //using (var scope = app.Services.CreateScope())
+            //{
+            //    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            //    ApplicationUserSeeder.SeedRoles(roleManager);
+
+            //    var userManager = ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            //    var user = userManager.FindByEmailAsync("admin@horizons.com").GetAwaiter()
+            //                       .GetResult();
+
+            //    if (user != null && !await userManager.IsInRoleAsync(user, "Admin"))
+            //    {
+            //        await userManager.AddToRoleAsync(user, "Admin");
+            //    }
+
+            //}
+
+          
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {

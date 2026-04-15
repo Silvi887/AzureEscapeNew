@@ -25,8 +25,4 @@
     <ProjectReference Include="..\..\AzureServises.Core\AzureServises.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Identity\" />
-  </ItemGroup>
-
 </Project>

@@ -48,7 +48,7 @@
                                 <a asp-controller="Vila" asp-action="Index" class="btn btn-success">
                                     <i class="fa fa-arrow-left  me-1"></i>  Back
                             </a>
-                            @if (res.IsUserGuest && User?.Identity?.IsAuthenticated == true)@* && !Model.IsInUserFavorite *@
+                                    @if (  User.IsInRole("User") && User?.Identity?.IsAuthenticated == true)@* && !Model.IsInUserFavorite *@
                             {
                                 <form asp-controller="Vacation" asp-action="GetFavorite" method="post" class="d-flex justify-content-center align-items-center flex-fill mx-1">
                                     <input type="hidden" name="id" value="@res.IdBooking" />
@@ -62,7 +62,7 @@
                                 </a>
                             }
                             else
-                         @if (User?.Identity?.IsAuthenticated == true && ViewBag.EmailConfirmed == true)
+                                    @if (User?.Identity?.IsAuthenticated == true && User.IsInRole("Admin")) @* ViewBag.EmailConfirmed == true *@
                             {
 
                                 <a asp-controller="Reserve" asp-action="Delete" asp-route-id="@res.IdBooking" class="btn btn-danger d-flex justify-content-center align-items-center flex-fill mx-1">

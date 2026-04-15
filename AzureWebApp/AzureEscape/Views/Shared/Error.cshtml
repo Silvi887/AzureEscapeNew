@@ -3,7 +3,7 @@
     ViewData["Title"] = "Oops!";
 }
 
-<div class="container py-5 text-center" style="background-color: #B0E0E6;">
+@* <div class="container py-5 text-center" style="background-color: #B0E0E6;">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card shadow-lg border-0">
@@ -27,4 +27,79 @@
             </div>
         </div>
     </div>
+</div> *@
+@* New code*@
+
+<div class="error-page d-flex align-items-center justify-content-center">
+    <div class="text-center">
+
+        <div class="error-code"></div>
+
+        <h2 class="mb-3">Oops! Something went wrong.</h2>
+        @if (Model.ShowRequestId)
+        {
+            <p class="mt-3">
+                <strong>Request ID:</strong> <code>@Model.RequestId</code>
+            </p>
+        }
+
+        <hr />
+        <p class="text-muted mb-4">
+            We're sorry, but an unexpected error occurred while processing your request..
+        </p>
+
+        <a asp-controller="Vila"
+           asp-action="Index"
+           class="btn btn-primary px-4 py-2">
+            <i class="fas fa-home"></i> Back to Home
+        </a>
+
+    </div>
 </div>
+
+<style>
+    html.body {
+        background: linear-gradient(135deg, #B0E0E6);
+    }
+
+    header {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .container_main {
+        height: 100vh;
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .error-page {
+        height: 100vh;
+        display: flex;
+        background: linear-gradient(135deg, #B0E0E6); /*  #d4f8e8, #b7efd4 */
+        color: white;
+    }
+
+    .error-code {
+        font-size: 120px;
+        font-weight: 800;
+        letter-spacing: 5px;
+        background: linear-gradient(45deg, #ff6b6b, #f06595);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    h2 {
+        font-weight: 600;
+    }
+
+    .btn-primary {
+        border-radius: 30px;
+        font-weight: 500;
+        transition: 0.3s;
+    }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+        }
+</style>

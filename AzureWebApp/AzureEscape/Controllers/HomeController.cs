@@ -111,12 +111,12 @@ namespace AzureEscape.Controllers
 
                 return View("Views/Shared/PageError404.cshtml", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
-            else if (statusCode == 500 || statusCode == null || statusCode == 0 )
+            else if (statusCode == 500 ) /*|| statusCode == null || statusCode == 0*/
             {
 
                 return View("Views/Shared/PageError500.cshtml", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View("Views/Shared/Error.cshtml", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
        

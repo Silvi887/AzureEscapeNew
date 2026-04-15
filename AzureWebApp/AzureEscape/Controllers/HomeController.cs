@@ -1,6 +1,7 @@
 using AzureAdd.DataModels;
 using AzureEscape.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -96,10 +97,28 @@ namespace AzureEscape.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Page500()
         {
+
+            return View("Views/Shared/PageError500.cshtml");
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error(int statusCode)
+        {
+            if (statusCode == 404)
+            {
+
+                return View("Views/Shared/PageError404.cshtml", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
+            else if (statusCode == 500 || statusCode == null || statusCode == 0 )
+            {
+
+                return View("Views/Shared/PageError500.cshtml", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+       
     }
 }

@@ -316,7 +316,7 @@
 					start.addEventListener("change", calculate);
 					end.addEventListener("change", calculate);
 				},
-					preConfirm: async () => { /*validations for input fields */
+		preConfirm: async () => { /*validations for input fields */
 
 		let errors = [];
 
@@ -330,12 +330,31 @@
 		const txtdateofbirth=document.getElementById("datebirth").value;
 
 
-		if (!firstName) errors.push("First Name is required");
-		if (!start) errors.push("Start Date is required");
-		if (!end) errors.push("End Date is required");
-		if(!txtlastName) errors.push("LastName is Required!");
-		if(!txtphone) errors.push("Phone Number is required!");
-		if(!txtdateofbirth) errors.push("You have to fill dateofbirth!");
+		if (!firstName) errors.push("Please fill First Name!");
+		if (!start) errors.push("Please fill Start Date!");
+		if (!end) errors.push("Please fill End Date!");
+		if(!txtlastName) errors.push("Please fillLastName is Required!");
+		if(!txtphone)errors.push("Please fill Number is required!");
+		if(!txtdateofbirth)errors.push("Please fill dateofbirth!");
+
+		const today= new Date();
+
+		 const dbirth = new Date(txtdateofbirth);
+		 if(dbirth.getFullYear()<1940 || dbirth.getFullYear()> today.getFullYear()){
+			 errors.push("Date of Birth must be valid date!")
+		 }
+
+		 if(dbirth.getMonth()<1 || dbirth.getMonth()>12){
+			  errors.push("Month of Birth must be valid number!")
+		 }
+
+		  if(dbirth.getDay()<1 || dbirth.getDay()>31){
+				errors.push("Day of Birth must be valid number!")
+		 }
+
+		 // console.log(dbirth.getFullYear());
+		 // console.log(dbirth.getMonth());
+		 // console.log(dbirth.getDate());
 
 		if (start && end) {
 			let s = new Date(start);
@@ -344,7 +363,7 @@
 		}
 
 		if (!adults || adults <= 0) {
-			errors.push("Adults must be greater than 0");
+			errors.push("Count of Adults must be greater than 0");
 		}
 		else if(adults > adultscount)
 		{

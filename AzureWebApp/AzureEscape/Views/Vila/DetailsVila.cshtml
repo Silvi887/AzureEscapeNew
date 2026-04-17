@@ -31,7 +31,7 @@
                     <h5 class="text-secondary">📄 Villa Info</h5>
                     <p class="card-text">@Model.VilaInfo</p>
                     <div class="mt-4 d-flex  align-items-center gap-4  flex-wrap">
-                     @*  @if (User?.Identity?.IsAuthenticated == true && !Model.IsManager && !Model.IsSaved) *@
+                 
 
                         @if (this.User.Identity?.IsAuthenticated ?? false)
                         {
@@ -41,15 +41,18 @@
                                     <i class="fa fa-heart"></i> Add to Favorites
                                 </button>
                             </form>
-                            @*  @if (User?.Identity?.IsAuthenticated == true && User?.Identity?.Name == "admin@horizons.com") *@
-                            @*  @if (this.User.Identity?.IsAuthenticated ?? false)
-                        { asp-action="EditVilla" asp-route-id="@Model.IdVila" asp-controller="Vila" *@  
-
-                            <a data-id="@Model.IdVila"  class="btn btn-warning editVillaBtn ml-1">✏️ Edit</a>
                             <a asp-action="LeaveFeedback" asp-route-id="@Model.IdVila" asp-controller="FeedBack" class="btn btn-warning ml-1">✏️ Feddback</a>
                             <a asp-action="Index" class="btn btn-secondary ml-1">🔙 Back to List</a>
-
                         }
+                       
+
+                        @if (User?.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
+                        {
+                    <a data-id="@Model.IdVila"  class="btn btn-warning editVillaBtn ml-1">✏️ Edit</a>
+                          
+                        }
+
+                        
                     </div>
                 </div>
             </div>

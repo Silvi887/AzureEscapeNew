@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AzureEscape.Controllers
 {
+
+    [Route("PartiaVilaReturn")]
+    [ApiController]
     public class PartiaVilaReturnController : BaseInternalApiController
     {
 
@@ -13,7 +16,7 @@ namespace AzureEscape.Controllers
         {
             this.vilaservice = villa;
         }
-        [HttpGet]
+        [HttpGet("EditVillaPartial")]
         public async Task<IActionResult> EditVillaPartial(int id)
         {
             var userId = this.GetUserId();
@@ -23,7 +26,7 @@ namespace AzureEscape.Controllers
             if (villa == null)
                 return NotFound();
 
-            return Ok( villa);
+            return Ok(villa);
         }
     }
 }

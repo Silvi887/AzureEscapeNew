@@ -46,7 +46,7 @@ namespace AzureEscape.Controllers
             try
             {
 
-                // AllHotels = await this.vacationService.GetFavotiteReservation(userid);
+               
 
                 if (AllPlaces == null)
                 {
@@ -60,8 +60,7 @@ namespace AzureEscape.Controllers
 
                 return RedirectToAction("Error", "Home");
 
-                //  return View("Views/Vila/FavoritePlaces.cshtml", AllPlaces);
-                //return this.RedirectToAction(nameof(Index));
+            
 
             }
 
@@ -89,7 +88,6 @@ namespace AzureEscape.Controllers
                 Console.WriteLine(ex.Message);
                 return RedirectToAction("Error", "Home");
 
-              //  return this.RedirectToAction(nameof(Index));
 
             }
 
@@ -117,15 +115,10 @@ namespace AzureEscape.Controllers
             {
                 Console.WriteLine(ex.Message);
                 return RedirectToAction("Error", "Home");
-                // return this.RedirectToAction(nameof(Index));
 
             }
         }
 
 
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
     }
 }

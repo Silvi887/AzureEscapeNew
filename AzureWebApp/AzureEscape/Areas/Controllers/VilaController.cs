@@ -54,15 +54,15 @@ namespace AzureEscape.Areas.Controllers
             }
 
         [AllowAnonymous]
-        public async Task<IActionResult> SearchVilaByDate(string startDate, string endDate)
+        public async Task<IActionResult> SearchVilaByDate(string startDate, string endDate,int page=1)
         {
 
             try
             {
 
                 string? UserId = this.GetUserId();
-
-                IEnumerable<VilaIndexViewModel> AllVillasSearch = await this.vilaService.GetAllVillasSearch(UserId, startDate, endDate);
+                int pageSize = 3;
+                var AllVillasSearch = await this.vilaService.GetAllVillasSearch(UserId, startDate, endDate, page, pageSize);
 
                 return View("Views/Vila/Index.cshtml", AllVillasSearch);
             }

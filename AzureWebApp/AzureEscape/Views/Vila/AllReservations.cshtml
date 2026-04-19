@@ -89,7 +89,7 @@
             const villaId = this.dataset.id;
 
             // ✅ Load partial view
-             const response = await fetch(`/EditBookingPartial/Edit?id=${villaId}`);
+             const response = await fetch(`/Reserve/Edit?id=${villaId}`);
 
             if (!response.ok) {
                 Swal.fire("Error", "Cannot load form", "error");
@@ -100,7 +100,7 @@
 
             console.log(html);
             Swal.fire({
-                title: "Edit Villa",
+                title: " ",
                 html: html,
                 width: 700,
                 showCancelButton: true,
@@ -130,8 +130,8 @@
                     if (!firstName) errors.push("Please fill First Name!");
                     if (!start) errors.push("Please fill Start Date!");
                     if (!end) errors.push("Please fill End Date!");
-                    if(!txtlastName) errors.push("Please fillLastName is Required!");
-                    if(!txtphone)errors.push("Please fill Number is required!");
+                    if(!txtlastName) errors.push("Please fill LastName!");
+                    if(!txtphone)errors.push("Please fill Number!");
                     if(!txtdateofbirth)errors.push("Please fill dateofbirth!");
 
                     const today= new Date();
@@ -172,7 +172,7 @@
 
                     try {
                           const vId = this.dataset.id;
-                         const res = await fetch('/EditBookingPartial/Edit', {
+                         const res = await fetch(`/Reserve/Edit`, { /*   EditBookingPartial */
                             method: 'POST',
                             body: formData
                         });

@@ -10,30 +10,99 @@
 
 
 @using AzureApp.ViewModels
-
 @model AddReservationViewModel
 
 
+<form id="popupForm" class="swal-form">
 
+    <input type="hidden" name="VillaId" id="idvilla" value="${villaId}">
+    <input type="hidden" name="pricepernight" id="price" value="${price}">
+    <input type="hidden" name="TotalPrice" id="totalPrice">
+    <!-- Guest Information -->
+    <fieldset class="form-section">
+        <legend>Guest Information</legend>
+
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input id="firstName" type="text" name="GuestFirstName">
+        </div>
+
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input id="lastName" type="text" name="LastNameG">
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" type="email" name="GuestEmail">
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input id="phone" type="text" name="GuestPhoneNumber">
+        </div>
+
+        <div class="form-group">
+            <label for="datebirth">Date of Birth</label>
+            <input id="datebirth" type="date" name="DateofBirth">
+        </div>
+
+        <div class="form-group">
+            <label for="address">Address</label>
+            <input id="address" type="text" name="GuestAddress">
+        </div>
+    </fieldset>
+
+    <!-- Reservation Details -->
+    <fieldset class="form-section">
+        <legend>Reservation Details</legend>
+
+        <div class="form-group">
+            <label for="start">Start Date</label>
+            <input id="start" type="text" name="StartDate">
+            <span id="date1Err" asp-validation-for="StartDate" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="end">End Date</label>
+            <input id="end" type="text" name="EndDate">
+        </div>
+
+        <div class="form-group">
+            <label for="adults">Adults Count</label>
+            <input id="adults" type="number" name="AdultsCount">
+        </div>
+
+        <div class="form-group">
+            <label for="children">Children Count</label>
+            <input id="children" type="number" name="ChildrenCount">
+        </div>
+    </fieldset>
+
+    <!-- Summary -->
+    <div class="form-summary">
+        <label class="villa-title" name="VilaName">Vila: @Model.VilaName</label>
+        <div id="totalBox" class="total-box"></div>
+    </div>
+
+</form>
+
+@* 
 <h2 class="mb-4">Add a New Reservation</h2>
-
-
 <div class="card shadow-sm" ng-app="reservationApp" ng-controller="reservationCtrl">
-@* <div class="card shadow-sm"> *@
     <div class="card-body">
         <form asp-action="Add" method="post">
             <div class="row g-3">
 
                 <div class="col-md-6 form-floating">
-                    @* <input asp-for="@Model.VilaName" class="form-control" placeholder="@Model.VilaName" /> *@
                     <label asp-for="@Model.VilaName">@Model.VilaName</label>
                     <input asp-for="@Model.VillaId" type="hidden" aria-required="true" />
-                     <input asp-for="@Model.pricepernight" type="hidden" aria-required="true" ng-init="pricePerNight=@Model.pricepernight" /> 
+                    <input asp-for="@Model.pricepernight" type="hidden" aria-required="true" ng-init="pricePerNight=@Model.pricepernight" />
+                    <input type="hidden" name="TotalPrice" id="totalPrice">
                 </div>
                 <div class="col-md-6 form-floating">
                     <input id="startDate" asp-for="@Model.StartDate" class="form-control" type="date" placeholder="Start Date" ng-model="startDate" />
                     <label asp-for="@Model.StartDate"></label>
-                    @* <span id="date1Err" asp-validation-for="StartDate" ></span> *@
                     <span id="date1Err" asp-validation-for="StartDate" class="text-danger"></span> 
                 </div>
 
@@ -41,7 +110,6 @@
                     <input id="endDate" asp-for="@Model.EndDate" class="form-control" type="date" placeholder="End Date" ng-model="endDate" />
                     <label asp-for="@Model.EndDate"></label>
                    <span id="date2Err" asp-validation-for="@Model.EndDate" class="text-danger"></span> 
-                    @* <span id="date2Err" asp-validation-for="@Model.EndDate"></span> *@
                 </div>
 
                 <div class="col-md-6 form-floating">
@@ -142,5 +210,5 @@
 
     });
 
-</script>
+</script> *@
 

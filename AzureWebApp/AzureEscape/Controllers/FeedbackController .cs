@@ -53,7 +53,7 @@ namespace AzureEscape.Controllers
                 if (allidsbookings == null || !allidsbookings.Any())
                 {
                     TempData["FeedbackError"] = "You don't have permission to leave feedback.";
-                   // return RedirectToAction("Index", "Home"); // Or redirect to a relevant page
+                 
                 }
 
                 var model =  new BookingFeedbackViewModel
@@ -94,11 +94,9 @@ namespace AzureEscape.Controllers
                 if (!isvalid)
                 {
 
-                 //   IEnumerable<VilaIndexViewModel> Allvillas = await this.vilaService.GetAllVillasAsync(Userid);
+                
                     return RedirectToAction("Error", "Home");
-                    //  return View("Views/Vila/Index.cshtml");
-
-                    // return View("Views/Vila/Index.cshtml", Allvillas);
+                   
                 }
 
                 // Save feedback to DB or process it

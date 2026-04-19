@@ -1,4 +1,5 @@
-﻿using Azure.Constants;
+﻿using Azure;
+using Azure.Constants;
 using AzureAdd.Data;
 using AzureAdd.DataModels;
 using AzureApp.ViewModels;
@@ -220,7 +221,7 @@ namespace AzureServises.Core
             return reservations;
         }
 
-        //public async Task<IEnumerable<VilaIndexViewModel>> GetAllVillasAsync(string? UserId, int page, int pageSize)
+     
         public async Task<PagedResult<VilaIndexViewModel>> GetAllVillasAsync(string? UserId, int page, int pageSize)
         {
             var query = Dbcontext.VillasPenthhouses.AsQueryable();
@@ -371,19 +372,7 @@ namespace AzureServises.Core
                     GuestFirstName = curentreservation.FirstName + " " + curentreservation.LastName,
                     HotelName = curentreservation.VillaPenthhouse.NameVilla
 
-                    //AdultsCount = curentreservation.AdultsCount,
-
-                    //ChildrenCount = curentreservation.ChildrenCount,
-
-                    //RoomId = curentreservation.RoomId.ToString(),
-                    //HotelId = curentreservation.HotelId.ToString(),
-                    //HotelName = curentreservation.Hotel.HotelName,
-                    //GuestFirstName = curentreservation.FirstName,
-                    //LastNameG = curentreservation.LastName,
-                    //DateofBirth = curentreservation.DateOfBirth.ToString("yyyy-MM-dd"),
-                    //GuestAddress = curentreservation.Address,
-                    //GuestEmail = curentreservation.Email,
-                    //GuestPhoneNumber = curentreservation.NumberOfPhone
+                  
                 };
 
             }
@@ -533,16 +522,22 @@ namespace AzureServises.Core
             return viladetails;
         }
 
-        public  async Task<IEnumerable<VilaIndexViewModel>> GetAllVillasSearch(string? UserId, string StartDate, string EndDate)
+        public  async Task<PagedResult<VilaIndexViewModel>> GetAllVillasSearch(string? UserId, string StartDate, string EndDate,int page, int pageSize)
         {
 
             var startdate = DateTime.ParseExact(StartDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
 
             var enddate = DateTime.ParseExact(EndDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None);
 
+
+            var query = Dbcontext.VillasPenthhouses.Where(v => !v.AllBookings.Any(b => b.StartDate >= startdate && b.EndDate <= enddate)).AsQueryable();
+            int totalItems = await query.CountAsync();
+
             var AllVillasSearch = await Dbcontext.VillasPenthhouses
                 .Include(v => v.AllBookings)
                 .Where(v => !v.AllBookings.Any(b => b.StartDate >= startdate && b.EndDate <= enddate))
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                  .Select(h => new VilaIndexViewModel()
                  {
                      IdVilla = h.IdVilla,
@@ -559,9 +554,14 @@ namespace AzureServises.Core
                      Parking = h.Parking
                  }).Distinct().ToListAsync();
 
-            return AllVillasSearch;
+            //  return AllVillasSearch;
 
-
+            return new PagedResult<VilaIndexViewModel>
+            {
+                Items = AllVillasSearch,
+                CurrentPage = page,
+                TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize)
+            };
         }
 
         public async Task<bool> LeaveFeedBack(string Userid, BookingFeedbackViewModel leavefeedbackmodel)

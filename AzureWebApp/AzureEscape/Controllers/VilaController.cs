@@ -1,9 +1,11 @@
-﻿using AzureAdd.DataModels;
+﻿using Azure;
+using AzureAdd.DataModels;
 using AzureApp.ViewModels;
 using AzureServises.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.CodeAnalysis;
 
 
@@ -36,9 +38,6 @@ namespace AzureEscape.Controllers
             int pageSize = 3; // how many villas per page
 
             var  Allvillas = await this.vilaService.GetAllVillasAsync(UserId, page, pageSize);
-
-           // IEnumerable<VilaIndexViewModel> Allvillas = await this.vilaService.GetAllVillasAsync(UserId);
-
             var user = await UserManager.FindByIdAsync(UserId);
 
 
@@ -51,17 +50,18 @@ namespace AzureEscape.Controllers
             }
 
         [AllowAnonymous]
-        public async Task<IActionResult> SearchVilaByDate(string startDate, string endDate)
+        public async Task<IActionResult> SearchVilaByDate(string startDate, string endDate,int page=1)
         {
 
             try
             {
 
                 string? UserId = this.GetUserId();
+                int pageSize = 6;
+                PagedResult<VilaIndexViewModel> AllVillasSearch = await this.vilaService.GetAllVillasSearch(UserId, startDate, endDate, page, pageSize);
 
-                IEnumerable<VilaIndexViewModel> AllVillasSearch = await this.vilaService.GetAllVillasSearch(UserId, startDate, endDate);
-
-                return View("Views/Vila/Index.cshtml", AllVillasSearch);
+            
+                return View("Index", AllVillasSearch);
             }
             catch (Exception ex)
             {
@@ -92,8 +92,7 @@ namespace AzureEscape.Controllers
             {
                 Console.WriteLine(ex.Message);
                 return RedirectToAction("Error", "Home");
-
-               // return this.RedirectToAction(nameof(Index));
+              
             }
 
         }
@@ -121,9 +120,8 @@ namespace AzureEscape.Controllers
 
                 ViewBag.SuccessMessage = "Successful addes vila!";
 
-
                 return RedirectToAction(nameof(Index), "Vila");
-                // return RedirectToAction("AddVilla", "Vila");
+              
 
             }
         
@@ -179,7 +177,7 @@ namespace AzureEscape.Controllers
                 if (ModelState.IsValid)
                 {
 
-                    return View("Views/Vila/EditVilla.cshtml", currentvilla);
+                    return View("Views/Vila/BookVillaView.cshtml", currentvilla);
 
                 }
 
@@ -190,7 +188,7 @@ namespace AzureEscape.Controllers
             {
                 return RedirectToAction("Error", "Home");
             }
-        
+
         }
 
         [HttpPost]
@@ -210,8 +208,7 @@ namespace AzureEscape.Controllers
 
                 bool editvilla = await vilaService
                                         .EditVilla(userid, editvillamodel);
-
-                // reservationmodel.roomdrp = (IEnumerable<RoomViewModel>)await this.vacationService.RoomViewDataAsync();
+            
 
                 if (editvilla == false)
                 {
@@ -223,7 +220,7 @@ namespace AzureEscape.Controllers
                 editvillamodel.AllTypePlaces = (IEnumerable<TypePlaceIndexViewModel>)await this.townService.TypePlaceViewDataAsync();
 
                 ViewBag.SuccessMessage = "Successful update of villa!";
-                return View("Views/Vila/EditVilla.cshtml", editvillamodel);
+                return PartialView("Views/Vila/BookVillaView.cshtml", editvillamodel);
 
 
             }
@@ -233,9 +230,9 @@ namespace AzureEscape.Controllers
             }
 
 
-            }
+        }
 
 
-            }
+    }
 
 }

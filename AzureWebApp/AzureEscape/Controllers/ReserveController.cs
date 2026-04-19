@@ -9,7 +9,6 @@ namespace AzureEscape.Controllers
     public class ReserveController : BaseController
     {
         private readonly IVilla vilaService;
-       
         private readonly UserManager<ApplicationUser?>? UserManager;
 
         public ReserveController(IVilla vilaService, UserManager<ApplicationUser> userManager)
@@ -18,10 +17,13 @@ namespace AzureEscape.Controllers
             this.UserManager = userManager;
             
         }
-        public IActionResult Index()
+
+        public virtual string? GetUserId()
         {
-            return View();
+            return UserManager?.GetUserId(User);
         }
+
+     
 
         [HttpGet]
         public async Task<IActionResult> AddBooking(string? id)
@@ -36,17 +38,15 @@ namespace AzureEscape.Controllers
                 {
                     VillaId = ArrVilaName[0],
                     VilaName = ArrVilaName[1],
-                    //pricepernight=decimal.Parse(ArrVilaName[2]),
+                  
                     // 
                     StartDate = DateTime.UtcNow.ToString("yyyy-MM-dd"),
                     EndDate = DateTime.UtcNow.ToString("yyyy-MM-dd"),
-                   // roomdrp = (IEnumerable<RoomViewModel>)await this.vacationService.RoomViewDataAsync(),
+                    // roomdrp = (IEnumerable<RoomViewModel>)await this.vacationService.RoomViewDataAsync(),
                     DateofBirth = DateTime.UtcNow.ToString("yyyy-MM-dd")
 
                 };
-                return View("Views/Vila/AddReservation.cshtml", inAddReservation);
-
-                // return this.View()
+                return PartialView("Views/Vila/AddReservation.cshtml", inAddReservation);
 
             }
             catch (Exception ex)
@@ -56,7 +56,6 @@ namespace AzureEscape.Controllers
 
             }
 
-         
         }
 
         [HttpPost]
@@ -64,8 +63,7 @@ namespace AzureEscape.Controllers
         {
             try
             {
-
-                //int idhotel1 = int.Parse(idhotel);
+              
                 string? UserId = this.GetUserId();
                 if (!this.ModelState.IsValid)
                 {
@@ -83,17 +81,10 @@ namespace AzureEscape.Controllers
                 {
 
                     ModelState.AddModelError(string.Empty, "Fatal error accure while adding a reservation!");
-                    return this.RedirectToAction(nameof(AddBooking),"Reserve");
+                    return this.RedirectToAction(nameof(AddBooking), "Reserve");
                 }
                 return Ok();
 
-                // inAddReservation.roomdrp = (IEnumerable<RoomViewModel>)await this.vacationService.RoomViewDataAsync();
-                //  ViewBag.SuccessMessage = "Successful reservation!";
-                //  return View("Views/Vila/AddReservation.cshtml", inAddReservation);
-
-                //return RedirectToAction("AllReservations", "Reserve");
-              
-                //  return View("Views/Vila/Index.cshtml");
 
             }
 
@@ -101,14 +92,13 @@ namespace AzureEscape.Controllers
             {
                 Console.WriteLine(ex.Message);
                 return RedirectToAction("Error", "Home");
-                //return View("Views/Vila/Index.cshtml");
+              
 
             }
         }
 
 
         [HttpGet]
-
         public async Task<IActionResult> AllReservations(string? Userid)
         {
             try
@@ -127,7 +117,7 @@ namespace AzureEscape.Controllers
                 return RedirectToAction("Error", "Home");
 
             }
-           // return View(allreservations);
+        
         }
 
 
@@ -174,8 +164,6 @@ namespace AzureEscape.Controllers
                 }
                 bool editreservation = await vilaService.DeleteReservation(userid, deletedres.IdBooking);
 
-                //deletedres.roomdrp = (IEnumerable<RoomViewModel>)await this.vacationService.RoomViewDataAsync();
-
                 if (editreservation == false)
                 {
                     return View("Views/Vila/Edit.cshtml", deletedres);
@@ -184,16 +172,13 @@ namespace AzureEscape.Controllers
 
                 return this.RedirectToAction(nameof(AllReservations));
 
-                // ViewBag.SuccessMessage = "Successful update of reservation!";
-                // return View("Views/Vacation/AllReservations.cshtml");
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
 
-
                 return RedirectToAction("Error", "Home");
-                //return this.RedirectToAction(nameof(Index));
+             
 
             }
 
@@ -209,11 +194,12 @@ namespace AzureEscape.Controllers
                 int id1 = int.Parse(id);
                 var UserId = this.GetUserId();
                 EditBooking currentreservation = await vilaService.GetForEditReservation(id1, UserId);
-                //currentreservation.roomdrp = (IEnumerable<RoomViewModel>)await this.vacationService.RoomViewDataAsync();
+               
 
                 if (this.ModelState.IsValid)
                 {
-                    return View("Views/Vila/EditReservation.cshtml", currentreservation);
+                 
+                    return PartialView("Views/Vila/EditReservationPartial.cshtml", currentreservation);
                 }
 
                 return View(nameof(Index));
@@ -241,24 +227,25 @@ namespace AzureEscape.Controllers
                 bool editreservation = await vilaService
                                            .EditReservation(userid, reservationmodel);
 
-               // reservationmodel.roomdrp = (IEnumerable<RoomViewModel>)await this.vacationService.RoomViewDataAsync();
+             
 
                 if (editreservation == false)
                 {
-                    return View("Views/Vila/EditReservation.cshtml", reservationmodel);
+                   
+                    return View("Views/Vila/EditReservationPartial.cshtml", reservationmodel);
                 }
 
 
-
-                ViewBag.SuccessMessage = "Successful update of reservation!";
-                return View("Views/Vila/EditReservation.cshtml", reservationmodel);
+                return Ok();
+               
+              
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
 
                 return RedirectToAction("Error", "Home");
-                //  return this.RedirectToAction(nameof(Index));
+              
 
             }
 

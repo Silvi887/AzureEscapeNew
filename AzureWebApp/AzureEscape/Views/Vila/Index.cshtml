@@ -2,6 +2,7 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+	ViewData["Title"] = "All Vilas";
 }
 
 
@@ -108,46 +109,7 @@
 
 					</div>
 				</div>
-				
-				
-				@* <div class="classItem">
-					<h4> @villa.NameVilla </h4>
-					<img src=@villa.ImageUrl alt="" />
-
-					<div class="classraiting"> <div><span class="nameplace-btn"> @villa.NamePlace</span></div>&nbsp;&nbsp; &nbsp;&nbsp;  Rating: ⭐ @villa.Raiting</div>
-				
-					<ul>
-						<li><span> Address: </span>@villa.VillaAddress </li>
-						<li><span> Count Adults:</span>@villa.CountAdults</li>
-						<li> <span> Count Children: @villa.CountChildren</span> </li>
-						<li><span> Location Name: @villa.LocationName</span></li>
-						
-					</ul>
-
-					<div class="classBtns">
-						<a asp-controller="Vila" asp-action="Details" asp-route-id="@villa.IdVilla" class="btn btn-info">
-							<i class="fa fa-info-circle"></i> More info
-						</a>
-
-						@if (User?.Identity?.IsAuthenticated == true && ViewBag.EmailConfirmed == false)
-						{
-
-							<a asp-controller="Reserve" asp-action="AddBooking" asp-route-id="@($"{villa.IdVilla},{villa.NameVilla}")" class="btn btn-info w-70">
-								<i class="fa fa-calendar-check-o"></i> Make reservation
-							</a>
-
-							<form asp-controller="Favorite" asp-action="GetFavorite" asp-route-id="@villa.IdVilla" method="post" class="w-50">
-								<input type="hidden" name="id" value="@villa.IdVilla" />
-								<button type="submit" class="btn btn-success w-100">
-									<i class="fa fa-heart"></i> Favorites
-								</button>
-							</form>
-						}
-
-					</div>
-					
-
-				</div> *@
+			
 			}
 
 
@@ -169,17 +131,38 @@
 
 	document.querySelectorAll(".reserveBtn").forEach(btn => {
 
-		btn.addEventListener("click", function () {
+		btn.addEventListener("click", async function () {
+			   console.log("CLICK WORKS"); // test
 
 			const villaId = this.dataset.id;
+
+			console.log(villaId);
+				if (!(villaId))
+			{
+				return BadRequest("id is missing");
+			}
 			const villaName = this.dataset.name;
 			const price = this.dataset.price;
+
+			const allidName=villaId +","+villaName;
+			console.log(villaName);
+			console.log(villaId);
 
 			var adultscount=parseInt(this.dataset.bcountadults);
 			var childrencount=parseInt(this.dataset.bcountchildren);
 
+			  // ✅ Load partial view
+			//     const response = await fetch(`/Reserve/AddBooking?id=${allidName}`);
 
-			Swal.fire({						/* sweet alert  */
+			// 	if (!response.ok) {
+			// 	console.error("API failed:", response.status);
+			// 	return;
+			// }
+			// const html = await response.text();
+
+
+			//console.log(html);
+			Swal.fire({	/* sweet alert  */
 				title: "Add Reservation",
 				width: 800,
 				html: `  <form id="popupForm" class="swal-form">
@@ -255,12 +238,20 @@
 						  </div>
 
 						</form>`,
+						
 	
 				showCancelButton: true,
 				confirmButtonText: "Book",
 				didOpen: async () => {
 
 					 const villaId = document.getElementById("idvilla").value;
+
+					 if(!villaId){
+
+					 console.log("element not found");
+					 return;
+					 }
+
 
 					const response = await fetch(`/ReservationApi/GetAllDates?idvilla=${villaId}`);
 					const reservedRanges = await response.json();
@@ -316,110 +307,111 @@
 					start.addEventListener("change", calculate);
 					end.addEventListener("change", calculate);
 				},
-		preConfirm: async () => { /*validations for input fields */
+				preConfirm: async () => { /*validations for input fields */
 
-		let errors = [];
+				let errors = [];
 
-		const start = document.getElementById("start").value;
-		const end = document.getElementById("end").value;
-		const adults = parseInt(document.getElementById("adults").value);
-		const children =parseInt(document.getElementById("children").value);
-		const firstName = document.getElementById("firstName").value;
-		const txtlastName=document.getElementById("lastName").value;
-		const txtphone=document.getElementById("phone").value;
-		const txtdateofbirth=document.getElementById("datebirth").value;
+				const start = document.getElementById("start").value;
+				const end = document.getElementById("end").value;
+				const adults = parseInt(document.getElementById("adults").value);
+				const children =parseInt(document.getElementById("children").value);
+				const firstName = document.getElementById("firstName").value;
+				const txtlastName=document.getElementById("lastName").value;
+				const txtphone=document.getElementById("phone").value;
+				const txtdateofbirth=document.getElementById("datebirth").value;
 
 
-		if (!firstName) errors.push("Please fill First Name!");
-		if (!start) errors.push("Please fill Start Date!");
-		if (!end) errors.push("Please fill End Date!");
-		if(!txtlastName) errors.push("Please fillLastName is Required!");
-		if(!txtphone)errors.push("Please fill Number is required!");
-		if(!txtdateofbirth)errors.push("Please fill dateofbirth!");
+				if (!firstName) errors.push("Please fill First Name!");
+				if (!start) errors.push("Please fill Start Date!");
+				if (!end) errors.push("Please fill End Date!");
+				if(!txtlastName) errors.push("Please fillLastName is Required!");
+				if(!txtphone)errors.push("Please fill Number is required!");
+				if(!txtdateofbirth)errors.push("Please fill dateofbirth!");
 
-		const today= new Date();
+				const today= new Date();
 
-		 const dbirth = new Date(txtdateofbirth);
-		 if(dbirth.getFullYear()<1940 || dbirth.getFullYear()> today.getFullYear()){
-			 errors.push("Date of Birth must be valid date!")
-		 }
+				 const dbirth = new Date(txtdateofbirth);
+				 if(dbirth.getFullYear()<1940 || dbirth.getFullYear()> today.getFullYear()){
+					 errors.push("Date of Birth must be valid date!")
+				 }
 
-		 if(dbirth.getMonth()<1 || dbirth.getMonth()>12){
-			  errors.push("Month of Birth must be valid number!")
-		 }
+				 if(dbirth.getMonth()<1 || dbirth.getMonth()>12){
+					  errors.push("Month of Birth must be valid number!")
+				 }
 
-		  if(dbirth.getDay()<1 || dbirth.getDay()>31){
-				errors.push("Day of Birth must be valid number!")
-		 }
+				  if(dbirth.getDay()<1 || dbirth.getDay()>31){
+						errors.push("Day of Birth must be valid number!")
+				 }
 
-		 // console.log(dbirth.getFullYear());
-		 // console.log(dbirth.getMonth());
-		 // console.log(dbirth.getDate());
+				 // console.log(dbirth.getFullYear());
+				 // console.log(dbirth.getMonth());
+				 // console.log(dbirth.getDate());
 
-		if (start && end) {
-			let s = new Date(start);
-			let e = new Date(end);
-			if (e <= s) errors.push("End Date must be after Start Date");
-		}
+				if (start && end) {
+					let s = new Date(start);
+					let e = new Date(end);
+					if (e <= s) errors.push("End Date must be after Start Date");
+				}
 
-		if (!adults || adults <= 0) {
-			errors.push("Count of Adults must be greater than 0");
-		}
-		else if(adults > adultscount)
-		{
-		errors.push("Adults must be equal or less than the count in villa!");
-		}
+				if (!adults || adults <= 0) {
+					errors.push("Count of Adults must be greater than 0");
+				}
+				else if(adults > adultscount)
+				{
+				errors.push("Adults must be equal or less than the count in villa!");
+				}
 
-		if(children > childrencount)
-		{
-		errors.push("Children must be equal or less than the count in villa!");
-		}
+				if(children > childrencount)
+				{
+				errors.push("Children must be equal or less than the count in villa!");
+				}
 
-		if (errors.length > 0) {
-			Swal.showValidationMessage(errors.join("<br>"));
-			return false;
-		}
-		 // ✅ SEND DATA WITH AJAX
-	    const form = document.getElementById("popupForm");
-		const formData = new FormData(form);
+				if (errors.length > 0) {
+					Swal.showValidationMessage(errors.join("<br>"));
+					return false;
+				}
+				 // ✅ SEND DATA WITH AJAX
+				const form = document.getElementById("popupForm");
+				const formData = new FormData(form);
 
-	    try {
-		const response = await fetch('/Reserve/Add', {
-			method: 'POST',
-			body: formData
-		});
+				try {
+				const response = await fetch('/Reserve/Add', {
+					method: 'POST',
+					body: formData
+				});
 
 	
-		if (!response.ok) {
-			throw new Error();
-		}
+				if (!response.ok) {
+					throw new Error();
+				}
 
-		return true;
+				return true;
 
-		} catch (error) {
-			Swal.showValidationMessage("Server error");
-			return false;
-		}
+				} catch (error) {
+					Swal.showValidationMessage("Server error");
+					return false;
+				}
 	
-		}
-		}).then((result) => {
-		if (result.isConfirmed) {
-			Swal.fire({
-				icon: 'success',
-				title: 'Successful reservation!',
-				confirmButtonColor: '#28a745'
-			}).then(() => {
-				location.reload();
+				}
+				}).then((result) => {
+				if (result.isConfirmed) {
+					Swal.fire({
+						icon: 'success',
+						title: 'Successful reservation!',
+						confirmButtonColor: '#28a745'
+					}).then(() => {
+						location.reload();
+					});
+				}
 			});
-		}
-	});
 	
 
 		
 
-		});
+	 	});
 
 	});
+		
 
 </script>
 @* @section Scripts {

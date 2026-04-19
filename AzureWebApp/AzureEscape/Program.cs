@@ -54,37 +54,13 @@ namespace AzureEscape
                  ApplicationUserSeeder.SeedRoles(services);
             }
 
-            //roles
-            //using (var scope = app.Services.CreateScope())
-            //{
-            //    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            //    ApplicationUserSeeder.SeedRoles(roleManager);
-
-            //    var userManager = ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            //    var user = userManager.FindByEmailAsync("admin@horizons.com").GetAwaiter()
-            //                       .GetResult();
-
-            //    if (user != null && !await userManager.IsInRoleAsync(user, "Admin"))
-            //    {
-            //        await userManager.AddToRoleAsync(user, "Admin");
-            //    }
-
-            //}
 
             app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 
-
-            // Configure the HTTP request pipeline.
-            //if (app.Environment.IsDevelopment())
-            //{
-            //    app.UseMigrationsEndPoint();
-            //}
-            //else
-            //{
+           
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
-           // }
+
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

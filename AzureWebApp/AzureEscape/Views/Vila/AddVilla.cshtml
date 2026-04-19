@@ -48,7 +48,7 @@
     <div class="col-md-6">
         <label asp-for="IdTown" class="form-label">Town</label>
         <select asp-for="IdTown" class="form-select" asp-items="@(Model.AllTownsModels != null ? new SelectList(Model.AllTownsModels, "IdTown", "NameTown"): new SelectList(Enumerable.Empty<SelectListItem>()))">
-            <option value="">Select Town</option>
+            <option value="0">Select Town</option>
         </select>
         <span asp-validation-for="IdTown" class="text-danger"></span>
     </div>
@@ -56,7 +56,7 @@
     <div class="col-md-6">
         <label asp-for="IdTypePlace" class="form-label">Type of Place</label>
         <select asp-for="IdTypePlace" class="form-select" asp-items="@(Model.AllTypePlaces != null ? new SelectList(Model.AllTypePlaces, "IdTypePlace", "NameTypePlace") : new SelectList(Enumerable.Empty<SelectListItem>()))">
-            <option value="">Select Type</option>
+            <option value="0">Select Type</option>
         </select>
         <span asp-validation-for="IdTypePlace" class="text-danger"></span>
     </div>
@@ -86,7 +86,7 @@
 
     <div class="col-md-3">
         <div class="form-floating">
-            <input asp-for="Bedrooms" class="form-control" type="number" placeholder="Bedrooms" />
+            <input asp-for="Bedrooms" class="form-control" type="number" placeholder="Bedrooms" value="1" />
             <label asp-for="Bedrooms">Bedrooms</label>
         </div>
         <span asp-validation-for="Bedrooms" class="text-danger small"></span>
@@ -94,7 +94,7 @@
 
     <div class="col-md-3">
         <div class="form-floating">
-            <input asp-for="Bathrooms" class="form-control" type="number" placeholder="Bathrooms" />
+            <input asp-for="Bathrooms" class="form-control" type="number" placeholder="Bathrooms" value="1" />
             <label asp-for="Bathrooms">Bathrooms</label>
         </div>
         <span asp-validation-for="Bathrooms" class="text-danger small"></span>
@@ -125,7 +125,7 @@
 
     <div class="col-12 d-flex justify-content-between mt-4">
         <button type="submit" class="btn btn-success">✅ Add Villa</button>
-        <a asp-action="Details" asp-route-id="@Model.NamePlace" class="btn btn-outline-primary">🔍 View Details</a>
+     @*  <a asp-controller="Vila" asp-action="Details" asp-route-id="@Model.NamePlace" class="btn btn-outline-primary">🔍 View Details</a> *@
     </div>
 </form>
 

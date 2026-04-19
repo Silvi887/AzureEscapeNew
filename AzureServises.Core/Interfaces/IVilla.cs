@@ -12,7 +12,7 @@ namespace AzureServises.Core.Interfaces
 
         Task<PagedResult<VilaIndexViewModel>> GetAllVillasAsync(string? UserId, int page, int pageSize);
 
-        Task<IEnumerable<VilaIndexViewModel>> GetAllVillasSearch(string? UserId, string StartDate, string EndDate);
+        Task<PagedResult<VilaIndexViewModel>> GetAllVillasSearch(string? UserId, string StartDate, string EndDate,int page, int pageSize);
         Task<bool> AddVilaModel(string Userid, AddVillaIndexViewModel vilamodel);
 
         Task<bool> AddBookingModel(string Userid, AddReservationViewModel reservationmodel);

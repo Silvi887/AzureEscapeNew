@@ -67,25 +67,22 @@
 
 							<div class="villa-buttons">
 
-							<a asp-area="Admin"
-							   asp-controller="Vila"
-							   asp-action="Details"
-							   asp-route-id="@villa.IdVilla"
-							   class="btn btn-primary">
-								<i class="fa fa-info-circle"></i> Details
-							</a>
-
-
-								@* <a asp-controller="Vila" asp-area="Admin"
-								   asp-action="Details"
-								   asp-route-id="@villa.IdVilla"
-								   class="btn btn-outline-primary">
-									<i class="fa fa-info-circle"></i> Details
-								</a> *@
+								<a asp-area="Admin" asp-controller="Vila"
+									asp-action="Details"
+									asp-route-id="@villa.IdVilla" 
+									class="btn btn-outline-primary">
+										<i class="fa fa-info-circle"></i> Details
+									</a>
+								
 
 								@if (User?.Identity?.IsAuthenticated == true &&  User.IsInRole("User"))
 								{
-									
+									@* <a asp-controller="Reserve"
+									   asp-action="AddBooking"
+									   asp-route-id="@($"{villa.IdVilla},{villa.NameVilla},{villa.Pricepernight}")"
+									   class="btn btn-primary">
+										<i class="fa fa-calendar-check-o"></i> Reserve
+									</a> *@
 									<button class="btn btn-primary reserveBtn"
 											data-id="@villa.IdVilla"
 											data-name="@villa.NameVilla"

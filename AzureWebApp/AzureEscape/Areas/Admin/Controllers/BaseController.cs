@@ -2,17 +2,17 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace AzureEscape.Areas.Controllers
+namespace AzureEscape.Areas.Admin.Controllers
 {
-    [Authorize]
+    [Area("Admin")]
     public class BaseController : Controller
     {
         protected bool IsUserAuthenticated()
         {
             bool retRes = false;
-            if (this.User.Identity != null)
+            if (User.Identity != null)
             {
-                retRes = this.User.Identity.IsAuthenticated;
+                retRes = User.Identity.IsAuthenticated;
             }
 
             return retRes;
@@ -21,9 +21,9 @@ namespace AzureEscape.Areas.Controllers
         protected string? GetUserId()
         {
             string? userId = null;
-            if (this.IsUserAuthenticated())
+            if (IsUserAuthenticated())
             {
-                userId = this.User
+                userId = User
                     .FindFirstValue(ClaimTypes.NameIdentifier);
             }
 

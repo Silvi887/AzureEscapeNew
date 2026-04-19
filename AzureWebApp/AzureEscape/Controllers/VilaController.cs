@@ -1,6 +1,7 @@
 ﻿using Azure;
 using AzureAdd.DataModels;
 using AzureApp.ViewModels;
+using AzureEscape.Controllers;
 using AzureServises.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -42,7 +43,7 @@ namespace AzureEscape.Controllers
 
 
             ViewBag.EmailConfirmed = user?.EmailConfirmed ?? false;
-            return View("Views/Vila/Index.cshtml", Allvillas);
+            return View( Allvillas);
             }
             catch (Exception ex) { 
                 return RedirectToAction("Error", "Home");

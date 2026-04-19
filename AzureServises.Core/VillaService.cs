@@ -390,7 +390,7 @@ namespace AzureServises.Core
 
             Booking? currentReservation = await Dbcontext.Bookings.FindAsync(id);
 
-            if (currentReservation != null && currentReservation != null)
+            if (currentReservation != null)
             {
 
 

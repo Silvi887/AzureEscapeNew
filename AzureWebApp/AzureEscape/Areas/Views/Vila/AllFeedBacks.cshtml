@@ -1,0 +1,29 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using AzureApp.ViewModels;
+@model IEnumerable<BookingFeedbackViewModel>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">🌟 Guest Feedback</h2>
+
+    <div class="row">
+        @foreach (var feedback in Model)
+        {
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">@feedback.ClientName</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Villa: @feedback.VillaName</h6>
+                        <blockquote class="blockquote mt-3">
+                            <p class="mb-0">“@feedback.FeedbackMessage”</p>
+                            <footer class="blockquote-footer mt-2">Rating: ⭐ @feedback.Rating / 5</footer>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

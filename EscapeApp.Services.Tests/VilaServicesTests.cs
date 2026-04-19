@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
+
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
@@ -357,7 +358,7 @@ namespace EscapeApp.Services.Tests
 
             var villa = new VillaPenthhouse
             {
-                Id = 1,
+                IdVilla = 1,
                 NameVilla = "Villa A",
                 ImageUrl = "img.jpg",
                 IsDeleted = false,
@@ -657,10 +658,403 @@ namespace EscapeApp.Services.Tests
             // Assert
             Assert.IsFalse(result);
         }
+
         [Test]
-        public void Test1()
+        public async Task DeleteReservation_ReturnsTrue_WhenReservationExists()
         {
-            Assert.Pass();
+            // Arrange
+
+
+            var options = new DbContextOptionsBuilder<AzureAddDbContext>()
+                .UseInMemoryDatabase("DeleteTestDb")
+                .Options;
+
+            var context = new AzureAddDbContext(options);
+
+            var user = new ApplicationUser { Id = "user1" };
+
+            var store = new Mock<IUserStore<ApplicationUser>>();
+            var userManager = new Mock<UserManager<ApplicationUser>>(
+                store.Object, null, null, null, null, null, null, null, null);
+
+            userManager.Setup(x => x.FindByIdAsync("user1"))
+                .ReturnsAsync(user);
+
+            var reservation = new Booking
+            {
+                IdBooking = 1,
+                IsDeleted = false
+            };
+
+            context.Bookings.Add(reservation);
+            context.SaveChanges();
+
+            var service = new VillaService(context, userManager.Object);
+
+            // Act
+            var result = await service.DeleteReservation("user1", 1);
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.IsTrue(context.Bookings.First().IsDeleted);
         }
+
+
+        [Test]
+        public async Task DeleteReservation_ReturnsFalse_WhenUserNotFound()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<AzureAddDbContext>()
+                .UseInMemoryDatabase("DeleteTestDb2")
+                .Options;
+
+            var context = new AzureAddDbContext(options);
+
+            var store = new Mock<IUserStore<ApplicationUser>>();
+            var userManager = new Mock<UserManager<ApplicationUser>>(
+                store.Object, null, null, null, null, null, null, null, null);
+
+            userManager.Setup(x => x.FindByIdAsync("badUser"))
+                .ReturnsAsync((ApplicationUser)null);
+
+            var reservation = new Booking
+            {
+                IdBooking = 1,
+                IsDeleted = false
+            };
+
+            context.Bookings.Add(reservation);
+            context.SaveChanges();
+
+            var service = new VillaService(context, userManager.Object);
+
+            // Act
+            var result = await service.DeleteReservation("badUser", 1);
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public async Task DeleteReservation_ReturnsFalse_WhenReservationNotFound()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<AzureAddDbContext>()
+                .UseInMemoryDatabase("DeleteTestDb3")
+                .Options;
+
+            var context = new AzureAddDbContext(options);
+
+            var user = new ApplicationUser { Id = "user1" };
+
+            var store = new Mock<IUserStore<ApplicationUser>>();
+            var userManager = new Mock<UserManager<ApplicationUser>>(
+                store.Object, null, null, null, null, null, null, null, null);
+
+            userManager.Setup(x => x.FindByIdAsync("user1"))
+                .ReturnsAsync(user);
+
+            var service = new VillaService(context, userManager.Object);
+
+            // Act
+            var result = await service.DeleteReservation("user1", 999);
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
+
+        [Test]
+        public async Task GetForEditReservation_ReturnsEditBooking_WhenDataExists()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<AzureAddDbContext>()
+                .UseInMemoryDatabase("EditGetTestDb")
+                .Options;
+
+            var context = new AzureAddDbContext(options);
+
+            var villa = new VillaPenthhouse
+            {
+                IdVilla = 1,
+                NameVilla = "Luxury Villa"
+            };
+
+            context.VillasPenthhouses.Add(villa);
+
+            context.Bookings.Add(new Booking
+            {
+                IdBooking = 1,
+                StartDate = new DateTime(2026, 01, 01),
+                EndDate = new DateTime(2026, 01, 05),
+                AdultsCount = 2,
+                ChildrenCount = 1,
+                VillaId = 1,
+                VillaPenthhouse = villa,
+                FirstName = "John",
+                LastName = "Doe",
+                DateOfBirth = new DateTime(1990, 01, 01),
+                Address = "Sofia",
+                Email = "john@test.com",
+                NumberOfPhone = "12345"
+            });
+
+            context.SaveChanges();
+
+            var user = new ApplicationUser { Id = "user1" };
+
+            var store = new Mock<IUserStore<ApplicationUser>>();
+            var userManager = new Mock<UserManager<ApplicationUser>>(
+                store.Object, null, null, null, null, null, null, null, null);
+
+            userManager.Setup(x => x.FindByIdAsync("user1"))
+                .ReturnsAsync(user);
+
+            var service = new VillaService(context, userManager.Object);
+
+            // Act
+            var result = await service.GetForEditReservation(1, "user1");
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("1", result.IdBooking);
+            Assert.AreEqual("Luxury Villa", result.VilaName);
+            Assert.AreEqual("John", result.GuestFirstName);
+        }
+
+
+        [Test]
+        public async Task GetForEditReservation_ReturnsNull_WhenUserNotFound()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<AzureAddDbContext>()
+                .UseInMemoryDatabase("EditGetTestDb2")
+                .Options;
+
+            var context = new AzureAddDbContext(options);
+
+            var store = new Mock<IUserStore<ApplicationUser>>();
+            var userManager = new Mock<UserManager<ApplicationUser>>(
+                store.Object, null, null, null, null, null, null, null, null);
+
+            userManager.Setup(x => x.FindByIdAsync("badUser"))
+                .ReturnsAsync((ApplicationUser)null);
+
+            var service = new VillaService(context, userManager.Object);
+
+            // Act
+            var result = await service.GetForEditReservation(1, "badUser");
+
+            // Assert
+            Assert.IsNull(result);
+        }
+
+
+        [Test]
+        public async Task EditReservation_ReturnsTrue_WhenUpdateIsSuccessful()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<AzureAddDbContext>()
+                .UseInMemoryDatabase("EditUpdateTestDb")
+                .Options;
+
+            var context = new AzureAddDbContext(options);
+
+            var villa = new VillaPenthhouse
+            {
+                IdVilla = 1,
+                NameVilla = "Villa"
+            };
+
+            context.VillasPenthhouses.Add(villa);
+
+            context.Bookings.Add(new Booking
+            {
+                IdBooking = 1,
+                StartDate = new DateTime(2026, 01, 01),
+                EndDate = new DateTime(2026, 01, 05),
+                AdultsCount = 2,
+                ChildrenCount = 1,
+                VillaId = 1,
+                VillaPenthhouse = villa,
+                FirstName = "Old",
+                LastName = "Name",
+                DateOfBirth = new DateTime(1990, 01, 01),
+                Address = "Old",
+                Email = "old@test.com",
+                NumberOfPhone = "000"
+            });
+
+            context.SaveChanges();
+
+            var user = new ApplicationUser { Id = "user1" };
+
+            var store = new Mock<IUserStore<ApplicationUser>>();
+            var userManager = new Mock<UserManager<ApplicationUser>>(
+                store.Object, null, null, null, null, null, null, null, null);
+
+            userManager.Setup(x => x.FindByIdAsync("user1"))
+                .ReturnsAsync(user);
+
+            var service = new VillaService(context, userManager.Object);
+
+            var model = new EditBooking
+            {
+                IdBooking = "1",
+                StartDate = "2026-02-01",
+                EndDate = "2026-02-05",
+                AdultsCount = 3,
+                ChildrenCount = 2,
+                GuestFirstName = "New",
+                LastNameG = "User",
+                DateofBirth = "1995-01-01",
+                GuestAddress = "New Address",
+                GuestEmail = "new@test.com",
+                GuestPhoneNumber = "999"
+            };
+
+            // Act
+            var result = await service.EditReservation("user1", model);
+
+            // Assert
+            Assert.IsTrue(result);
+
+            var updated = context.Bookings.First();
+
+            Assert.AreEqual("New", updated.FirstName);
+            Assert.AreEqual(3, updated.AdultsCount);
+        }
+
+        [Test]
+        public async Task GetVilaDetailsAsync_ReturnsDetails_WhenVillaExists()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<AzureAddDbContext>()
+                .UseInMemoryDatabase("VillaDetailsDb")
+                .Options;
+
+            var context = new AzureAddDbContext(options);
+
+            var location = new Location { IdLocation = 1, NameLocation = "Sofia" };
+            var type = new TypePlace { IdTypePlace = 1, NamePlace = "Luxury" };
+
+            context.Locations.Add(location);
+            context.TypePlaces.Add(type);
+
+            var villa = new VillaPenthhouse
+            {
+                IdVilla = 1,
+                NameVilla = "Sea View",
+                CountChildren = 2,
+                CountAdults = 4,
+                CountRooms = 3,
+                Bedrooms = 2,
+                Bathrooms = 2,
+                Parking = "yes",
+                ImageUrl = "img.jpg",
+                VillaInfo = "Nice villa",
+                Location = location,
+                TypePlace = type,
+                IDManager = "manager1"
+            };
+
+            context.VillasPenthhouses.Add(villa);
+            context.SaveChanges();
+
+            var manager = new ApplicationUser { Id = "manager1" };
+
+            var store = new Mock<IUserStore<ApplicationUser>>();
+            var userManager = new Mock<UserManager<ApplicationUser>>(
+                store.Object, null, null, null, null, null, null, null, null);
+
+            userManager.Setup(x => x.FindByIdAsync("manager1"))
+                .ReturnsAsync(manager);
+
+            var service = new VillaService(context, userManager.Object);
+
+            // Act
+            var result = await service.GetVilaDetailsAsync(1, "manager1");
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Sea View", result.VilaName);
+            Assert.AreEqual("Sofia", result.TownName);
+            Assert.AreEqual("Luxury", result.TypePlace);
+            Assert.IsTrue(result.IsManager);
+        }
+
+        [Test]
+        public async Task GetVilaDetailsAsync_ReturnsNull_WhenVillaNotFound()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<AzureAddDbContext>()
+                .UseInMemoryDatabase("VillaDetailsDb2")
+                .Options;
+
+            var context = new AzureAddDbContext(options);
+
+            var store = new Mock<IUserStore<ApplicationUser>>();
+            var userManager = new Mock<UserManager<ApplicationUser>>(
+                store.Object, null, null, null, null, null, null, null, null);
+
+            userManager.Setup(x => x.FindByIdAsync("user1"))
+                .ReturnsAsync(new ApplicationUser { Id = "user1" });
+
+            var service = new VillaService(context, userManager.Object);
+
+            // Act
+            var result = await service.GetVilaDetailsAsync(999, "user1");
+
+            // Assert
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public async Task GetVilaDetailsAsync_IsManagerFalse_WhenUserNotFound()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<AzureAddDbContext>()
+                .UseInMemoryDatabase("VillaDetailsDb3")
+                .Options;
+
+            var context = new AzureAddDbContext(options);
+
+            var location = new Location { IdLocation = 1, NameLocation = "Sofia" };
+            var type = new TypePlace { IdTypePlace = 1, NamePlace = "Luxury" };
+
+            context.Locations.Add(location);
+            context.TypePlaces.Add(type);
+
+            var villa = new VillaPenthhouse
+            {
+                IdVilla = 1,
+                NameVilla = "Sea View",
+                Location = location,
+                TypePlace = type,
+                IDManager = "manager1"
+            };
+
+            context.VillasPenthhouses.Add(villa);
+            context.SaveChanges();
+
+            var store = new Mock<IUserStore<ApplicationUser>>();
+            var userManager = new Mock<UserManager<ApplicationUser>>(
+                store.Object, null, null, null, null, null, null, null, null);
+
+            userManager.Setup(x => x.FindByIdAsync("badUser"))
+                .ReturnsAsync((ApplicationUser)null);
+
+            var service = new VillaService(context, userManager.Object);
+
+            // Act
+            var result = await service.GetVilaDetailsAsync(1, "badUser");
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsFalse(result.IsManager);
+        }
+
+
+       
     }
 }

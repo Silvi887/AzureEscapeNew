@@ -1,11 +1,10 @@
 ﻿using AzureAdd.DataModels;
 using AzureApp.ViewModels;
-using AzureEscape.Controllers;
 using AzureServises.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AzureEscape.Controllers
+namespace AzureEscape.Areas.Admin.Controllers
 {
     public class ReserveController : BaseController
     {
@@ -15,7 +14,7 @@ namespace AzureEscape.Controllers
         public ReserveController(IVilla vilaService, UserManager<ApplicationUser> userManager)
         {
             this.vilaService = vilaService;
-            this.UserManager = userManager;
+            UserManager = userManager;
             
         }
 
@@ -65,8 +64,8 @@ namespace AzureEscape.Controllers
             try
             {
               
-                string? UserId = this.GetUserId();
-                if (!this.ModelState.IsValid)
+                string? UserId = GetUserId();
+                if (!ModelState.IsValid)
                 {
                     // return this.View(inAddReservation);
 
@@ -82,7 +81,7 @@ namespace AzureEscape.Controllers
                 {
 
                     ModelState.AddModelError(string.Empty, "Fatal error accure while adding a reservation!");
-                    return this.RedirectToAction(nameof(AddBooking), "Reserve");
+                    return RedirectToAction(nameof(AddBooking), "Reserve");
                 }
                 return Ok();
 
@@ -106,9 +105,9 @@ namespace AzureEscape.Controllers
             {
 
 
-                string? UserId = this.GetUserId();
+                string? UserId = GetUserId();
 
-                IEnumerable<AllReservationsViewModel> allreservations = await this.vilaService.GetAllReservations(UserId);
+                IEnumerable<AllReservationsViewModel> allreservations = await vilaService.GetAllReservations(UserId);
                 var user = await UserManager.FindByIdAsync(UserId);
                 ViewBag.EmailConfirmed = user?.EmailConfirmed ?? false;
                 return View("Views/Vila/AllReservations.cshtml", allreservations);
@@ -130,7 +129,7 @@ namespace AzureEscape.Controllers
             {
 
                 int id1 = int.Parse(id);
-                var UserId = this.GetUserId();
+                var UserId = GetUserId();
 
                 DeleteReservationIndexViewModel selectedreservation = await vilaService.GetForDeleteReservation(id1, UserId);
 
@@ -156,7 +155,7 @@ namespace AzureEscape.Controllers
             try
             {
 
-                string? userid = this.GetUserId();
+                string? userid = GetUserId();
 
                 if (!ModelState.IsValid)
                 {
@@ -171,7 +170,7 @@ namespace AzureEscape.Controllers
                 }
 
 
-                return this.RedirectToAction(nameof(AllReservations));
+                return RedirectToAction(nameof(AllReservations));
 
             }
             catch (Exception ex)
@@ -193,11 +192,11 @@ namespace AzureEscape.Controllers
             {
 
                 int id1 = int.Parse(id);
-                var UserId = this.GetUserId();
+                var UserId = GetUserId();
                 EditBooking currentreservation = await vilaService.GetForEditReservation(id1, UserId);
                
 
-                if (this.ModelState.IsValid)
+                if (ModelState.IsValid)
                 {
                  
                     return PartialView("Views/Vila/EditReservationPartial.cshtml", currentreservation);
@@ -218,7 +217,7 @@ namespace AzureEscape.Controllers
             try
             {
 
-                string? userid = this.GetUserId();
+                string? userid = GetUserId();
 
                 if (!ModelState.IsValid)
                 {

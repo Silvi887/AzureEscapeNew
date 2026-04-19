@@ -1,16 +1,17 @@
-﻿using AzureAdd.DataModels;
+﻿using Azure;
+using AzureAdd.DataModels;
 using AzureApp.ViewModels;
 using AzureServises.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.CodeAnalysis;
 
 
 
-namespace AzureEscape.Areas.Controllers
+namespace AzureEscape.Areas.Admin.Controllers
 {
-    [Area("Admin")]
     public class VilaController : BaseController
     {
 
@@ -21,32 +22,27 @@ namespace AzureEscape.Areas.Controllers
         public VilaController(IVilla vilaService, ITownService townservice1, UserManager<ApplicationUser> userManager)
         {
             this.vilaService = vilaService;
-            this.UserManager = userManager;
-            this.townService = townservice1;
+            UserManager = userManager;
+            townService = townservice1;
         }
 
-
-       
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public async Task<IActionResult> Index(int page=1)
         {
 
             try
             { 
 
-            string? UserId = this.GetUserId();
+            string? UserId = GetUserId();
                 //Pagination
             int pageSize = 3; // how many villas per page
 
-            var  Allvillas = await this.vilaService.GetAllVillasAsync(UserId, page, pageSize);
-
-           // IEnumerable<VilaIndexViewModel> Allvillas = await this.vilaService.GetAllVillasAsync(UserId);
-
+            var  Allvillas = await vilaService.GetAllVillasAsync(UserId, page, pageSize);
             var user = await UserManager.FindByIdAsync(UserId);
 
 
             ViewBag.EmailConfirmed = user?.EmailConfirmed ?? false;
-            return View("Views/Vila/Index.cshtml", Allvillas);
+            return View("~/Areas/Views/Vila/Index.cshtml", Allvillas);
             }
             catch (Exception ex) { 
                 return RedirectToAction("Error", "Home");
@@ -60,11 +56,12 @@ namespace AzureEscape.Areas.Controllers
             try
             {
 
-                string? UserId = this.GetUserId();
-                int pageSize = 3;
-                var AllVillasSearch = await this.vilaService.GetAllVillasSearch(UserId, startDate, endDate, page, pageSize);
+                string? UserId = GetUserId();
+                int pageSize = 6;
+                PagedResult<VilaIndexViewModel> AllVillasSearch = await vilaService.GetAllVillasSearch(UserId, startDate, endDate, page, pageSize);
 
-                return View("Views/Vila/Index.cshtml", AllVillasSearch);
+            
+                return View("Index", AllVillasSearch);
             }
             catch (Exception ex)
             {
@@ -84,8 +81,8 @@ namespace AzureEscape.Areas.Controllers
                 // {
                 AddVillaIndexViewModel addvilla = new AddVillaIndexViewModel()
                 {
-                    AllTownsModels = (IEnumerable<TownIndexViewModel>)await this.townService.TownViewDataAsync(),
-                    AllTypePlaces = (IEnumerable<TypePlaceIndexViewModel>)await this.townService.TypePlaceViewDataAsync(),
+                    AllTownsModels = await townService.TownViewDataAsync(),
+                    AllTypePlaces = await townService.TypePlaceViewDataAsync(),
                 };
                 return View("Views/Vila/AddVilla.cshtml", addvilla);
 
@@ -95,28 +92,26 @@ namespace AzureEscape.Areas.Controllers
             {
                 Console.WriteLine(ex.Message);
                 return RedirectToAction("Error", "Home");
-
-               // return this.RedirectToAction(nameof(Index));
+              
             }
 
         }
 
-        [Authorize(Roles="Admin")]
         [HttpPost]
         public async Task<IActionResult> AddVilla(AddVillaIndexViewModel modelvila)
         {
 
             try
             {
-                string? UserId = this.GetUserId();
+                string? UserId = GetUserId();
                 bool isvalid= await vilaService.AddVilaModel(UserId, modelvila);
 
                 if (isvalid==false)
                 {
                     modelvila = new AddVillaIndexViewModel()
                     {
-                        AllTownsModels = (IEnumerable<TownIndexViewModel>)await this.townService.TownViewDataAsync(),
-                        AllTypePlaces = (IEnumerable<TypePlaceIndexViewModel>)await this.townService.TypePlaceViewDataAsync(),
+                        AllTownsModels = await townService.TownViewDataAsync(),
+                        AllTypePlaces = await townService.TypePlaceViewDataAsync(),
                     };
 
                     return View("Views/Vila/AddVilla.cshtml", modelvila);
@@ -125,17 +120,16 @@ namespace AzureEscape.Areas.Controllers
 
                 ViewBag.SuccessMessage = "Successful addes vila!";
 
-
                 return RedirectToAction(nameof(Index), "Vila");
-                // return RedirectToAction("AddVilla", "Vila");
+              
 
             }
         
             catch (Exception ex)
             {
 
-                modelvila.AllTownsModels = (IEnumerable<TownIndexViewModel>)await this.townService.TownViewDataAsync();
-                modelvila.AllTypePlaces = (IEnumerable<TypePlaceIndexViewModel>)await this.townService.TypePlaceViewDataAsync();
+                modelvila.AllTownsModels = await townService.TownViewDataAsync();
+                modelvila.AllTypePlaces = await townService.TypePlaceViewDataAsync();
                 Console.WriteLine(ex.Message);
                 return View("Views/Vila/AddVilla.cshtml", modelvila);
             }
@@ -154,11 +148,11 @@ namespace AzureEscape.Areas.Controllers
             {
 
                 int id1 = int.Parse(id);
-                string? UserId = this.GetUserId();
-                var VilaDetails = await this.vilaService.GetVilaDetailsAsync(id1, UserId);
+                string? UserId = GetUserId();
+                var VilaDetails = await vilaService.GetVilaDetailsAsync(id1, UserId);
 
 
-                return View("Views/Vila/DetailsVila.cshtml", VilaDetails);
+                return View("~/Areas/Views/Vila/DetailsVila.cshtml", VilaDetails);
             }
             catch (Exception ex)
             {
@@ -166,7 +160,6 @@ namespace AzureEscape.Areas.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> EditVilla(string id)
         {
@@ -175,16 +168,16 @@ namespace AzureEscape.Areas.Controllers
             {
 
                 int id1 = int.Parse(id);
-                var UserId = this.GetUserId();
+                var UserId = GetUserId();
                 EditVilaViewModel currentvilla = await vilaService.GetForEditVila(id1, UserId);
 
-                currentvilla.AllTownsModels = (IEnumerable<TownIndexViewModel>)await this.townService.TownViewDataAsync();
-                currentvilla.AllTypePlaces = (IEnumerable<TypePlaceIndexViewModel>)await this.townService.TypePlaceViewDataAsync();
+                currentvilla.AllTownsModels = await townService.TownViewDataAsync();
+                currentvilla.AllTypePlaces = await townService.TypePlaceViewDataAsync();
 
                 if (ModelState.IsValid)
                 {
 
-                    return View("Views/Vila/EditVilla.cshtml", currentvilla);
+                    return View("Views/Vila/BookVillaView.cshtml", currentvilla);
 
                 }
 
@@ -195,10 +188,9 @@ namespace AzureEscape.Areas.Controllers
             {
                 return RedirectToAction("Error", "Home");
             }
-        
+
         }
 
-        [Authorize (Roles="Admin")]
         [HttpPost]
         public async Task<IActionResult> EditVilla(EditVilaViewModel editvillamodel)
         {
@@ -206,7 +198,7 @@ namespace AzureEscape.Areas.Controllers
             try
             {
 
-                string? userid = this.GetUserId();
+                string? userid = GetUserId();
 
                 if (!ModelState.IsValid)
                 {
@@ -216,8 +208,7 @@ namespace AzureEscape.Areas.Controllers
 
                 bool editvilla = await vilaService
                                         .EditVilla(userid, editvillamodel);
-
-                // reservationmodel.roomdrp = (IEnumerable<RoomViewModel>)await this.vacationService.RoomViewDataAsync();
+            
 
                 if (editvilla == false)
                 {
@@ -225,11 +216,11 @@ namespace AzureEscape.Areas.Controllers
                 }
 
 
-                editvillamodel.AllTownsModels = (IEnumerable<TownIndexViewModel>)await this.townService.TownViewDataAsync();
-                editvillamodel.AllTypePlaces = (IEnumerable<TypePlaceIndexViewModel>)await this.townService.TypePlaceViewDataAsync();
+                editvillamodel.AllTownsModels = await townService.TownViewDataAsync();
+                editvillamodel.AllTypePlaces = await townService.TypePlaceViewDataAsync();
 
                 ViewBag.SuccessMessage = "Successful update of villa!";
-                return View("Views/Vila/EditVilla.cshtml", editvillamodel);
+                return PartialView("Views/Vila/BookVillaView.cshtml", editvillamodel);
 
 
             }
@@ -239,9 +230,9 @@ namespace AzureEscape.Areas.Controllers
             }
 
 
-            }
+        }
 
 
-            }
+    }
 
 }

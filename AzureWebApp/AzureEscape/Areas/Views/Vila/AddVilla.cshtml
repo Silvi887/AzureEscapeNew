@@ -1,0 +1,136 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Add Hotel";
+}
+
+
+@using AzureApp.ViewModels;
+@model AddVillaIndexViewModel;
+
+
+
+<h2 class="mb-4 text-primary">🏠 Add New Villa</h2>
+
+<form asp-action="AddVilla" method="post" class="row g-3">
+    <div class="col-md-6">
+        <div class="form-floating">
+            <input asp-for="NameVilla" class="form-control" placeholder="Villa Name" />
+            <label asp-for="NameVilla">Villa Name</label>
+        </div>
+        <span asp-validation-for="NameVilla" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating">
+            <input asp-for="VillaAddress" class="form-control" placeholder="Address" />
+            <label asp-for="VillaAddress">Address</label>
+        </div>
+        <span asp-validation-for="VillaAddress" class="text-danger small"></span>
+    </div>
+
+    <div class="col-12">
+        <div class="form-floating">
+            <textarea asp-for="VillaInfo" class="form-control" placeholder="Villa Info" style="height: 100px;"></textarea>
+            <label asp-for="VillaInfo">Villa Info</label>
+        </div>
+        <span asp-validation-for="VillaInfo" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating">
+            <input asp-for="ImageUrl" class="form-control" placeholder="Image URL" />
+            <label asp-for="ImageUrl">Image URL</label>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="IdTown" class="form-label">Town</label>
+        <select asp-for="IdTown" class="form-select" asp-items="@(Model.AllTownsModels != null ? new SelectList(Model.AllTownsModels, "IdTown", "NameTown"): new SelectList(Enumerable.Empty<SelectListItem>()))">
+            <option value="0">Select Town</option>
+        </select>
+        <span asp-validation-for="IdTown" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="IdTypePlace" class="form-label">Type of Place</label>
+        <select asp-for="IdTypePlace" class="form-select" asp-items="@(Model.AllTypePlaces != null ? new SelectList(Model.AllTypePlaces, "IdTypePlace", "NameTypePlace") : new SelectList(Enumerable.Empty<SelectListItem>()))">
+            <option value="0">Select Type</option>
+        </select>
+        <span asp-validation-for="IdTypePlace" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-floating">
+            <input asp-for="CountRooms" class="form-control" type="number" placeholder="Rooms" />
+            <label asp-for="CountRooms">Rooms</label>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-floating">
+            <input asp-for="CountAdults" class="form-control" type="number" placeholder="Adults" />
+            <label asp-for="CountAdults">Adults</label>
+        </div>
+        <span asp-validation-for="CountAdults" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-floating">
+            <input asp-for="CountChildren" class="form-control" type="number" placeholder="Children" />
+            <label asp-for="CountChildren">Children</label>
+        </div>
+        <span asp-validation-for="CountChildren" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-floating">
+            <input asp-for="Bedrooms" class="form-control" type="number" placeholder="Bedrooms" value="1" />
+            <label asp-for="Bedrooms">Bedrooms</label>
+        </div>
+        <span asp-validation-for="Bedrooms" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-floating">
+            <input asp-for="Bathrooms" class="form-control" type="number" placeholder="Bathrooms" value="1" />
+            <label asp-for="Bathrooms">Bathrooms</label>
+        </div>
+        <span asp-validation-for="Bathrooms" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-floating">
+            <input asp-for="Area" class="form-control" placeholder="Area" />
+            <label asp-for="Area">Area (m²)</label>
+        </div>
+        <span asp-validation-for="Area" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-floating">
+            <input asp-for="Parking" class="form-control" placeholder="Parking" />
+            <label asp-for="Parking">Parking</label>
+        </div>
+        <span asp-validation-for="Parking" class="text-danger small"></span>
+    </div>
+
+   @*  <div class="col-md-3">
+        <div class="form-floating">
+            <input asp-for="LocationName" class="form-control" placeholder="Location Name" />
+            <label asp-for="LocationName">Location Name</label>
+        </div>
+    </div> *@
+
+    <div class="col-12 d-flex justify-content-between mt-4">
+        <button type="submit" class="btn btn-success">✅ Add Villa</button>
+     @*  <a asp-controller="Vila" asp-action="Details" asp-route-id="@Model.NamePlace" class="btn btn-outline-primary">🔍 View Details</a> *@
+    </div>
+</form>
+
+@* @section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+} *@ 

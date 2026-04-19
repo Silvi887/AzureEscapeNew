@@ -1,0 +1,208 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@using AzureApp.ViewModels
+@model IEnumerable<AllReservationsViewModel>
+
+<div class="card shadow-sm" ng-app="reservationApp" ng-controller="reservationCtrl">
+@* <div class="text-center"> *@
+
+    <p>All Reservations</p>
+
+
+    <hr />
+    <div class="mx-auto" style="max-width: 900px;">
+    <table id="Table1" class="table table-hover table-bordered align-middle text-center">
+        <thead class="table-primary">
+            <tr>
+                <th>Villa Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var res in Model)
+        {
+
+            <tr>
+                <td>
+
+                    <h3>  @res.VilaName</h3>
+                </td>
+                <td> <p>@res.StartDate</p></td>
+                <td> <p>@res.EndDate</p></td>
+					@* <td>
+                    <div class="classBtns">
+
+                        <a asp-controller="Vacation" asp-action="Edit" asp-route-id="@res.IdReservation" class="btn btn-info w-100">
+                            <i class="fas fa-info-circle"></i> Edit
+                        </a></div> 
+                </td>*@
+                <td>
+                    <div class="card-footer text-center">
+                        <div class="d-flex justify-content-between align-items-center">
+                                <a asp-controller="Vila" asp-action="Index" class="btn btn-success">
+                                    <i class="fa fa-arrow-left  me-1"></i>  Back
+                            </a>
+                                    @if (User.IsInRole("User") && User?.Identity?.IsAuthenticated == true)@* && !Model.IsInUserFavorite *@
+                            {
+                                <form asp-controller="Vacation" asp-action="GetFavorite" method="post" class="d-flex justify-content-center align-items-center flex-fill mx-1">
+                                    <input type="hidden" name="id" value="@res.IdBooking" />
+                                    @*   <button type="submit" class="btn btn-success w-100">
+                                        <i class="fas fa-heart"></i> Add to Favorites</button>  *@
+
+                                </form>
+                               @*  asp-controller="Reserve" asp-action="Edit" asp-route-id="@res.IdBooking" *@
+                                        <a data-id="@res.IdBooking" class="btn btn-primary">
+                                        <i class="fa fa-edit  me-1"></i> Edit </a>
+                            }
+                            else
+                                    @if (User?.Identity?.IsAuthenticated == true && User.IsInRole("Admin")) @* ViewBag.EmailConfirmed == true *@
+                            {
+                                        <a data-id="@res.IdBooking" class="btn btn-primary">
+                                            <i class="fa fa-edit  me-1"></i> Edit
+                                        </a>
+                                <a asp-controller="Reserve" asp-action="Delete" asp-route-id="@res.IdBooking" class="btn btn-danger d-flex justify-content-center align-items-center flex-fill mx-1">
+                                    <i class="fa fa-trash"></i> Delete
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+            </tr>
+        }
+        </tbody>
+    </table></div>
+</div>
+<script>
+    document.querySelectorAll(".btn-primary").forEach(btn=>{
+
+    
+        btn.addEventListener("click", async function () {
+
+            const villaId = this.dataset.id;
+
+            // ✅ Load partial view
+             const response = await fetch(`/Reserve/Edit?id=${villaId}`);
+
+            if (!response.ok) {
+                Swal.fire("Error", "Cannot load form", "error");
+                return;
+            }
+
+            const html = await response.text();
+
+            console.log(html);
+            Swal.fire({
+                title: " ",
+                html: html,
+                width: 700,
+                showCancelButton: true,
+                confirmButtonText: "Save",
+
+                didOpen:async () => {
+                    // Optional: re-init validation if needed
+                },
+
+                preConfirm: async () => {
+
+                    const form = document.getElementById("FormEditBooking");
+                    const formData = new FormData(form);
+
+                    let errors = [];
+
+                    const start = document.getElementById("start").value;
+                    const end = document.getElementById("end").value;
+                    const adults = parseInt(document.getElementById("adults").value);
+                    const children =parseInt(document.getElementById("children").value);
+                    const firstName = document.getElementById("firstName").value;
+                    const txtlastName=document.getElementById("lastName").value;
+                    const txtphone=document.getElementById("phone").value;
+                    const txtdateofbirth=document.getElementById("datebirth").value;
+
+
+                    if (!firstName) errors.push("Please fill First Name!");
+                    if (!start) errors.push("Please fill Start Date!");
+                    if (!end) errors.push("Please fill End Date!");
+                    if(!txtlastName) errors.push("Please fill LastName!");
+                    if(!txtphone)errors.push("Please fill Number!");
+                    if(!txtdateofbirth)errors.push("Please fill dateofbirth!");
+
+                    const today= new Date();
+
+                     const dbirth = new Date(txtdateofbirth);
+                     if(dbirth.getFullYear()<1940 || dbirth.getFullYear()> today.getFullYear()){
+                         errors.push("Date of Birth must be valid date!")
+                     }
+
+                     if(dbirth.getMonth()<1 || dbirth.getMonth()>12){
+                          errors.push("Month of Birth must be valid number!")
+                     }
+
+                      if(dbirth.getDay()<1 || dbirth.getDay()>31){
+                            errors.push("Day of Birth must be valid number!")
+                     }
+
+                     console.log(dbirth.getFullYear());
+                     console.log(dbirth.getMonth());
+                     console.log(dbirth.getDate());
+
+                    if (start && end) {
+                        let s = new Date(start);
+                        let e = new Date(end);
+                        if (e <= s) errors.push("End Date must be after Start Date");
+                    }
+
+                    if (!adults || adults <= 0) {
+                        errors.push("Count of Adults must be greater than 0");
+                    }
+                  
+
+                    if (errors.length > 0) {
+                        Swal.showValidationMessage(errors.join("<br>"));
+                        return false;
+                    }
+
+
+                    try {
+                          const vId = this.dataset.id;
+                         const res = await fetch(`/Reserve/Edit`, { /*   EditBookingPartial */
+                            method: 'POST',
+                            body: formData
+                        });
+                        console.log("Status:", res.status);
+
+                         if (!res.ok) {
+                        const errorText = await res.text();
+                        Swal.showValidationMessage(errorText);
+                        return false;
+                        }
+
+                        return true;
+
+                    } catch {
+                        Swal.showValidationMessage("Error saving changes");
+                        return false;
+                    }
+                }
+
+            }).then(result => {
+                if (result.isConfirmed) {
+                    Swal.fire("Success", "Reservation updated!", "success")
+                        .then(() => location.reload());
+                }
+            });
+
+        })
+        });
+
+</script>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

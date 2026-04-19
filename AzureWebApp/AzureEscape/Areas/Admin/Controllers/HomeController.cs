@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
 
-namespace AzureEscape.Controllers
+namespace AzureEscape.Areas.Admin.Controllers
 {
-   
+
+
+
+    [Area("Admin")] // or whatever your area is called
     public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
@@ -18,7 +21,7 @@ namespace AzureEscape.Controllers
         public HomeController(ILogger<HomeController> logger, UserManager<ApplicationUser> userManager)
         {
             _logger = logger;
-            this.UserManager = userManager;
+            UserManager = userManager;
         }
 
         [AllowAnonymous]
@@ -26,9 +29,10 @@ namespace AzureEscape.Controllers
         {
             try
             {
+                //return Content("ADMIN OK");
 
 
-                if (this.IsUserAuthenticated())
+                if (IsUserAuthenticated())
                 {
                     return RedirectToAction("Index", "Vila");
                 }
@@ -104,8 +108,11 @@ namespace AzureEscape.Controllers
             return View("Views/Shared/PageError500.cshtml");
         }
 
+
+
+
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        [AllowAnonymous]
         public IActionResult Error(int statusCode)
         {
             if (statusCode == 404)
@@ -113,7 +120,7 @@ namespace AzureEscape.Controllers
 
                 return View("Views/Shared/PageError404.cshtml", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
-            else if (statusCode == 500 || statusCode == null )
+            else if (statusCode == 500 || statusCode == null || statusCode == 0)
             {
 
                 return View("Views/Shared/PageError500.cshtml", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

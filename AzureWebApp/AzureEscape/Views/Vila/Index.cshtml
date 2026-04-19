@@ -67,7 +67,8 @@
 
 							<div class="villa-buttons">
 
-								<a asp-controller="Vila"
+
+								<a asp-controller="Vila" 
 								   asp-action="Details"
 								   asp-route-id="@villa.IdVilla"
 								   class="btn btn-outline-primary">
@@ -76,12 +77,7 @@
 
 								@if (User?.Identity?.IsAuthenticated == true &&  User.IsInRole("User"))
 								{
-									@* <a asp-controller="Reserve"
-									   asp-action="AddBooking"
-									   asp-route-id="@($"{villa.IdVilla},{villa.NameVilla},{villa.Pricepernight}")"
-									   class="btn btn-primary">
-										<i class="fa fa-calendar-check-o"></i> Reserve
-									</a> *@
+									
 									<button class="btn btn-primary reserveBtn"
 											data-id="@villa.IdVilla"
 											data-name="@villa.NameVilla"

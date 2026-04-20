@@ -51,11 +51,15 @@
                             <ul class="d-flex flex-row align-items-center justify-content-start">
                                 <li class="active"><a asp-controller="Home" asp-action="Index">  <i class="fa fa-home"></i>Home</a></li>
                                 <li class="nav-item dropdown">
+                                     
                                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">All Villas</a>
+                                        
                                     <div class="dropdown-menu">
-                                        
-                                        
-                                            <a class="dropdown-item" asp-area="" asp-controller="Vila" asp-action="Index"> <i class="fa fa-list"></i>All Villas</a>
+
+                                         @if (User?.Identity?.IsAuthenticated == false)
+                                        {
+                                        <a class="dropdown-item" asp-area="" asp-controller="Vila" asp-action="Index"> <i class="fa fa-list"></i>All Villas</a>
+                                        }
                                         
                                         <div class="dropdown-divider"></div>
                                        
@@ -72,24 +76,27 @@
                                       
                                         else if (User?.Identity?.IsAuthenticated == true && User.IsInRole("User"))
                                         {
+                                            <a class="dropdown-item" asp-area="" asp-controller="Vila" asp-action="Index"> <i class="fa fa-list"></i>All Villas</a>
+                                            <div class="dropdown-divider"></div>
                                             <a class="dropdown-item" asp-controller="Favorite" asp-action="GetFavorite">
                                                 <i class="fa fa-heart"></i> Favorite Vila
                                             </a>
                                         }
+                                       
                                     </div>
                                 </li>
 
                                  @if (User?.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
                                 {
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-area="Admin" asp-controller="Reserve" asp-action="AllReservations">All Reservation</a>
+                                        <a class="nav-link" asp-area="Admin" asp-controller="Reserve" asp-action="AllReservations">All Reservations</a>
                                     </li>
                                 }
                                 else if (User?.Identity?.IsAuthenticated == true && User.IsInRole("User"))
                                 {
 
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="Reserve" asp-action="AllReservations">All Reservation</a>
+                                        <a class="nav-link" asp-area="" asp-controller="Reserve" asp-action="AllReservations">All Reservations</a>
                                     </li>
                                 }
 

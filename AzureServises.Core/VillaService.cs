@@ -38,7 +38,10 @@ namespace AzureServises.Core
 
 
                 bool operationResult = false;
-                ApplicationUser? user1 = await this.userManager.FindByIdAsync(Userid);
+                 ApplicationUser? user1 = await this.userManager.FindByIdAsync(Userid);
+
+                //ApplicationUser? user1 =await userManager.Users.FirstOrDefaultAsync(u => u.Id == Userid);
+
 
                 //string? UserId = this.GetUserId();
                 //int idroom = int.Parse(reservationmodel.RoomId);
@@ -119,7 +122,8 @@ namespace AzureServises.Core
             try
             {
                 bool operationResult = false;
-                ApplicationUser? user1 = await this.userManager.Users.FirstOrDefaultAsync(u => u.Id == Userid);
+                ApplicationUser? user1 = await this.userManager.FindByIdAsync(Userid);
+                   // Users.FirstOrDefaultAsync(u => u.Id == Userid);
                     
                     //FindByIdAsync(Guid.Parse(Userid));
 

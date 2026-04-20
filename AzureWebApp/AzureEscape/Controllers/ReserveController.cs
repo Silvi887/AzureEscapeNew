@@ -110,7 +110,8 @@ namespace AzureEscape.Controllers
 
                 IEnumerable<AllReservationsViewModel> allreservations = await this.vilaService.GetAllReservations(UserId);
                 var user = await UserManager.FindByIdAsync(UserId);
-                ViewBag.EmailConfirmed = user?.EmailConfirmed ?? false;
+               // ViewBag.EmailConfirmed = user?.EmailConfirmed ?? false;
+              
                 return View("Views/Vila/AllReservations.cshtml", allreservations);
             }
             catch (Exception ex)

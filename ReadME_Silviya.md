@@ -126,7 +126,7 @@ After start the project the users and roles will be seeded and you can test with
 
 ## Make Reservation
 
-<img src="./imagesread/imagesread/AddReservation.jpg" width="600">
+<img src="./imagesread/AddReservation.jpg" width="600">
 <!--![All feedbacks](./Allfeedbacks.jpg)-->
 
 

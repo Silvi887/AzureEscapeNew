@@ -48,8 +48,7 @@ Administrators can edit villas, edit reservations, and delete reservations creat
 ### Admin Panel – Example Screenshot
 
 <!--![Admin Management](https://images.unsplash.com/photo-1551288049-bebda4e38f71)-->
-<img src="" width="200">
----
+
 <img src="./imagesread/UserAllReservations.jpg" width="600">
 
 ## All Villas
